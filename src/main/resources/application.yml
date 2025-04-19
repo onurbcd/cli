@@ -3,9 +3,9 @@ spring:
     banner-mode: OFF
     web-application-type: NONE
   datasource:
-    password: secret
-    url: jdbc:postgresql://localhost:5432/eru-service-dev
+    url: jdbc:postgresql://localhost:5432/eru-service
     username: admin
+    password: secret
     driver-class-name: org.postgresql.Driver
   flyway:
     locations: classpath:db/migration
