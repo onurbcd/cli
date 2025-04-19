@@ -24,10 +24,12 @@ $ docker run --net eru-network -p8069:8069 --name eru-service -e SPRING_DATASOUR
 ## Update Maven Wrapper Version
 
 ```shell
-# View current version
+# verify current version
 $ ./mvnw --version
-# Update version
-$ ./mvnw -N wrapper:wrapper -Dmaven=3.9.8
-# Check installed version
+
+# update to latest version
+$ ./mvnw -N wrapper:wrapper -Dmaven=3.9.9
+
+# confirm update
 $ ./mvnw --version
 ```
