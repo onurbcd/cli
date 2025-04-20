@@ -2,9 +2,9 @@ package com.onurbcd.eruservice.persistency.repository;
 
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSumDto;
+import com.onurbcd.eruservice.dto.budget.BudgetValuesDto;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import com.onurbcd.eruservice.persistency.param.SequenceParam;
-import com.onurbcd.eruservice.dto.budget.BudgetValuesDto;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -72,6 +72,17 @@ public interface BudgetRepository extends EruRepository<Budget, BudgetDto>, Sequ
             " where b.id = :id")
     int updatePaid(
             @Param("id") UUID id,
+            @Param("paid") Boolean paid,
+            @Param("lastModifiedDate") LocalDateTime lastModifiedDate
+    );
+
+    @Modifying
+    @Query("update Budget b" +
+            " set b.active = :active, b.paid = :paid, b.lastModifiedDate = :lastModifiedDate" +
+            " where b.id = :id")
+    int updateActiveAndPaid(
+            @Param("id") UUID id,
+            @Param("active") Boolean active,
             @Param("paid") Boolean paid,
             @Param("lastModifiedDate") LocalDateTime lastModifiedDate
     );

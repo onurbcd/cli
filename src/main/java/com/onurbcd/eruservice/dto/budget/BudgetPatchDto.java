@@ -13,6 +13,17 @@ public class BudgetPatchDto extends PrimePatchDto {
     private Boolean paid;
 
     public static BudgetPatchDto of(Boolean paid) {
-        return BudgetPatchDto.builder().paid(paid).build();
+        return BudgetPatchDto
+                .builder()
+                .paid(paid)
+                .build();
+    }
+
+    public static BudgetPatchDto of(Boolean active, Boolean paid) {
+        return BudgetPatchDto
+                .builder()
+                .active(active)
+                .paid(paid)
+                .build();
     }
 }

@@ -2,14 +2,11 @@ package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.config.annotations.PrimeService;
 import com.onurbcd.eruservice.config.enums.Domain;
-import com.onurbcd.eruservice.dto.budget.BudgetDto;
-import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
-import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
-import com.onurbcd.eruservice.dto.budget.BudgetSumDto;
-import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
 import com.onurbcd.eruservice.dto.Dtoable;
-import com.onurbcd.eruservice.dto.budget.SumDto;
+import com.onurbcd.eruservice.dto.budget.*;
 import com.onurbcd.eruservice.dto.enums.Direction;
+import com.onurbcd.eruservice.dto.filter.BudgetFilter;
+import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
 import com.onurbcd.eruservice.persistency.factory.SequenceParamFactory;
@@ -21,11 +18,8 @@ import com.onurbcd.eruservice.service.SequenceService;
 import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.service.enums.Error;
 import com.onurbcd.eruservice.service.enums.QueryType;
-import com.onurbcd.eruservice.dto.filter.BudgetFilter;
-import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.service.mapper.BudgetToEntityMapper;
-import com.onurbcd.eruservice.dto.budget.BudgetValuesDto;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.BudgetValidationService;
 import com.onurbcd.eruservice.util.CollectionUtil;
@@ -89,7 +83,9 @@ public class BudgetServiceImpl extends AbstractCrudService<Budget, BudgetDto, Bu
         var patchDto = (BudgetPatchDto) dto;
         var updatedRowsCount = 0;
 
-        if (patchDto.isActive() != null) {
+        if (patchDto.isActive() != null && patchDto.getPaid() != null) {
+            updatedRowsCount = repository.updateActiveAndPaid(id, patchDto.isActive(), patchDto.getPaid(), LocalDateTime.now());
+        } else if (patchDto.isActive() != null) {
             updatedRowsCount = repository.updateActive(id, patchDto.isActive());
         } else if (patchDto.getPaid() != null) {
             updatedRowsCount = repository.updatePaid(id, patchDto.getPaid(), LocalDateTime.now());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.command.enums.EruTable;
 import com.onurbcd.eruservice.command.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
+import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
@@ -107,6 +108,22 @@ public class BudgetCommand {
                 ),
                 EruTable.BUDGET
         );
+    }
+
+    @ShellMethod(key = "budget-update", value = "Update budget's status by id.")
+    public String update(
+            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"active", "-a"}, help = "The budget's active status.", defaultValue = ShellOption.NULL)
+            Boolean active,
+
+            @ShellOption(value = {"paid", "-p"}, help = "The budget's paid status.", defaultValue = ShellOption.NULL)
+            Boolean paid
+    ) {
+        service.update(BudgetPatchDto.of(active, paid), id);
+        return String.format("Budget with id: '%s' updated with success.", id);
     }
 
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
