@@ -14,16 +14,10 @@ import java.util.UUID;
 public class BudgetDto extends PrimeDto {
 
     private Short sequence;
-
     private Short refYear;
-
     private Short refMonth;
-
     private UUID billTypeId;
-
     private String billTypeName;
-
     private BigDecimal amount;
-
     private Boolean paid;
 }

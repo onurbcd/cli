@@ -1,5 +1,6 @@
 package com.onurbcd.eruservice.persistency.repository;
 
+import com.onurbcd.eruservice.dto.ItemDto;
 import com.onurbcd.eruservice.dto.billtype.BillTypeDto;
 import com.onurbcd.eruservice.dto.billtype.BillTypeValuesDto;
 import com.onurbcd.eruservice.persistency.entity.BillType;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,4 +37,12 @@ public interface BillTypeRepository extends EruRepository<BillType, BillTypeDto>
             " from BillType b" +
             " where b.id = :id")
     Optional<BillTypeValuesDto> getValues(@Param("id") UUID id);
+
+    @Override
+    @Query("select new com.onurbcd.eruservice.dto.ItemDto(bt.id, bt.name)" +
+            " from BillType bt" +
+            " where :id is null" +
+            " or bt.id != :id" +
+            " order by bt.name")
+    List<ItemDto> getItems(UUID id);
 }

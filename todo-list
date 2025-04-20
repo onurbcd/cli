@@ -11,3 +11,7 @@
     Criar o documento, mas só gravar no storage no final da transação de base de dados.
 
 ------------------------------------------------------------------------------------------------------------------------
+
+- version: Show version info - adicionar informação no comando version
+
+- configurar o workflow / pipeline de qualidade, apontando para um sonarqube instalado na minha máquina antiga
