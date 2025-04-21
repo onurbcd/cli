@@ -155,6 +155,34 @@ public class BudgetCommand {
         return "Budget with id: '%s' updated with success (position).".formatted(id);
     }
 
+    @ShellMethod(key = "budget-sum-month", value = "Get budget's sum by month.")
+    public String getSumByMonth(
+            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            Boolean active,
+
+            @ShellOption(value = {"search", "-s"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            String search,
+
+            @ShellOption(value = {"refYear", "-y"}, help = "Filter's reference year.")
+            @NotNull
+            Short refYear,
+
+            @ShellOption(value = {"refMonth", "-m"}, help = "Filter's reference month.")
+            @NotNull
+            Short refMonth,
+
+            @ShellOption(value = {"billTypeId", "-b"}, help = "Filter's bill type id.", defaultValue = ShellOption.NULL)
+            UUID billTypeId,
+
+            @ShellOption(value = {"paid", "-p"}, help = "Filter's paid option.", defaultValue = ShellOption.NULL)
+            Boolean paid
+    ) {
+        return shellHelper.printTable(
+                service.getSumByMonth(BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid)),
+                EruTable.BUDGET_SUM_MONTH
+        );
+    }
+
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
         var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
 
