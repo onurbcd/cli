@@ -6,6 +6,7 @@ import com.onurbcd.eruservice.command.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
+import com.onurbcd.eruservice.dto.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
@@ -124,6 +125,20 @@ public class BudgetCommand {
     ) {
         service.update(BudgetPatchDto.of(active, paid), id);
         return String.format("Budget with id: '%s' updated with success.", id);
+    }
+
+    @ShellMethod(key = "budget-update-sequence", value = "Update budget's sequence by id.")
+    public String updateSequence(
+            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"direction", "-d"}, help = "The sequence's direction.")
+            @NotNull
+            Direction direction
+    ) {
+        service.updateSequence(id, direction);
+        return "Budget with id: '%s' updated with success (sequence).".formatted(id);
     }
 
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {

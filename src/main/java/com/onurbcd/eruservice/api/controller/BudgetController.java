@@ -33,11 +33,6 @@ public class BudgetController extends PrimeController<BudgetSaveDto, BudgetPatch
     }
 
     @Override
-    public void updateSequence(UUID id, Direction direction) {
-        budgetService.updateSequence(id, direction);
-    }
-
-    @Override
     public void swapPosition(UUID id, Short targetSequence) {
         budgetService.swapPosition(id, targetSequence);
     }
