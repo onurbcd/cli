@@ -6,6 +6,7 @@ import com.onurbcd.eruservice.command.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
+import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
 import com.onurbcd.eruservice.dto.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
@@ -181,6 +182,28 @@ public class BudgetCommand {
                 service.getSumByMonth(BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid)),
                 EruTable.BUDGET_SUM_MONTH
         );
+    }
+
+    @ShellMethod(key = "budget-copy", value = "Copy budget.")
+    public String copy(
+            @ShellOption(value = {"fromYear", "-y"}, help = "Copy from year.")
+            @NotNull
+            Short fromYear,
+
+            @ShellOption(value = {"fromMonth", "-m"}, help = "Copy from month.")
+            @NotNull
+            Short fromMonth,
+
+            @ShellOption(value = {"toYear", "-a"}, help = "To year.")
+            @NotNull
+            Short toYear,
+
+            @ShellOption(value = {"toMonth", "-b"}, help = "To month.")
+            @NotNull
+            Short toMonth
+    ) {
+        service.copy(CopyBudgetDto.of(fromYear, fromMonth, toYear, toMonth));
+        return "Budget copied from %d/%02d to %d/%02d.".formatted(fromYear, fromMonth, toYear, toMonth);
     }
 
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {

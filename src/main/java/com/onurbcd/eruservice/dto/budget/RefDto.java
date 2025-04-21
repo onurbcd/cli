@@ -1,15 +1,19 @@
 package com.onurbcd.eruservice.dto.budget;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 public class RefDto {
 
     private Short year;
-
     private Short month;
+
+    public static RefDto of(Short year, Short month) {
+        return new RefDto(year, month);
+    }
 }
