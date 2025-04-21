@@ -141,6 +141,20 @@ public class BudgetCommand {
         return "Budget with id: '%s' updated with success (sequence).".formatted(id);
     }
 
+    @ShellMethod(key = "budget-swap-position", value = "Swap budget's position by id.")
+    public String swapPosition(
+            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"targetSequence", "-t"}, help = "The target sequence.")
+            @NotNull
+            Short targetSequence
+    ) {
+        service.swapPosition(id, targetSequence);
+        return "Budget with id: '%s' updated with success (position).".formatted(id);
+    }
+
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
         var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
 
