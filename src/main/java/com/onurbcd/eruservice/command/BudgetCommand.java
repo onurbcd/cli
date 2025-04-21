@@ -206,6 +206,20 @@ public class BudgetCommand {
         return "Budget copied from %d/%02d to %d/%02d.".formatted(fromYear, fromMonth, toYear, toMonth);
     }
 
+    @ShellMethod(key = "budget-delete-all", value = "Delete all budgets by year and month.")
+    public String deleteAll(
+            @ShellOption(value = {"refYear", "-y"}, help = "Reference year.")
+            @NotNull
+            Short refYear,
+
+            @ShellOption(value = {"refMonth", "-m"}, help = "Reference month.")
+            @NotNull
+            Short refMonth
+    ) {
+        service.deleteAll(refYear, refMonth);
+        return "All budgets for %d/%02d deleted.".formatted(refYear, refMonth);
+    }
+
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
         var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
 
