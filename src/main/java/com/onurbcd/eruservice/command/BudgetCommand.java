@@ -150,6 +150,7 @@ public class BudgetCommand {
         return BudgetSaveDto.of(
                 result.get(NAME, String.class),
                 Optional.ofNullable(budget).map(BudgetDto::isActive).orElse(Boolean.TRUE),
+                Optional.ofNullable(budget).map(BudgetDto::getSequence).orElse(null),
                 result.get("refYear", String.class),
                 result.get("refMonth", String.class),
                 result.get("billTypeId", String.class),

@@ -23,14 +23,12 @@ public class BudgetSaveDto extends PrimeSaveDto {
     private BigDecimal amount;
     private Boolean paid;
 
-    public static BudgetSaveDto of(String name, Boolean active, String refYear, String refMonth, String billTypeId,
-                                   String amount, Boolean paid) {
-
+    public static BudgetSaveDto of(String name, Boolean active, Short sequence, String refYear, String refMonth, String billTypeId, String amount, Boolean paid) {
         return BudgetSaveDto
                 .builder()
                 .name(name.normalizeSpace())
                 .active(active)
-                .sequence(null)
+                .sequence(sequence)
                 .refYear(Short.parseShort(refYear))
                 .refMonth(Short.parseShort(refMonth))
                 .billTypeId(UUID.fromString(billTypeId))
