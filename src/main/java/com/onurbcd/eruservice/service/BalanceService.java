@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface BalanceService extends CrudService, Sequenceable {
 
     @Transactional
-    void save(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles, @Nullable UUID id);
+    String save(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles, @Nullable UUID id);
 
     Set<BalanceSumDto> getSum(BalanceFilter filter);
 

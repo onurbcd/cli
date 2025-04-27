@@ -1,5 +1,6 @@
 package com.onurbcd.eruservice.persistency.repository;
 
+import com.onurbcd.eruservice.dto.ItemDto;
 import com.onurbcd.eruservice.dto.enums.SourceType;
 import com.onurbcd.eruservice.dto.source.SourceDto;
 import com.onurbcd.eruservice.persistency.entity.Source;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -42,4 +44,12 @@ public interface SourceRepository extends EruRepository<Source, SourceDto> {
             " from Source s" +
             " where s.id = :id")
     BigDecimal getBalance(@Param("id") UUID id);
+
+    @Override
+    @Query("select new com.onurbcd.eruservice.dto.ItemDto(s.id, s.name)" +
+            " from Source s" +
+            " where :id is null" +
+            " or s.id != :id" +
+            " order by s.name")
+    List<ItemDto> getItems(UUID id);
 }

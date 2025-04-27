@@ -35,16 +35,16 @@ public class Action {
         return new Action(checkCondition);
     }
 
-    public static Action checkIfSizeBetween(String value, int min, int max) {
-        return new Action(!(value == null || (value.length() >= min && value.length() <= max)));
-    }
-
     public static <T> Action checkIfNotNull(T value) {
         return new Action(value == null);
     }
 
     public static <T> Action checkIfNotEmpty(Collection<T> collection) {
         return new Action(CollectionUtil.isEmpty(collection));
+    }
+
+    public static <T> Action checkIfNotEmpty(T[] array) {
+        return new Action(array == null || array.length == 0);
     }
 
     public static Action checkIfNotBlank(String value) {

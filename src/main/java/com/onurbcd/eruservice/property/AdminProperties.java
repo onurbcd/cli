@@ -12,8 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class AdminProperties {
 
     private CryptoProperties crypto;
-
     private Short minYear;
-
     private String storagePath;
+    private String filesPath;
 }

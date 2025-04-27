@@ -16,4 +16,5 @@ public final class CommandConstants {
     public static final String PATH_LABEL = "* Path:";
     public static final String CATEGORY_ID = "categoryId";
     public static final String CATEGORY_ID_LABEL = "* Category:";
+    public static final String DOCUMENTS = "documents";
 }

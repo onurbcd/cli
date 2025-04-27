@@ -78,7 +78,7 @@ public class BalanceServiceImpl
     }
 
     @Override
-    public void save(BalanceSaveDto saveDto, MultipartFile[] multipartFiles, UUID id) {
+    public String save(BalanceSaveDto saveDto, MultipartFile[] multipartFiles, UUID id) {
         var currentBalance = id != null ? repository.get(id).orElse(null) : null;
         var currentAmount = Optional.ofNullable(currentBalance).map(Balance::getAmount).orElse(null);
         validate(saveDto, currentBalance, id);
@@ -86,6 +86,7 @@ public class BalanceServiceImpl
         var newBalance = repository.saveAndFlush(createBalance.getBalance());
         balanceDocumentService.deleteDocuments(createBalance.getDeleteDocuments());
         balanceSourceService.save(newBalance, currentAmount);
+        return newBalance.getId().toString();
     }
 
     @Override

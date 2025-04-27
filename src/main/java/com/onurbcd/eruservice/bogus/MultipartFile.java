@@ -1,23 +1,22 @@
 package com.onurbcd.eruservice.bogus;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.InputStream;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class MultipartFile {
 
     private String originalFilename;
-
     private String contentType;
-
     private Long size;
-
     private InputStream inputStream;
 
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 }
