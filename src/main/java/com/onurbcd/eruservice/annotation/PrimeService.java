@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.config.annotations;
+package com.onurbcd.eruservice.annotation;
 
 import com.onurbcd.eruservice.config.enums.Domain;
 import org.springframework.beans.factory.annotation.Qualifier;

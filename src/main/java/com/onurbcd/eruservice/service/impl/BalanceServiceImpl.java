@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.config.EruConstants;
-import com.onurbcd.eruservice.config.annotations.PrimeService;
+import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.config.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
