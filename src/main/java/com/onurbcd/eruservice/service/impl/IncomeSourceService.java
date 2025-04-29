@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.config.enums.Domain;
+import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourceDto;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourceSaveDto;
 import com.onurbcd.eruservice.persistency.entity.IncomeSource;

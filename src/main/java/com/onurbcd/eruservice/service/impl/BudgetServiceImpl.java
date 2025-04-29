@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.config.enums.Domain;
+import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.budget.*;
 import com.onurbcd.eruservice.dto.enums.Direction;
