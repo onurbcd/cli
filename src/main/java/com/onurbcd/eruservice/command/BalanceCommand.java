@@ -24,10 +24,10 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.command.CommandConstants.DESCRIPTION;
-import static com.onurbcd.eruservice.command.CommandConstants.DOCUMENTS;
-import static com.onurbcd.eruservice.command.CommandConstants.NAME;
-import static com.onurbcd.eruservice.command.CommandConstants.NAME_LABEL;
+import static com.onurbcd.eruservice.constant.CommandConstant.DESCRIPTION;
+import static com.onurbcd.eruservice.constant.CommandConstant.DOCUMENTS;
+import static com.onurbcd.eruservice.constant.CommandConstant.NAME;
+import static com.onurbcd.eruservice.constant.CommandConstant.NAME_LABEL;
 
 @ShellComponent
 @ShellCommandGroup("Balance")

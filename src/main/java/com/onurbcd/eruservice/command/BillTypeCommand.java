@@ -24,7 +24,7 @@ import org.springframework.shell.standard.ShellOption;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.command.CommandConstants.*;
+import static com.onurbcd.eruservice.constant.CommandConstant.*;
 
 @ShellComponent
 @ShellCommandGroup("Bill Type")
