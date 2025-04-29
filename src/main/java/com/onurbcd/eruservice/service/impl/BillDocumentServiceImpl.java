@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.document.MultipartFileDto;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
 import com.onurbcd.eruservice.persistency.entity.Document;
@@ -36,13 +36,13 @@ public class BillDocumentServiceImpl implements BillDocumentService {
 
     private String getPath(BillDocParams billDocParams) {
         var pathBuilder = new StringBuilder()
-                .append(EruConstants.BILL_DOCUMENT_PATH)
+                .append(Constant.BILL_DOCUMENT_PATH)
                 .append(billDocParams.getPath());
 
         if (ReferenceType.YEAR != billDocParams.getReferenceType()) {
             var referenceDayPath = billDocParams
                     .getReferenceDayCalendarDate()
-                    .format(DateTimeFormatter.ofPattern(EruConstants.YEAR_PATTERN));
+                    .format(DateTimeFormatter.ofPattern(Constant.YEAR_PATTERN));
 
             pathBuilder
                     .append("/")

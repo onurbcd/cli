@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.enums.BalanceType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
@@ -30,14 +30,14 @@ public class BillBalanceServiceImpl implements BillBalanceService {
     private BalanceSaveDto createBalanceSaveDto(BillBalanceParams params) {
         return BalanceSaveDto
                 .builder()
-                .name(EruConstants.BOGUS_NAME)
+                .name(Constant.BOGUS_NAME)
                 .active(Boolean.TRUE)
                 .sequence(Short.MAX_VALUE)
                 .dayCalendarDate(params.getBillCloseDto().getPaymentDateCalendarDate())
                 .sourceId(params.getBillCloseDto().getSourceId())
                 .categoryId(params.getCategoryId())
                 .amount(params.getBill().getValue())
-                .code(EruConstants.BILL_CLOSE_CODE)
+                .code(Constant.BILL_CLOSE_CODE)
                 .description(createDescription(params))
                 .balanceType(BalanceType.OUTCOME)
                 .documentsIds(null)
@@ -60,8 +60,8 @@ public class BillBalanceServiceImpl implements BillBalanceService {
 
     private String createReference(Bill bill) {
         var pattern = ReferenceType.YEAR == bill.getReferenceType() ?
-                EruConstants.YEAR_PATTERN :
-                EruConstants.MONTH_YEAR_PATTERN;
+                Constant.YEAR_PATTERN :
+                Constant.MONTH_YEAR_PATTERN;
 
         return bill.getReferenceDay().getCalendarDate().format(DateTimeFormatter.ofPattern(pattern));
     }

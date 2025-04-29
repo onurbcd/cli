@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.bill.BillCloseDto;
 import com.onurbcd.eruservice.dto.bill.BillDto;
 import com.onurbcd.eruservice.dto.bill.BillOpenDto;
@@ -93,7 +93,7 @@ public class BillServiceImpl
 
         var billDocument = documentService.createDocument(billDocParams);
 
-        bill.setName(EruConstants.BOGUS_NAME);
+        bill.setName(Constant.BOGUS_NAME);
         fillDay(billOpenDto.getReferenceDayCalendarDate(), bill::setReferenceDay);
         fillDay(billOpenDto.getDocumentDateCalendarDate(), bill::setDocumentDate);
         fillDay(billOpenDto.getDueDateCalendarDate(), bill::setDueDate);
@@ -132,7 +132,7 @@ public class BillServiceImpl
 
         var balance = billBalanceService.saveBalance(billBalanceParams);
 
-        bill.setName(EruConstants.BOGUS_NAME);
+        bill.setName(Constant.BOGUS_NAME);
         fillDay(billCloseDto.getPaymentDateCalendarDate(), bill::setPaymentDate);
         bill.setReceipt(receipt);
         bill.setObservation(billCloseDto.getObservation());

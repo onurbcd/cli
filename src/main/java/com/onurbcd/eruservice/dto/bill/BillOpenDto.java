@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.bill;
 
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.Constants;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.dto.enums.DocumentType;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BillOpenDto extends PrimeSaveDto {
 
     public BillOpenDto() {
-        super(EruConstants.BOGUS_NAME, Boolean.TRUE);
+        super(Constant.BOGUS_NAME, Boolean.TRUE);
     }
 
     @NotNull

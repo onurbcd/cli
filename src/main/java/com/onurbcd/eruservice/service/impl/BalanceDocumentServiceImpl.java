@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 import com.onurbcd.eruservice.service.resource.CreateDocument;
@@ -62,8 +62,8 @@ public class BalanceDocumentServiceImpl implements BalanceDocumentService {
     }
 
     private String getPath(LocalDate dayCalendarDate) {
-        return EruConstants.BALANCE_DOCUMENT_PATH +
-                dayCalendarDate.format(DateTimeFormatter.ofPattern(EruConstants.BALANCE_DOCUMENT_PATH_PATTERN));
+        return Constant.BALANCE_DOCUMENT_PATH +
+                dayCalendarDate.format(DateTimeFormatter.ofPattern(Constant.BALANCE_DOCUMENT_PATH_PATTERN));
     }
 
     private Set<Document> getCurrentDocuments(@Nullable UUID id) {

@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.config.EruConstants;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
@@ -185,7 +185,7 @@ public class BalanceServiceImpl
         var id = Optional.ofNullable(currentBalance).map(Balance::getId).orElse(null);
         var createDocument = balanceDocumentService.createDocuments(saveDto, multipartFiles, id);
         balance.setDocuments(createDocument.getSaveDocuments());
-        balance.setName(EruConstants.BOGUS_NAME);
+        balance.setName(Constant.BOGUS_NAME);
         var sequence = getSequence(currentBalance, saveDto.getDayCalendarDate(), balance.getBalanceType());
         balance.setSequence(sequence);
         var dayId = getDayId(saveDto, currentBalance);
