@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.validation;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 
 public interface DocumentValidationService {
 

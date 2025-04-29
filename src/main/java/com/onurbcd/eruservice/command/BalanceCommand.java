@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.command;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.command.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;

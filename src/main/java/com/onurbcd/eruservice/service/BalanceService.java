@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSumDto;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;

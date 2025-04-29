@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.config.EruConstants;
 import com.onurbcd.eruservice.config.annotations.PrimeService;
 import com.onurbcd.eruservice.config.enums.Domain;

@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.bogus;
+package com.onurbcd.eruservice.model;
 
 import lombok.*;
 

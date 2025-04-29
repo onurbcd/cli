@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.document;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

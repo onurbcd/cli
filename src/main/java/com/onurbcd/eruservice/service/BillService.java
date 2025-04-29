@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.dto.bill.BillCloseDto;
 import com.onurbcd.eruservice.dto.bill.BillOpenDto;
 import org.springframework.transaction.annotation.Transactional;

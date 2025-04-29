@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.bogus.MultipartFile;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
 import com.onurbcd.eruservice.dto.document.FileDto;
 import com.onurbcd.eruservice.dto.document.MultipartFileDto;
