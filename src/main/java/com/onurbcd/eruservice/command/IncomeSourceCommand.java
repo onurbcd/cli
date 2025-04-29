@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.enums.EruTable;
-import com.onurbcd.eruservice.command.helper.ShellHelper;
+import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.filter.IncomeSourceFilter;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourcePatchDto;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourceSaveDto;

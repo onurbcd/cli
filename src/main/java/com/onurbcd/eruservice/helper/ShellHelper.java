@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.command.helper;
+package com.onurbcd.eruservice.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
