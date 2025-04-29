@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.enums.CurrencyType;
 import com.onurbcd.eruservice.dto.enums.SourceType;
 import lombok.AllArgsConstructor;
@@ -49,8 +49,8 @@ public class Source extends Prime {
 
     @NotNull
     @Column(name = "balance", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(Constants.AMOUNT_MIN)
-    @DecimalMax(Constants.AMOUNT_MAX)
+    @DecimalMin(DtoConstant.AMOUNT_MIN)
+    @DecimalMax(DtoConstant.AMOUNT_MAX)
     private BigDecimal balance;
 
     @Override

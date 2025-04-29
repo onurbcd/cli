@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.enums.DocumentType;
 import com.onurbcd.eruservice.dto.enums.PaymentType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
@@ -75,8 +75,8 @@ public class Bill extends Prime {
      */
     @NotNull
     @Column(name = "value", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(Constants.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(Constants.AMOUNT_MAX)
+    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(DtoConstant.AMOUNT_MAX)
     private BigDecimal value;
 
     /**
@@ -101,8 +101,8 @@ public class Bill extends Prime {
     @JoinColumn(name = "receipt_id")
     private Document receipt;
 
-    @Size(max = Constants.SIZE_250)
-    @Column(name = "observation", length = Constants.SIZE_250)
+    @Size(max = DtoConstant.SIZE_250)
+    @Column(name = "observation", length = DtoConstant.SIZE_250)
     private String observation;
 
     /**

@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class Prime extends Audit implements Entityable {
 
     @Column(unique = true)
     @NotNull
-    @Size(min = Constants.SIZE_3, max = Constants.SIZE_50)
+    @Size(min = DtoConstant.SIZE_3, max = DtoConstant.SIZE_50)
     @Getter
     @Setter
     private String name;

@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.dto.bill;
 
 import com.onurbcd.eruservice.constant.Constant;
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.dto.enums.PaymentType;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class BillCloseDto extends PrimeSaveDto {
     @NotNull
     private LocalDate paymentDateCalendarDate;
 
-    @Size(max = Constants.SIZE_250)
+    @Size(max = DtoConstant.SIZE_250)
     private String observation;
 
     @NotNull

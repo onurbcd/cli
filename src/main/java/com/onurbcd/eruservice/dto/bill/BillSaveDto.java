@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.bill;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.dto.enums.DocumentType;
 import com.onurbcd.eruservice.dto.enums.PaymentType;
@@ -32,8 +32,8 @@ public class BillSaveDto extends PrimeSaveDto {
     private LocalDate dueDateCalendarDate;
 
     @NotNull
-    @DecimalMin(Constants.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(Constants.AMOUNT_MAX)
+    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(DtoConstant.AMOUNT_MAX)
     private BigDecimal value;
 
     private LocalDate paymentDateCalendarDate;
@@ -42,7 +42,7 @@ public class BillSaveDto extends PrimeSaveDto {
 
     private UUID receiptId;
 
-    @Size(max = Constants.SIZE_250)
+    @Size(max = DtoConstant.SIZE_250)
     private String observation;
 
     @Min(1)

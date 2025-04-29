@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -25,9 +25,9 @@ import lombok.experimental.SuperBuilder;
 public class BillType extends Prime {
 
     @NotNull
-    @Size(min = Constants.SIZE_3, max = Constants.SIZE_250)
-    @Pattern(regexp = Constants.REGEXP_PATH)
-    @Column(name = "path", nullable = false, length = Constants.SIZE_250)
+    @Size(min = DtoConstant.SIZE_3, max = DtoConstant.SIZE_250)
+    @Pattern(regexp = DtoConstant.REGEXP_PATH)
+    @Column(name = "path", nullable = false, length = DtoConstant.SIZE_250)
     private String path;
 
     @NotNull

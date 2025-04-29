@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,17 +30,17 @@ public class Document implements Persistable<UUID> {
     private UUID id;
 
     @NotNull
-    @Size(max = Constants.SIZE_100)
-    @Column(name = "name", nullable = false, updatable = false, length = Constants.SIZE_100)
+    @Size(max = DtoConstant.SIZE_100)
+    @Column(name = "name", nullable = false, updatable = false, length = DtoConstant.SIZE_100)
     private String name;
 
     @NotNull
-    @Size(max = Constants.SIZE_250)
-    @Column(name = "path", nullable = false, updatable = false, length = Constants.SIZE_250)
+    @Size(max = DtoConstant.SIZE_250)
+    @Column(name = "path", nullable = false, updatable = false, length = DtoConstant.SIZE_250)
     private String path;
 
     @NotNull
-    @Size(max = Constants.SIZE_255)
+    @Size(max = DtoConstant.SIZE_255)
     @Column(name = "mime_type", nullable = false, updatable = false)
     private String mimeType;
 
@@ -49,8 +49,8 @@ public class Document implements Persistable<UUID> {
     private Long size;
 
     @NotNull
-    @Size(max = Constants.SIZE_32)
-    @Column(name = "hash", nullable = false, updatable = false, length = Constants.SIZE_32)
+    @Size(max = DtoConstant.SIZE_32)
+    @Column(name = "hash", nullable = false, updatable = false, length = DtoConstant.SIZE_32)
     private String hash;
 
     @Override

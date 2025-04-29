@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +20,15 @@ import jakarta.validation.constraints.Size;
 @SuperBuilder
 public class Secret extends Prime {
 
-    @Size(min = Constants.SIZE_5, max = Constants.SIZE_250)
+    @Size(min = DtoConstant.SIZE_5, max = DtoConstant.SIZE_250)
     private String description;
 
-    @URL(regexp = Constants.REGEXP_URL)
-    @Size(min = Constants.SIZE_7, max = Constants.SIZE_2048)
+    @URL(regexp = DtoConstant.REGEXP_URL)
+    @Size(min = DtoConstant.SIZE_7, max = DtoConstant.SIZE_2048)
     private String link;
 
     @NotNull
-    @Size(min = Constants.SIZE_3, max = Constants.SIZE_50)
+    @Size(min = DtoConstant.SIZE_3, max = DtoConstant.SIZE_50)
     private String username;
 
     @NotNull

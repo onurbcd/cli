@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.validation.constraint.MaxYear;
 import com.onurbcd.eruservice.validation.constraint.MinYear;
 import lombok.AllArgsConstructor;
@@ -61,8 +61,8 @@ public class Budget extends Prime implements SequenceEntity {
 
     @NotNull
     @Column(precision = 19, scale = 4)
-    @DecimalMin(Constants.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(Constants.AMOUNT_MAX)
+    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(DtoConstant.AMOUNT_MAX)
     private BigDecimal amount;
 
     @NotNull

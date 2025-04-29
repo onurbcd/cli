@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.enums.BalanceType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
@@ -70,17 +70,17 @@ public class Balance extends Prime implements SequenceEntity {
 
     @NotNull
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(Constants.AMOUNT_MIN)
-    @DecimalMax(Constants.AMOUNT_MAX)
+    @DecimalMin(DtoConstant.AMOUNT_MIN)
+    @DecimalMax(DtoConstant.AMOUNT_MAX)
     private BigDecimal amount;
 
     @NotNull
-    @Size(max = Constants.SIZE_150)
-    @Column(name = "code", nullable = false, length = Constants.SIZE_150)
+    @Size(max = DtoConstant.SIZE_150)
+    @Column(name = "code", nullable = false, length = DtoConstant.SIZE_150)
     private String code;
 
-    @Size(max = Constants.SIZE_250)
-    @Column(name = "description", length = Constants.SIZE_250)
+    @Size(max = DtoConstant.SIZE_250)
+    @Column(name = "description", length = DtoConstant.SIZE_250)
     private String description;
 
     @NotNull

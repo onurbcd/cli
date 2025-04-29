@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.command;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.helper.ShellHelper;
-import com.onurbcd.eruservice.dto.Constants;
+import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.filter.SecretFilter;
 import com.onurbcd.eruservice.dto.secret.SecretPatchDto;
 import com.onurbcd.eruservice.dto.secret.SecretSaveDto;
@@ -46,7 +46,7 @@ public class SecretCommand {
             String description,
 
             @ShellOption(value = {"link", "-l"}, help = "The link to the secret app.", defaultValue = ShellOption.NULL)
-            @URL(regexp = Constants.REGEXP_URL)
+            @URL(regexp = DtoConstant.REGEXP_URL)
             @Size(min = 7, max = 2048)
             String link,
 
