@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.onurbcd.eruservice.command.enums.EruTable;
+import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.command.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.Constants;
 import com.onurbcd.eruservice.dto.filter.SecretFilter;

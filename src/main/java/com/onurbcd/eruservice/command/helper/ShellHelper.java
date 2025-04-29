@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.command.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onurbcd.eruservice.command.enums.EruTable;
+import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.util.BigDecimalFormatter;
 import com.onurbcd.eruservice.util.LocalDateTimeFormatter;

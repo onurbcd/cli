@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.command.enums;
+package com.onurbcd.eruservice.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
