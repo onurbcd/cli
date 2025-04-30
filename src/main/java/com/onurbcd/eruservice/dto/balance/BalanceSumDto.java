@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.balance;
 
-import com.onurbcd.eruservice.dto.enums.BalanceSumType;
+import com.onurbcd.eruservice.enums.BalanceSumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
