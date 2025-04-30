@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.persistency.entity;
 import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

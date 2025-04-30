@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.document.MultipartFileDto;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.service.BillDocumentService;
 import com.onurbcd.eruservice.service.DocumentService;

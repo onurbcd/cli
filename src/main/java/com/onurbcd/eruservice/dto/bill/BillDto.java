@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.dto.PrimeDto;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

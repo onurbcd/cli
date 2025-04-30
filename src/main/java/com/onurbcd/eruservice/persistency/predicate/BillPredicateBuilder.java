@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.persistency.predicate;
 
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.dto.filter.BillFilter;
 import com.onurbcd.eruservice.persistency.entity.QBill;
 import com.querydsl.core.types.Predicate;

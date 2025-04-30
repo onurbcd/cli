@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.service.impl;
 import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.dto.enums.ReferenceType;
+import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Bill;
 import com.onurbcd.eruservice.service.BalanceService;
