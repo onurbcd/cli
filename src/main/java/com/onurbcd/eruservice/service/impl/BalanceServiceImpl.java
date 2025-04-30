@@ -9,7 +9,7 @@ import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSumDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.dto.enums.Direction;
+import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.persistency.entity.Balance;

@@ -7,7 +7,7 @@ import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
-import com.onurbcd.eruservice.dto.enums.Direction;
+import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;

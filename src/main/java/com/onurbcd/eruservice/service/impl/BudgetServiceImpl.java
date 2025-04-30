@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.budget.*;
-import com.onurbcd.eruservice.dto.enums.Direction;
+import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.persistency.entity.Budget;

@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.dto.enums.Direction;
+import com.onurbcd.eruservice.enums.Direction;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
