@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.dto.filter;
 
 import com.onurbcd.eruservice.enums.DocumentType;
-import com.onurbcd.eruservice.dto.enums.PaymentType;
+import com.onurbcd.eruservice.enums.PaymentType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
 import lombok.Getter;
 import lombok.Setter;
