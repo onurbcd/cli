@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.predicate;
 
-import com.onurbcd.eruservice.dto.enums.CurrencyType;
+import com.onurbcd.eruservice.enums.CurrencyType;
 import com.onurbcd.eruservice.dto.enums.SourceType;
 import com.onurbcd.eruservice.dto.filter.SourceFilter;
 import com.onurbcd.eruservice.persistency.entity.QSource;

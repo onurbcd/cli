@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.filter;
 
-import com.onurbcd.eruservice.dto.enums.CurrencyType;
+import com.onurbcd.eruservice.enums.CurrencyType;
 import com.onurbcd.eruservice.dto.enums.SourceType;
 import lombok.Getter;
 import lombok.Setter;
