@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.budget;
 
-import com.onurbcd.eruservice.dto.enums.SumType;
+import com.onurbcd.eruservice.enums.SumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
