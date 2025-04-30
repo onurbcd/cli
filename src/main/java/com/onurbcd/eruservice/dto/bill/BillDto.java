@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.dto.bill;
 
 import com.onurbcd.eruservice.dto.PrimeDto;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
-import com.onurbcd.eruservice.dto.enums.DocumentType;
+import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.dto.enums.PaymentType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
 import lombok.Getter;

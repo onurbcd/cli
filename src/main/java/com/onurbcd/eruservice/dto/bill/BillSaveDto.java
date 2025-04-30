@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.dto.bill;
 
 import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.dto.enums.DocumentType;
+import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.dto.enums.PaymentType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
 import jakarta.validation.constraints.DecimalMax;

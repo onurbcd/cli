@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.resource;
 
 import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.dto.enums.DocumentType;
+import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.dto.enums.ReferenceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
