@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.property.AdminProperties;
 import com.onurbcd.eruservice.service.BalanceService;
 import com.onurbcd.eruservice.service.SourceService;

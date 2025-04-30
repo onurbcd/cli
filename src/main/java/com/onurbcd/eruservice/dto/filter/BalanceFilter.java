@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.filter;
 
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.predicate;
 
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.persistency.entity.QBalance;
 import com.querydsl.core.types.Predicate;

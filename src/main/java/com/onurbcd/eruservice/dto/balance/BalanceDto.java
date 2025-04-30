@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.dto.balance;
 
 import com.onurbcd.eruservice.dto.PrimeDto;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

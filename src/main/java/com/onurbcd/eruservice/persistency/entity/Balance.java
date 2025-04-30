@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.persistency.entity;
 
 import com.onurbcd.eruservice.constant.DtoConstant;
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

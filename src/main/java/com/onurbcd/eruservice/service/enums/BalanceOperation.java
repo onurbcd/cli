@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.enums;
 
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.util.NumberUtil;
 import lombok.Getter;

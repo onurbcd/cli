@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.dto.balance;
 
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.dto.enums.BalanceType;
+import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.Extension;
 import lombok.Getter;
