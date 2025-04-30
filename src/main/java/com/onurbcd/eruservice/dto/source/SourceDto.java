@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.dto.source;
 
 import com.onurbcd.eruservice.dto.PrimeDto;
 import com.onurbcd.eruservice.enums.CurrencyType;
-import com.onurbcd.eruservice.dto.enums.SourceType;
+import com.onurbcd.eruservice.enums.SourceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.persistency.entity;
 
 import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.enums.CurrencyType;
-import com.onurbcd.eruservice.dto.enums.SourceType;
+import com.onurbcd.eruservice.enums.SourceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

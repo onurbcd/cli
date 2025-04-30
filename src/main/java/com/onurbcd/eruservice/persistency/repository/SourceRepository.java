@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.persistency.repository;
 
 import com.onurbcd.eruservice.dto.ItemDto;
-import com.onurbcd.eruservice.dto.enums.SourceType;
+import com.onurbcd.eruservice.enums.SourceType;
 import com.onurbcd.eruservice.dto.source.SourceDto;
 import com.onurbcd.eruservice.persistency.entity.Source;
 import org.springframework.data.jpa.repository.Modifying;

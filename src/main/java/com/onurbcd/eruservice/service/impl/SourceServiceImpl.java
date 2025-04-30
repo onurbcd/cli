@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.dto.enums.SourceType;
+import com.onurbcd.eruservice.enums.SourceType;
 import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.dto.filter.SourceFilter;
 import com.onurbcd.eruservice.dto.source.BalanceSumDto;
