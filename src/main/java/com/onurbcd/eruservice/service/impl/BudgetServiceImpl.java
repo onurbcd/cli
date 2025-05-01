@@ -18,7 +18,7 @@ import com.onurbcd.eruservice.service.SequenceService;
 import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.QueryType;
-import com.onurbcd.eruservice.service.exception.ApiException;
+import com.onurbcd.eruservice.exception.ApiException;
 import com.onurbcd.eruservice.service.mapper.BudgetToEntityMapper;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.BudgetValidationService;

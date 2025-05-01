@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.exception;
+package com.onurbcd.eruservice.exception;
 
 import com.onurbcd.eruservice.enums.Error;
 import lombok.Getter;

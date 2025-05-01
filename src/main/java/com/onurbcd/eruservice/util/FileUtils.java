@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.util;
 
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.enums.Error;
-import com.onurbcd.eruservice.service.exception.ApiException;
+import com.onurbcd.eruservice.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
