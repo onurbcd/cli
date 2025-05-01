@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.property;
+package com.onurbcd.eruservice.config.property;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +10,7 @@ import lombok.Setter;
 public class CryptoProperties {
 
     private String key1;
-
     private String key2;
-
     private String algorithm;
-
     private String transformation;
 }
