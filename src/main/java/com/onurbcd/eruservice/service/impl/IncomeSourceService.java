@@ -8,7 +8,7 @@ import com.onurbcd.eruservice.persistency.entity.IncomeSource;
 import com.onurbcd.eruservice.persistency.predicate.IncomeSourcePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.IncomeSourceRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
-import com.onurbcd.eruservice.service.enums.QueryType;
+import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.service.mapper.IncomeSourceToDtoMapper;
 import com.onurbcd.eruservice.service.mapper.IncomeSourceToEntityMapper;
 

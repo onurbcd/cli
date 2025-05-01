@@ -9,7 +9,7 @@ import com.onurbcd.eruservice.persistency.predicate.BillTypePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BillTypeRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.service.BillTypeService;
-import com.onurbcd.eruservice.service.enums.QueryType;
+import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.service.mapper.BillTypeToEntityMapper;
 import org.springframework.stereotype.Service;

@@ -10,7 +10,7 @@ import com.onurbcd.eruservice.persistency.entity.Secret;
 import com.onurbcd.eruservice.persistency.predicate.SecretPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.SecretRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
-import com.onurbcd.eruservice.service.enums.QueryType;
+import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.service.helper.Cryptoable;
 import com.onurbcd.eruservice.service.mapper.SecretToEntityMapper;
 import com.onurbcd.eruservice.service.mapper.SecretToDtoMapper;

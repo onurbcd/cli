@@ -11,7 +11,7 @@ import com.onurbcd.eruservice.persistency.predicate.SourcePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.SourceRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.service.SourceService;
-import com.onurbcd.eruservice.service.enums.QueryType;
+import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.service.mapper.SourceToEntityMapper;
 import com.onurbcd.eruservice.service.resource.UpdateSourceBalance;
 import com.querydsl.core.types.Predicate;
