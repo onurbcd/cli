@@ -11,7 +11,7 @@ import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.exception.ApiException;
-import com.onurbcd.eruservice.service.mapper.BillTypeToEntityMapper;
+import com.onurbcd.eruservice.mapper.BillTypeToEntityMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
