@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.validation;
+package com.onurbcd.eruservice.validation;
 
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.model.SequenceParam;
