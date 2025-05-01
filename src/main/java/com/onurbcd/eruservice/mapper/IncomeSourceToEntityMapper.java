@@ -1,8 +1,6 @@
-package com.onurbcd.eruservice.service.mapper;
+package com.onurbcd.eruservice.mapper;
 
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourceSaveDto;
-import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
-import com.onurbcd.eruservice.mapper.EntityMapper;
 import com.onurbcd.eruservice.persistency.entity.IncomeSource;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
