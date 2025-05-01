@@ -19,3 +19,7 @@
 - agrupar os serviços do balance e bill em packages
 
 - juntar todas as constantes em um arquivo Constants no package util
+
+- criar uma anotação par os helpers
+
+- criar uma anotação para os validadores
