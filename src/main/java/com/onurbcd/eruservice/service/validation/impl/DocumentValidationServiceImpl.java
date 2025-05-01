@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.validation.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.DocumentValidationService;
 import org.springframework.stereotype.Service;

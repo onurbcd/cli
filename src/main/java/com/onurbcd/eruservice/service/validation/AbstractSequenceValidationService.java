@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.service.validation;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.model.SequenceParam;
 import com.onurbcd.eruservice.persistency.repository.SequenceRepository;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 

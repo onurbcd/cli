@@ -6,7 +6,7 @@ import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import com.onurbcd.eruservice.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.BudgetValidationService;
 import com.onurbcd.eruservice.util.DateUtil;

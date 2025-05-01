@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.validation.impl;
 
 import com.onurbcd.eruservice.dto.category.CategoryDto;
 import com.onurbcd.eruservice.dto.category.CategorySaveDto;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.CategoryValidationService;
 import com.onurbcd.eruservice.util.NumberUtil;

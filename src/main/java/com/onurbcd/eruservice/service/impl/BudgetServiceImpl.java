@@ -16,7 +16,7 @@ import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.service.BudgetService;
 import com.onurbcd.eruservice.service.SequenceService;
 import com.onurbcd.eruservice.service.SourceService;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.enums.QueryType;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.service.mapper.BudgetToEntityMapper;

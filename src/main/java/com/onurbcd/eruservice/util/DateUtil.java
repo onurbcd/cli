@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.util;
 
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -21,7 +21,7 @@ import com.onurbcd.eruservice.service.BillService;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
 import com.onurbcd.eruservice.service.DayService;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.enums.QueryType;
 import com.onurbcd.eruservice.service.mapper.BillOpenToEntityMapper;
 import com.onurbcd.eruservice.service.resource.BillBalanceParams;

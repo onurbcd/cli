@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service.exception;
 
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import lombok.Getter;
 
 import java.io.Serial;

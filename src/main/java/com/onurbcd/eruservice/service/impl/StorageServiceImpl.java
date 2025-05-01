@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.service.StorageService;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.service.validation.Action;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service.factory;
 
 import com.onurbcd.eruservice.persistency.predicate.BasePredicateBuilder;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

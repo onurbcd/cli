@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.validation.impl;
 
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.persistency.entity.Balance;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.BalanceValidationService;
 import com.onurbcd.eruservice.util.DateUtil;

@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.validation.impl;
 
 import com.onurbcd.eruservice.dto.day.CreateMonthDto;
 import com.onurbcd.eruservice.persistency.repository.DayRepository;
-import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.DayValidationService;
 import lombok.RequiredArgsConstructor;
