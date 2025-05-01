@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.service.mapper;
 
 import com.onurbcd.eruservice.dto.category.CategorySaveDto;
+import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
 import com.onurbcd.eruservice.persistency.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

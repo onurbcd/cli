@@ -2,6 +2,7 @@ package com.onurbcd.eruservice.service.mapper;
 
 import com.onurbcd.eruservice.dto.secret.SecretDto;
 import com.onurbcd.eruservice.helper.CryptoHelper;
+import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
 import com.onurbcd.eruservice.persistency.entity.Secret;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

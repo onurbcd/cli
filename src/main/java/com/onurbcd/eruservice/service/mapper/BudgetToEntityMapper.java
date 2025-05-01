@@ -2,6 +2,7 @@ package com.onurbcd.eruservice.service.mapper;
 
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
+import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.mapper;
+package com.onurbcd.eruservice.mapper;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.NullValueMappingStrategy;

@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.service.mapper;
 
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
+import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
