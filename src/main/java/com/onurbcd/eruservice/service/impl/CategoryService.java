@@ -12,7 +12,7 @@ import com.onurbcd.eruservice.persistency.predicate.CategoryPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.CategoryRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.enums.QueryType;
-import com.onurbcd.eruservice.service.mapper.CategoryToEntityMapper;
+import com.onurbcd.eruservice.mapper.CategoryToEntityMapper;
 import com.onurbcd.eruservice.service.validation.CategoryValidationService;
 import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
