@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.validation.impl;
+package com.onurbcd.eruservice.validation;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
