@@ -15,3 +15,5 @@
 - configurar o workflow / pipeline de qualidade, apontando para um sonarqube instalado na minha máquina antiga
 
 - remover todas as interfaces com só uma implementação
+
+- agrupar os serviços do balance e bill em packages

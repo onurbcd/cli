@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.factory;
+package com.onurbcd.eruservice.factory;
 
 import com.onurbcd.eruservice.persistency.predicate.BasePredicateBuilder;
 import com.onurbcd.eruservice.enums.Error;
