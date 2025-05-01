@@ -1,12 +1,8 @@
-package com.onurbcd.eruservice.service.resource;
+package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -18,6 +14,5 @@ import java.util.Set;
 public class CreateBalance {
 
     private Balance balance;
-
     private Set<Document> deleteDocuments;
 }

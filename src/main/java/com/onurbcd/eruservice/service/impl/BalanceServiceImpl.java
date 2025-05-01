@@ -21,7 +21,7 @@ import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 import com.onurbcd.eruservice.service.*;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.BalanceToEntityMapper;
-import com.onurbcd.eruservice.service.resource.CreateBalance;
+import com.onurbcd.eruservice.model.CreateBalance;
 import com.onurbcd.eruservice.service.validation.BalanceValidationService;
 import com.onurbcd.eruservice.util.CollectionUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
