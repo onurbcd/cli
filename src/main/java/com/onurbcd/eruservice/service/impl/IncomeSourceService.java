@@ -9,7 +9,7 @@ import com.onurbcd.eruservice.persistency.predicate.IncomeSourcePredicateBuilder
 import com.onurbcd.eruservice.persistency.repository.IncomeSourceRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.enums.QueryType;
-import com.onurbcd.eruservice.service.mapper.IncomeSourceToDtoMapper;
+import com.onurbcd.eruservice.mapper.IncomeSourceToDtoMapper;
 import com.onurbcd.eruservice.service.mapper.IncomeSourceToEntityMapper;
 
 @PrimeService(Domain.INCOME_SOURCE)
