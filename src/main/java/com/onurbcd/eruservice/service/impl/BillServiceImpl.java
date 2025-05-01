@@ -25,7 +25,7 @@ import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.BillOpenToEntityMapper;
 import com.onurbcd.eruservice.model.BillBalanceParams;
-import com.onurbcd.eruservice.service.resource.BillDocParams;
+import com.onurbcd.eruservice.model.BillDocParams;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;

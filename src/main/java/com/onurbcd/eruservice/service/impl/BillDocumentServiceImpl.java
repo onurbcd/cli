@@ -6,7 +6,7 @@ import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.service.BillDocumentService;
 import com.onurbcd.eruservice.service.DocumentService;
-import com.onurbcd.eruservice.service.resource.BillDocParams;
+import com.onurbcd.eruservice.model.BillDocParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
