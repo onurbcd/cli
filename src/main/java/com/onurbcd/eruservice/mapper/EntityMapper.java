@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.mapper;
+package com.onurbcd.eruservice.mapper;
 
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
