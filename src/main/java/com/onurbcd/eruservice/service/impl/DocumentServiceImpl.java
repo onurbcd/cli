@@ -1,18 +1,17 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
 import com.onurbcd.eruservice.dto.document.FileDto;
 import com.onurbcd.eruservice.dto.document.MultipartFileDto;
+import com.onurbcd.eruservice.enums.Error;
+import com.onurbcd.eruservice.exception.ApiException;
+import com.onurbcd.eruservice.mapper.DocumentToDtoMapper;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.persistency.repository.DocumentRepository;
 import com.onurbcd.eruservice.service.DocumentService;
 import com.onurbcd.eruservice.service.StorageService;
-import com.onurbcd.eruservice.enums.Error;
-import com.onurbcd.eruservice.exception.ApiException;
-import com.onurbcd.eruservice.mapper.DocumentToDtoMapper;
 import com.onurbcd.eruservice.service.validation.Action;
-import com.onurbcd.eruservice.service.validation.DocumentValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -23,32 +22,23 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
 
     private static final int RADIX = 16;
-
     private final DocumentRepository repository;
-
     private final StorageService storageService;
-
     private final DocumentToDtoMapper toDtoMapper;
-
-    private final DocumentValidationService validationService;
 
     @Override
     public Set<Document> save(MultipartFileDto dto) {
         var documents = new ArrayList<Document>();
 
         for (var multipartFile : dto.getMultipartFiles()) {
-            validationService.validate(multipartFile);
+            validate(multipartFile);
             var document = create(multipartFile, dto.getPath());
             documents.add(document);
         }
@@ -58,7 +48,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document saveOne(MultipartFileDto dto) {
-        validationService.validate(dto.getMultipartFile());
+        validate(dto.getMultipartFile());
         var document = create(dto.getMultipartFile(), dto.getPath(), dto.getName());
         return repository.save(document);
     }
@@ -97,6 +87,13 @@ public class DocumentServiceImpl implements DocumentService {
                 // .contentType(MediaType.parseMediaType(document.getMimeType()))
                 .resource(new ByteArrayResource(file))
                 .build();
+    }
+
+    private void validate(MultipartFile multipartFile) {
+        Action.checkIfNot(multipartFile.isEmpty()).orElseThrow(Error.DOCUMENT_IS_EMPTY);
+        Action.checkIfNotBlank(multipartFile.getOriginalFilename()).orElseThrow(Error.DOCUMENT_NAME_IS_BLANK);
+        Action.checkIfNotBlank(multipartFile.getContentType()).orElseThrow(Error.DOCUMENT_MIME_TYPE_IS_BLANK);
+        Action.checkIfNot(multipartFile.getSize() == 0).orElseThrow(Error.DOCUMENT_SIZE_IS_ZERO);
     }
 
     private Document create(MultipartFile multipartFile, String path) {

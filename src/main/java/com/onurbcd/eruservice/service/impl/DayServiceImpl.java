@@ -2,10 +2,11 @@ package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.dto.day.CreateMonthDto;
 import com.onurbcd.eruservice.dto.day.DayDto;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.persistency.entity.Day;
 import com.onurbcd.eruservice.persistency.repository.DayRepository;
 import com.onurbcd.eruservice.service.DayService;
-import com.onurbcd.eruservice.service.validation.DayValidationService;
+import com.onurbcd.eruservice.service.validation.Action;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +19,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static java.time.temporal.TemporalAdjusters.*;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Service
 @RequiredArgsConstructor
 public class DayServiceImpl implements DayService {
 
-    private final DayValidationService validationService;
-
     private final DayRepository repository;
 
     @Override
     public void createMonth(CreateMonthDto dto) {
-        validationService.validate(dto);
+        Action.checkIf(repository.numberOfDaysInMonth(dto) < 1)
+                .orElseThrow(Error.MONTH_ALREADY_EXISTS, dto.getCalendarMonth(), dto.getCalendarYear());
+
         var days = createDays(dto);
         repository.saveAll(days);
     }
