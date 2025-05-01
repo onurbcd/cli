@@ -1,12 +1,8 @@
-package com.onurbcd.eruservice.service.resource;
+package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.util.CollectionUtil;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import java.util.Set;

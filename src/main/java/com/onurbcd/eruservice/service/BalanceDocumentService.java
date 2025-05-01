@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.service;
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import com.onurbcd.eruservice.service.resource.CreateDocument;
+import com.onurbcd.eruservice.model.CreateDocument;
 import org.springframework.lang.Nullable;
 
 import java.util.Set;
