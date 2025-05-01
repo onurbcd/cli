@@ -22,7 +22,7 @@ import com.onurbcd.eruservice.service.*;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.BalanceToEntityMapper;
 import com.onurbcd.eruservice.model.CreateBalance;
-import com.onurbcd.eruservice.service.validation.BalanceValidationService;
+import com.onurbcd.eruservice.validation.BalanceValidationService;
 import com.onurbcd.eruservice.util.CollectionUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
 import com.querydsl.core.types.Predicate;
