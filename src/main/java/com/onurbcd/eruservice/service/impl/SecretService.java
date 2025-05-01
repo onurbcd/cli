@@ -13,7 +13,7 @@ import com.onurbcd.eruservice.persistency.predicate.SecretPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.SecretRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.mapper.SecretToDtoMapper;
-import com.onurbcd.eruservice.service.mapper.SecretToEntityMapper;
+import com.onurbcd.eruservice.mapper.SecretToEntityMapper;
 import com.onurbcd.eruservice.service.validation.SecretValidationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
