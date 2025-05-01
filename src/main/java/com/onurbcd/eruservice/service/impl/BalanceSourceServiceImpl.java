@@ -5,7 +5,7 @@ import com.onurbcd.eruservice.service.BalanceSourceService;
 import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.enums.BalanceOperation;
 import com.onurbcd.eruservice.enums.Operation;
-import com.onurbcd.eruservice.service.resource.UpdateSourceBalance;
+import com.onurbcd.eruservice.model.UpdateSourceBalance;
 import com.onurbcd.eruservice.util.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

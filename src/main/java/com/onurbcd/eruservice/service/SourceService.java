@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.dto.filter.SourceFilter;
 import com.onurbcd.eruservice.dto.source.BalanceSumDto;
-import com.onurbcd.eruservice.service.resource.UpdateSourceBalance;
+import com.onurbcd.eruservice.model.UpdateSourceBalance;
 
 import java.math.BigDecimal;
 

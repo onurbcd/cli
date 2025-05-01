@@ -13,7 +13,7 @@ import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.SourceToEntityMapper;
-import com.onurbcd.eruservice.service.resource.UpdateSourceBalance;
+import com.onurbcd.eruservice.model.UpdateSourceBalance;
 import com.querydsl.core.types.Predicate;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,7 @@
-package com.onurbcd.eruservice.service.resource;
+package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.persistency.entity.Source;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.function.BinaryOperator;
@@ -18,8 +14,6 @@ import java.util.function.BinaryOperator;
 public class UpdateSourceBalance {
 
     private Source source;
-
     private BinaryOperator<BigDecimal> func;
-
     private BigDecimal value;
 }
