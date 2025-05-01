@@ -5,7 +5,7 @@ import com.onurbcd.eruservice.dto.document.DocumentDto;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import com.onurbcd.eruservice.persistency.param.SequenceParam;
+import com.onurbcd.eruservice.model.SequenceParam;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

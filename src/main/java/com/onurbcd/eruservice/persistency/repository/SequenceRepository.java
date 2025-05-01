@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.persistency.repository;
 
-import com.onurbcd.eruservice.persistency.param.SequenceParam;
+import com.onurbcd.eruservice.model.SequenceParam;
 import org.springframework.data.repository.query.Param;
 
 public interface SequenceRepository {

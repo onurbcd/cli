@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.enums.Direction;
-import com.onurbcd.eruservice.persistency.param.SequenceParam;
+import com.onurbcd.eruservice.model.SequenceParam;
 
 public interface SequenceService {
 

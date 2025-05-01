@@ -9,7 +9,7 @@ import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
-import com.onurbcd.eruservice.persistency.param.SequenceParam;
+import com.onurbcd.eruservice.model.SequenceParam;
 import com.onurbcd.eruservice.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;

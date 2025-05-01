@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.persistency.param;
+package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.persistency.entity.SequenceEntity;

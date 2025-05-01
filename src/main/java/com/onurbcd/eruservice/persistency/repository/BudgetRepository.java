@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSumDto;
 import com.onurbcd.eruservice.dto.budget.BudgetValuesDto;
 import com.onurbcd.eruservice.persistency.entity.Budget;
-import com.onurbcd.eruservice.persistency.param.SequenceParam;
+import com.onurbcd.eruservice.model.SequenceParam;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
