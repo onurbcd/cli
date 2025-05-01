@@ -1,5 +1,6 @@
-package com.onurbcd.eruservice.property;
+package com.onurbcd.eruservice.config.property;
 
+import com.onurbcd.eruservice.property.CryptoProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

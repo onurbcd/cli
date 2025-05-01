@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.helper.impl;
 
 import com.onurbcd.eruservice.service.enums.Error;
 import com.onurbcd.eruservice.service.exception.ApiException;
-import com.onurbcd.eruservice.property.AdminProperties;
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.service.helper.Cryptoable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

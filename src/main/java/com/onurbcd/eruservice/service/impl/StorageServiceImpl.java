@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import com.onurbcd.eruservice.property.AdminProperties;
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.service.StorageService;
 import com.onurbcd.eruservice.service.enums.Error;
 import com.onurbcd.eruservice.service.exception.ApiException;

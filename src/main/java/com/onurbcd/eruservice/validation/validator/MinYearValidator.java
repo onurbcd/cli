@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.validation.validator;
 
 import com.onurbcd.eruservice.validation.constraint.MinYear;
-import com.onurbcd.eruservice.property.AdminProperties;
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.util.SpringContext;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
