@@ -1,19 +1,19 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.secret.SecretDto;
 import com.onurbcd.eruservice.dto.secret.SecretSaveDto;
+import com.onurbcd.eruservice.enums.Domain;
+import com.onurbcd.eruservice.enums.QueryType;
+import com.onurbcd.eruservice.helper.CryptoHelper;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
 import com.onurbcd.eruservice.persistency.entity.Secret;
 import com.onurbcd.eruservice.persistency.predicate.SecretPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.SecretRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
-import com.onurbcd.eruservice.enums.QueryType;
-import com.onurbcd.eruservice.service.helper.Cryptoable;
-import com.onurbcd.eruservice.service.mapper.SecretToEntityMapper;
 import com.onurbcd.eruservice.service.mapper.SecretToDtoMapper;
+import com.onurbcd.eruservice.service.mapper.SecretToEntityMapper;
 import com.onurbcd.eruservice.service.validation.SecretValidationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
@@ -23,15 +23,14 @@ import java.util.UUID;
 @PrimeService(Domain.SECRET)
 public class SecretService extends AbstractCrudService<Secret, SecretDto, SecretPredicateBuilder, SecretSaveDto> {
 
-    private final Cryptoable cryptoable;
-
+    private final CryptoHelper cryptoHelper;
     private final SecretValidationService validationService;
 
-    public SecretService(SecretRepository repository, Cryptoable cryptoable, SecretToDtoMapper toDtoMapper,
+    public SecretService(SecretRepository repository, CryptoHelper cryptoHelper, SecretToDtoMapper toDtoMapper,
                          SecretToEntityMapper toEntityMapper, SecretValidationService validationService) {
 
         super(repository, toDtoMapper, toEntityMapper, QueryType.JPA, SecretPredicateBuilder.class);
-        this.cryptoable = cryptoable;
+        this.cryptoHelper = cryptoHelper;
         this.validationService = validationService;
     }
 
@@ -45,7 +44,7 @@ public class SecretService extends AbstractCrudService<Secret, SecretDto, Secret
         var secret = (Secret) super.fillValues(dto, entity);
 
         if (StringUtils.isNotBlank(secret.getPassword())) {
-            secret.setPassword(cryptoable.encrypt(secret.getPassword()));
+            secret.setPassword(cryptoHelper.encrypt(secret.getPassword()));
         }
 
         return secret;

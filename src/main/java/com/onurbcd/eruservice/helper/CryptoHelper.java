@@ -1,9 +1,8 @@
-package com.onurbcd.eruservice.service.helper.impl;
+package com.onurbcd.eruservice.helper;
 
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
-import com.onurbcd.eruservice.config.property.AdminProperties;
-import com.onurbcd.eruservice.service.helper.Cryptoable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,16 +23,14 @@ import java.util.function.BiFunction;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CryptoHelper implements Cryptoable {
+public class CryptoHelper {
 
     private final AdminProperties config;
 
-    @Override
     public String encrypt(String plainText) {
         return crypt(this::encrypt, plainText, Cipher.ENCRYPT_MODE);
     }
 
-    @Override
     public String decrypt(String encodedCipherText) {
         return crypt(this::decrypt, encodedCipherText, Cipher.DECRYPT_MODE);
     }
