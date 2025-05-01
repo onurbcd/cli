@@ -1,6 +1,7 @@
-package com.onurbcd.eruservice.service.enums;
+package com.onurbcd.eruservice.enums;
 
-import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.service.enums.Error;
+import com.onurbcd.eruservice.service.enums.Operation;
 import com.onurbcd.eruservice.service.exception.ApiException;
 import com.onurbcd.eruservice.util.NumberUtil;
 import lombok.Getter;
@@ -15,21 +16,14 @@ import java.util.function.BinaryOperator;
 public enum BalanceOperation {
 
     INSERT_INCOME(Operation.INSERT, BalanceType.INCOME, NumberUtil::add),
-
     INSERT_OUTCOME(Operation.INSERT, BalanceType.OUTCOME, NumberUtil::subtract),
-
     DELETE_INCOME(Operation.DELETE, BalanceType.INCOME, NumberUtil::subtract),
-
     DELETE_OUTCOME(Operation.DELETE, BalanceType.OUTCOME, NumberUtil::add),
-
     UPDATE_INCOME(Operation.UPDATE, BalanceType.INCOME, NumberUtil::add),
-
     UPDATE_OUTCOME(Operation.UPDATE, BalanceType.OUTCOME, NumberUtil::subtract);
 
     private final Operation operation;
-
     private final BalanceType balanceType;
-
     private final BinaryOperator<BigDecimal> func;
 
     public static BalanceOperation from(Operation operation, BalanceType balanceType) {
