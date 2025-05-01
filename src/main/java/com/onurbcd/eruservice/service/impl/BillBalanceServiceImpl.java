@@ -8,7 +8,7 @@ import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Bill;
 import com.onurbcd.eruservice.service.BalanceService;
 import com.onurbcd.eruservice.service.BillBalanceService;
-import com.onurbcd.eruservice.service.resource.BillBalanceParams;
+import com.onurbcd.eruservice.model.BillBalanceParams;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

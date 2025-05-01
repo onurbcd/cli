@@ -17,3 +17,5 @@
 - remover todas as interfaces com só uma implementação
 
 - agrupar os serviços do balance e bill em packages
+
+- juntar todas as constantes em um arquivo Constants no package util
