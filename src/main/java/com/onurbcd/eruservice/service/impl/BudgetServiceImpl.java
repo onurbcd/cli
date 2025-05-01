@@ -1,15 +1,15 @@
 package com.onurbcd.eruservice.service.impl;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.budget.*;
-import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.dto.filter.Filterable;
+import com.onurbcd.eruservice.enums.Direction;
+import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.entity.Budget;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
-import com.onurbcd.eruservice.persistency.factory.SequenceParamFactory;
+import com.onurbcd.eruservice.persistency.param.SequenceParam;
 import com.onurbcd.eruservice.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
 import com.onurbcd.eruservice.service.AbstractCrudService;
@@ -97,7 +97,7 @@ public class BudgetServiceImpl extends AbstractCrudService<Budget, BudgetDto, Bu
     @Override
     public void updateSequence(UUID id, Direction direction) {
         var budget = findByIdOrElseThrow(id);
-        var sequenceParam = SequenceParamFactory.create(budget);
+        var sequenceParam = SequenceParam.of(budget, null);
         sequenceService.swapSequence(sequenceParam, direction);
     }
 
@@ -105,7 +105,7 @@ public class BudgetServiceImpl extends AbstractCrudService<Budget, BudgetDto, Bu
     public void delete(UUID id) {
         var budget = findByIdOrElseThrow(id);
         repository.deleteById(budget.getId());
-        var sequenceParam = SequenceParamFactory.create(budget);
+        var sequenceParam = SequenceParam.of(budget, null);
         sequenceService.updateNextSequences(sequenceParam);
     }
 
@@ -137,7 +137,7 @@ public class BudgetServiceImpl extends AbstractCrudService<Budget, BudgetDto, Bu
     @Override
     public void swapPosition(UUID id, Short targetSequence) {
         var budget = findByIdOrElseThrow(id);
-        var sequenceParam = SequenceParamFactory.create(budget, targetSequence);
+        var sequenceParam = SequenceParam.of(budget, targetSequence);
         sequenceService.swapPosition(sequenceParam);
     }
 
@@ -162,7 +162,7 @@ public class BudgetServiceImpl extends AbstractCrudService<Budget, BudgetDto, Bu
     }
 
     private Supplier<Short> getNextSequence(Budget budget) {
-        var sequenceParam = SequenceParamFactory.createNext(budget);
+        var sequenceParam = SequenceParam.of(budget);
         return () -> sequenceService.getNextSequence(sequenceParam);
     }
 }

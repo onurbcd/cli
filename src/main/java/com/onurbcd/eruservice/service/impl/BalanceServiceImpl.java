@@ -1,30 +1,25 @@
 package com.onurbcd.eruservice.service.impl;
 
-import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.enums.Domain;
+import com.onurbcd.eruservice.constant.Constant;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSumDto;
-import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.dto.filter.Filterable;
+import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.enums.Direction;
+import com.onurbcd.eruservice.enums.Domain;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Day;
 import com.onurbcd.eruservice.persistency.entity.Entityable;
+import com.onurbcd.eruservice.persistency.param.SequenceParam;
 import com.onurbcd.eruservice.persistency.predicate.BalancePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
-import com.onurbcd.eruservice.service.AbstractCrudService;
-import com.onurbcd.eruservice.service.BalanceDocumentService;
-import com.onurbcd.eruservice.service.BalanceService;
-import com.onurbcd.eruservice.service.BalanceSourceService;
-import com.onurbcd.eruservice.service.DayService;
-import com.onurbcd.eruservice.service.SequenceService;
+import com.onurbcd.eruservice.service.*;
 import com.onurbcd.eruservice.service.enums.QueryType;
-import com.onurbcd.eruservice.persistency.factory.SequenceParamFactory;
 import com.onurbcd.eruservice.service.mapper.BalanceToEntityMapper;
 import com.onurbcd.eruservice.service.resource.CreateBalance;
 import com.onurbcd.eruservice.service.validation.BalanceValidationService;
@@ -48,17 +43,11 @@ public class BalanceServiceImpl
         implements BalanceService {
 
     private final BalanceRepository repository;
-
     private final BalanceValidationService validationService;
-
     private final SequenceService sequenceService;
-
     private final DayService dayService;
-
     private final BalanceDocumentService balanceDocumentService;
-
     private final EntityManager entityManager;
-
     private final BalanceSourceService balanceSourceService;
 
     public BalanceServiceImpl(BalanceRepository repository, BalanceToEntityMapper toEntityMapper,
@@ -112,7 +101,7 @@ public class BalanceServiceImpl
         var balance = getOrElseThrow(id);
         var documents = repository.getDocuments(id);
         repository.deleteById(id);
-        var sequenceParam = SequenceParamFactory.create(balance);
+        var sequenceParam = SequenceParam.of(balance, null);
         sequenceParam.setBalanceType(balance.getBalanceType());
         sequenceService.updateNextSequences(sequenceParam);
         balanceDocumentService.deleteDocuments(documents);
@@ -122,7 +111,7 @@ public class BalanceServiceImpl
     @Override
     public void updateSequence(UUID id, Direction direction) {
         var balance = getOrElseThrow(id);
-        var sequenceParam = SequenceParamFactory.create(balance);
+        var sequenceParam = SequenceParam.of(balance, null);
         sequenceParam.setBalanceType(balance.getBalanceType());
         sequenceService.swapSequence(sequenceParam, direction);
     }
@@ -130,7 +119,7 @@ public class BalanceServiceImpl
     @Override
     public void swapPosition(UUID id, Short targetSequence) {
         var balance = getOrElseThrow(id);
-        var sequenceParam = SequenceParamFactory.create(balance, targetSequence);
+        var sequenceParam = SequenceParam.of(balance, targetSequence);
         sequenceParam.setBalanceType(balance.getBalanceType());
         sequenceService.swapPosition(sequenceParam);
     }
@@ -201,7 +190,7 @@ public class BalanceServiceImpl
     }
 
     private Supplier<Short> getNextSequence(LocalDate calendarDate, BalanceType balanceType) {
-        var sequenceParam = SequenceParamFactory.create(calendarDate);
+        var sequenceParam = SequenceParam.of(calendarDate);
         sequenceParam.setBalanceType(balanceType);
         return () -> sequenceService.getNextSequence(sequenceParam);
     }
