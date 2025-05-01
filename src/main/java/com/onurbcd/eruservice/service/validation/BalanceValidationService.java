@@ -26,12 +26,12 @@ public class BalanceValidationService {
         var sequence = balance != null ? balance.getSequence() : null;
 
         Action.checkIf(id == null || NumberUtil.equals(dto.getSequence(), sequence))
-                .orElseThrow(com.onurbcd.eruservice.enums.Error.SEQUENCE_CHANGED, sequence, dto.getSequence());
+                .orElseThrow(Error.SEQUENCE_CHANGED, sequence, dto.getSequence());
     }
 
     private void validateDay(BalanceSaveDto dto, @Nullable Balance balance, @Nullable UUID id) {
-        Action.checkIf(id == null || equalDay(dto, balance)).orElseThrow(com.onurbcd.eruservice.enums.Error.DAY_CHANGED);
-        Action.checkIf(id != null || dayNotFuture(dto.getDayCalendarDate())).orElseThrow(com.onurbcd.eruservice.enums.Error.DAY_IN_FUTURE);
+        Action.checkIf(id == null || equalDay(dto, balance)).orElseThrow(Error.DAY_CHANGED);
+        Action.checkIf(id != null || dayNotFuture(dto.getDayCalendarDate())).orElseThrow(Error.DAY_IN_FUTURE);
     }
 
     private boolean equalDay(BalanceSaveDto dto, @Nullable Balance balance) {
@@ -52,7 +52,7 @@ public class BalanceValidationService {
 
     private void validateSource(BalanceSaveDto dto, @Nullable Balance balance, @Nullable UUID id) {
         var sourceId = balance != null ? balance.getSource().getId() : null;
-        Action.checkIf(id == null || dto.getSourceId().equals(sourceId)).orElseThrow(com.onurbcd.eruservice.enums.Error.DAY_SOURCE_CHANGED);
+        Action.checkIf(id == null || dto.getSourceId().equals(sourceId)).orElseThrow(Error.DAY_SOURCE_CHANGED);
     }
 
     private void validateBalanceType(BalanceSaveDto dto, @Nullable Balance balance, @Nullable UUID id) {
