@@ -1,7 +1,6 @@
-package com.onurbcd.eruservice.service.mapper;
+package com.onurbcd.eruservice.mapper;
 
 import com.onurbcd.eruservice.dto.document.DocumentDto;
-import com.onurbcd.eruservice.mapper.DefaultMapperConfig;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import org.mapstruct.Mapper;
 

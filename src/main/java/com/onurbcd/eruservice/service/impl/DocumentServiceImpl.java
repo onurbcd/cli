@@ -10,7 +10,7 @@ import com.onurbcd.eruservice.service.DocumentService;
 import com.onurbcd.eruservice.service.StorageService;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
-import com.onurbcd.eruservice.service.mapper.DocumentToDtoMapper;
+import com.onurbcd.eruservice.mapper.DocumentToDtoMapper;
 import com.onurbcd.eruservice.service.validation.Action;
 import com.onurbcd.eruservice.service.validation.DocumentValidationService;
 import lombok.RequiredArgsConstructor;
