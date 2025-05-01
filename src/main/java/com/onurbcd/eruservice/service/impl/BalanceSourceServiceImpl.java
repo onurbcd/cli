@@ -4,7 +4,7 @@ import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.service.BalanceSourceService;
 import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.enums.BalanceOperation;
-import com.onurbcd.eruservice.service.enums.Operation;
+import com.onurbcd.eruservice.enums.Operation;
 import com.onurbcd.eruservice.service.resource.UpdateSourceBalance;
 import com.onurbcd.eruservice.util.NumberUtil;
 import lombok.RequiredArgsConstructor;
