@@ -8,7 +8,7 @@ import com.onurbcd.eruservice.persistency.repository.EruRepository;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.mapper.EntityMapper;
-import com.onurbcd.eruservice.service.validation.Action;
+import com.onurbcd.eruservice.validation.Action;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

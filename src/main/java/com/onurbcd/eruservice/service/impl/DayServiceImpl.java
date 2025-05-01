@@ -6,7 +6,7 @@ import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.persistency.entity.Day;
 import com.onurbcd.eruservice.persistency.repository.DayRepository;
 import com.onurbcd.eruservice.service.DayService;
-import com.onurbcd.eruservice.service.validation.Action;
+import com.onurbcd.eruservice.validation.Action;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

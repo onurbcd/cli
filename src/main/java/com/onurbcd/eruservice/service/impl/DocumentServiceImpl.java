@@ -11,7 +11,7 @@ import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.persistency.repository.DocumentRepository;
 import com.onurbcd.eruservice.service.DocumentService;
 import com.onurbcd.eruservice.service.StorageService;
-import com.onurbcd.eruservice.service.validation.Action;
+import com.onurbcd.eruservice.validation.Action;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
