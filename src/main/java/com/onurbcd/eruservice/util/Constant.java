@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.constant;
+package com.onurbcd.eruservice.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

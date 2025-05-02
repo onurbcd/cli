@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.constant.Constant;
+import com.onurbcd.eruservice.util.Constant;
 import com.onurbcd.eruservice.dto.document.MultipartFileDto;
 import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.model.BillDocParams;

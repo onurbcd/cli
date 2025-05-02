@@ -13,7 +13,7 @@ import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import static com.onurbcd.eruservice.constant.Constant.LOCAL_DATE_TIME_PATTERN;
+import static com.onurbcd.eruservice.util.Constant.LOCAL_DATE_TIME_PATTERN;
 
 @Configuration
 public class EruConfig {

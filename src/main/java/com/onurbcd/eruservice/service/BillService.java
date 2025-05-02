@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.constant.Constant;
+import com.onurbcd.eruservice.util.Constant;
 import com.onurbcd.eruservice.dto.bill.BillCloseDto;
 import com.onurbcd.eruservice.dto.bill.BillDto;
 import com.onurbcd.eruservice.dto.bill.BillOpenDto;

@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.bill;
 
-import com.onurbcd.eruservice.constant.Constant;
+import com.onurbcd.eruservice.util.Constant;
 import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.PaymentType;
