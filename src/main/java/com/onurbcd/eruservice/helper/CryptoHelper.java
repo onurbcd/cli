@@ -1,11 +1,11 @@
 package com.onurbcd.eruservice.helper;
 
+import com.onurbcd.eruservice.annotation.Helper;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -20,7 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.function.BiFunction;
 
-@Component
+@Helper
 @RequiredArgsConstructor
 @Slf4j
 public class CryptoHelper {

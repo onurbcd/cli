@@ -2,23 +2,19 @@ package com.onurbcd.eruservice.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onurbcd.eruservice.enums.EruTable;
+import com.onurbcd.eruservice.annotation.Helper;
 import com.onurbcd.eruservice.dto.Dtoable;
+import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.util.BigDecimalFormatter;
 import com.onurbcd.eruservice.util.LocalDateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.shell.table.BeanListTableModel;
-import org.springframework.shell.table.BorderStyle;
-import org.springframework.shell.table.CellMatchers;
-import org.springframework.shell.table.SimpleHorizontalAligner;
-import org.springframework.shell.table.TableBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.shell.table.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Component
+@Helper
 @RequiredArgsConstructor
 public class ShellHelper {
 

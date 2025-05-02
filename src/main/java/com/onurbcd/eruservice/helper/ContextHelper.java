@@ -1,12 +1,12 @@
 package com.onurbcd.eruservice.helper;
 
+import com.onurbcd.eruservice.annotation.Helper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
-@Component
+@Helper
 public class ContextHelper implements ApplicationContextAware {
 
     private static ApplicationContext context;
