@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.validation.validator;
+package com.onurbcd.eruservice.validation;
 
 import com.onurbcd.eruservice.annotation.MinYear;
 import com.onurbcd.eruservice.config.property.AdminProperties;
