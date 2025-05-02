@@ -23,7 +23,7 @@ import com.onurbcd.eruservice.persistency.predicate.BalancePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 import com.onurbcd.eruservice.util.CollectionUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
-import com.onurbcd.eruservice.validation.BalanceValidationService;
+import com.onurbcd.eruservice.validator.BalanceValidationService;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 import org.springframework.lang.Nullable;

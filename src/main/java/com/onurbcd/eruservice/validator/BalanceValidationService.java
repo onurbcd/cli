@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.validation;
+package com.onurbcd.eruservice.validator;
 
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.enums.Error;

@@ -9,7 +9,7 @@ import com.onurbcd.eruservice.mapper.DocumentToDtoMapper;
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Document;
 import com.onurbcd.eruservice.persistency.repository.DocumentRepository;
-import com.onurbcd.eruservice.validation.Action;
+import com.onurbcd.eruservice.validator.Action;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;

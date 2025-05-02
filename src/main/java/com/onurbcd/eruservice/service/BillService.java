@@ -19,7 +19,7 @@ import com.onurbcd.eruservice.persistency.entity.Day;
 import com.onurbcd.eruservice.persistency.entity.Source;
 import com.onurbcd.eruservice.persistency.predicate.BillPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BillRepository;
-import com.onurbcd.eruservice.validation.Action;
+import com.onurbcd.eruservice.validator.Action;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 import org.springframework.lang.Nullable;

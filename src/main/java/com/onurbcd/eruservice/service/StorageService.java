@@ -5,7 +5,7 @@ import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import com.onurbcd.eruservice.validation.Action;
+import com.onurbcd.eruservice.validator.Action;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
