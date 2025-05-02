@@ -1,9 +1,8 @@
-package com.onurbcd.eruservice.service.impl;
+package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
-import com.onurbcd.eruservice.service.AbstractSequenceService;
 import com.onurbcd.eruservice.validation.SequenceValidationService;
 
 @PrimeService(Domain.BALANCE_SEQUENCE)
