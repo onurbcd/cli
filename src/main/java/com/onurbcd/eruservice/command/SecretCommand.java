@@ -7,7 +7,7 @@ import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.filter.SecretFilter;
 import com.onurbcd.eruservice.dto.secret.SecretPatchDto;
 import com.onurbcd.eruservice.dto.secret.SecretSaveDto;
-import com.onurbcd.eruservice.service.impl.SecretService;
+import com.onurbcd.eruservice.service.SecretService;
 import com.onurbcd.eruservice.util.Extension;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
