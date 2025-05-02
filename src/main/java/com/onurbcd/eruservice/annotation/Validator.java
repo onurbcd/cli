@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface Helper {
+public @interface Validator {
 
     @AliasFor(annotation = Component.class)
     String value() default "";
