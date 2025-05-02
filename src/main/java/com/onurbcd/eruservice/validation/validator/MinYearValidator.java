@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.validation.validator;
 
 import com.onurbcd.eruservice.validation.constraint.MinYear;
 import com.onurbcd.eruservice.config.property.AdminProperties;
-import com.onurbcd.eruservice.util.SpringContext;
+import com.onurbcd.eruservice.helper.ContextHelper;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import jakarta.validation.ConstraintValidator;
@@ -13,7 +13,7 @@ public class MinYearValidator implements ConstraintValidator<MinYear, Short> {
     private final AdminProperties config;
 
     public MinYearValidator() {
-        this.config = SpringContext.getBean(AdminProperties.class);
+        this.config = ContextHelper.getBean(AdminProperties.class);
     }
 
     @Override
