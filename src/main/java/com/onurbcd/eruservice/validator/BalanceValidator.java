@@ -1,18 +1,18 @@
 package com.onurbcd.eruservice.validator;
 
+import com.onurbcd.eruservice.annotation.Validator;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Service
-public class BalanceValidationService {
+@Validator
+public class BalanceValidator {
 
     public void validate(BalanceSaveDto dto, @Nullable Balance balance, @Nullable UUID id) {
         Action.checkIf(id == null || balance != null).orElseThrowNotFound(id);

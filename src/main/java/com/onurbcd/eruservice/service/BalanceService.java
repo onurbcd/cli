@@ -23,7 +23,7 @@ import com.onurbcd.eruservice.persistency.predicate.BalancePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 import com.onurbcd.eruservice.util.CollectionUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
-import com.onurbcd.eruservice.validator.BalanceValidationService;
+import com.onurbcd.eruservice.validator.BalanceValidator;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 import org.springframework.lang.Nullable;
@@ -42,7 +42,7 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
         implements CrudService, Sequenceable {
 
     private final BalanceRepository repository;
-    private final BalanceValidationService validationService;
+    private final BalanceValidator validationService;
     private final SequenceService sequenceService;
     private final DayService dayService;
     private final BalanceDocumentService balanceDocumentService;
@@ -50,7 +50,7 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
     private final BalanceSourceService balanceSourceService;
 
     public BalanceService(BalanceRepository repository, BalanceToEntityMapper toEntityMapper,
-                          BalanceValidationService validationService,
+                          BalanceValidator validationService,
                           @PrimeService(Domain.BALANCE_SEQUENCE) SequenceService sequenceService,
                           DayService dayService, BalanceDocumentService balanceDocumentService,
                           EntityManager entityManager, BalanceSourceService balanceSourceService) {
