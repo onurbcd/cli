@@ -5,9 +5,9 @@ import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 
 @PrimeService(Domain.BALANCE_SEQUENCE_VALIDATION)
-public class BalanceSequenceValidationService extends AbstractSequenceValidationService {
+public class BalanceSequenceValidator extends AbstractSequenceValidator {
 
-    public BalanceSequenceValidationService(BalanceRepository repository) {
+    public BalanceSequenceValidator(BalanceRepository repository) {
         super(repository);
     }
 }

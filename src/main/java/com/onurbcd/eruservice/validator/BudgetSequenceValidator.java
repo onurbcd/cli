@@ -5,9 +5,9 @@ import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
 
 @PrimeService(Domain.BUDGET_SEQUENCE_VALIDATION)
-public class BudgetSequenceValidationService extends AbstractSequenceValidationService {
+public class BudgetSequenceValidator extends AbstractSequenceValidator {
 
-    public BudgetSequenceValidationService(BudgetRepository repository) {
+    public BudgetSequenceValidator(BudgetRepository repository) {
         super(repository);
     }
 }

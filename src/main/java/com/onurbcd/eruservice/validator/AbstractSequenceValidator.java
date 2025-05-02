@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 
 @RequiredArgsConstructor
-public abstract class AbstractSequenceValidationService implements SequenceValidationService {
+public abstract class AbstractSequenceValidator implements SequenceValidationService {
 
     private final SequenceRepository repository;
 
