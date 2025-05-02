@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.validator;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.model.SequenceParam;
 
-public interface SequenceValidationService {
+public interface SequenceValidator {
 
     void validate(SequenceParam currentParam, SequenceParam targetParam, Direction direction);
 

@@ -3,14 +3,14 @@ package com.onurbcd.eruservice.service;
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
-import com.onurbcd.eruservice.validator.SequenceValidationService;
+import com.onurbcd.eruservice.validator.SequenceValidator;
 
 @PrimeService(Domain.BALANCE_SEQUENCE)
 public class BalanceSequenceService extends AbstractSequenceService {
 
     public BalanceSequenceService(
             BalanceRepository repository,
-            @PrimeService(Domain.BALANCE_SEQUENCE_VALIDATION) SequenceValidationService validationService) {
+            @PrimeService(Domain.BALANCE_SEQUENCE_VALIDATION) SequenceValidator validationService) {
 
         super(repository, validationService);
     }

@@ -3,7 +3,7 @@ package com.onurbcd.eruservice.service;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.model.SequenceParam;
 import com.onurbcd.eruservice.persistency.repository.SequenceRepository;
-import com.onurbcd.eruservice.validator.SequenceValidationService;
+import com.onurbcd.eruservice.validator.SequenceValidator;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -11,7 +11,7 @@ public abstract class AbstractSequenceService implements SequenceService {
 
     private final SequenceRepository repository;
 
-    private final SequenceValidationService validationService;
+    private final SequenceValidator validationService;
 
     @Override
     public Short getNextSequence(SequenceParam sequenceParam) {
