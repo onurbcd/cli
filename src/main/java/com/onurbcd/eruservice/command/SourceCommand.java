@@ -10,7 +10,7 @@ import com.onurbcd.eruservice.dto.source.SourceDto;
 import com.onurbcd.eruservice.dto.source.SourcePatchDto;
 import com.onurbcd.eruservice.dto.source.SourceSaveDto;
 import com.onurbcd.eruservice.service.SourceService;
-import com.onurbcd.eruservice.service.impl.IncomeSourceService;
+import com.onurbcd.eruservice.service.IncomeSourceService;
 import com.onurbcd.eruservice.util.EnumUtil;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

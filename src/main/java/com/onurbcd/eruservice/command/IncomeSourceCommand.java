@@ -6,7 +6,7 @@ import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.filter.IncomeSourceFilter;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourcePatchDto;
 import com.onurbcd.eruservice.dto.incomesource.IncomeSourceSaveDto;
-import com.onurbcd.eruservice.service.impl.IncomeSourceService;
+import com.onurbcd.eruservice.service.IncomeSourceService;
 import com.onurbcd.eruservice.util.Extension;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

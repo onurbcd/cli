@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.impl;
+package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
@@ -7,7 +7,6 @@ import com.onurbcd.eruservice.dto.incomesource.IncomeSourceSaveDto;
 import com.onurbcd.eruservice.persistency.entity.IncomeSource;
 import com.onurbcd.eruservice.persistency.predicate.IncomeSourcePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.IncomeSourceRepository;
-import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.IncomeSourceToDtoMapper;
 import com.onurbcd.eruservice.mapper.IncomeSourceToEntityMapper;
