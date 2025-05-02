@@ -1,17 +1,17 @@
 package com.onurbcd.eruservice.validator;
 
+import com.onurbcd.eruservice.annotation.Validator;
 import com.onurbcd.eruservice.dto.category.CategoryDto;
 import com.onurbcd.eruservice.dto.category.CategorySaveDto;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.util.NumberUtil;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Service
-public class CategoryValidationService {
+@Validator
+public class CategoryValidator {
 
     public void validate(CategorySaveDto saveDto, @Nullable CategoryDto current, @Nullable UUID id) {
         Action.checkIf(id != null || saveDto.getParentId() != null).orElseThrow(Error.CATEGORY_PARENT_IS_NULL);

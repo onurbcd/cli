@@ -12,7 +12,7 @@ import com.onurbcd.eruservice.persistency.predicate.CategoryPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.CategoryRepository;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.CategoryToEntityMapper;
-import com.onurbcd.eruservice.validator.CategoryValidationService;
+import com.onurbcd.eruservice.validator.CategoryValidator;
 import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +26,10 @@ public class CategoryService
 
     private final CategoryRepository repository;
     private final CategoryToEntityMapper toEntityMapper;
-    private final CategoryValidationService validationService;
+    private final CategoryValidator validationService;
 
     public CategoryService(CategoryRepository repository, CategoryToEntityMapper toEntityMapper,
-                           CategoryValidationService validationService) {
+                           CategoryValidator validationService) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, CategoryPredicateBuilder.class);
         this.repository = repository;
