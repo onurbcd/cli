@@ -1,5 +1,6 @@
 package com.onurbcd.eruservice.validator;
 
+import com.onurbcd.eruservice.annotation.Validator;
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
@@ -11,14 +12,13 @@ import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Validator
 @RequiredArgsConstructor
-public class BudgetValidationService {
+public class BudgetValidator {
 
     private final BudgetRepository repository;
 

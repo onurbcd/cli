@@ -19,7 +19,7 @@ import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
 import com.onurbcd.eruservice.util.CollectionUtil;
 import com.onurbcd.eruservice.util.NumberUtil;
 import com.onurbcd.eruservice.validator.Action;
-import com.onurbcd.eruservice.validator.BudgetValidationService;
+import com.onurbcd.eruservice.validator.BudgetValidator;
 import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -37,12 +37,12 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
 
     private final BudgetRepository repository;
     private final BudgetToEntityMapper toEntityMapper;
-    private final BudgetValidationService validationService;
+    private final BudgetValidator validationService;
     private final SequenceService sequenceService;
     private final SourceService sourceService;
 
     public BudgetService(BudgetRepository repository, BudgetToEntityMapper toEntityMapper,
-                         BudgetValidationService validationService,
+                         BudgetValidator validationService,
                          @PrimeService(Domain.BUDGET_SEQUENCE) SequenceService sequenceService,
                          SourceService sourceService) {
 
