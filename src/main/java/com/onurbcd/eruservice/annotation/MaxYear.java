@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.annotation;
 
-import com.onurbcd.eruservice.validation.validator.MaxYearValidator;
+import com.onurbcd.eruservice.validation.MaxYearValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
