@@ -8,7 +8,7 @@ import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.service.BalanceService;
 import com.onurbcd.eruservice.service.SourceService;
-import com.onurbcd.eruservice.service.impl.CategoryService;
+import com.onurbcd.eruservice.service.CategoryService;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.EnumUtil;
 import com.onurbcd.eruservice.util.FileUtils;

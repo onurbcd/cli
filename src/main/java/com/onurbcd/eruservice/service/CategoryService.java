@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.service.impl;
+package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.enums.Domain;
@@ -10,7 +10,6 @@ import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.persistency.entity.Category;
 import com.onurbcd.eruservice.persistency.predicate.CategoryPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.CategoryRepository;
-import com.onurbcd.eruservice.service.AbstractCrudService;
 import com.onurbcd.eruservice.enums.QueryType;
 import com.onurbcd.eruservice.mapper.CategoryToEntityMapper;
 import com.onurbcd.eruservice.validation.CategoryValidationService;

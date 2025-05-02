@@ -7,7 +7,7 @@ import com.onurbcd.eruservice.dto.category.CategoryDto;
 import com.onurbcd.eruservice.dto.category.CategoryPatchDto;
 import com.onurbcd.eruservice.dto.category.CategorySaveDto;
 import com.onurbcd.eruservice.dto.filter.CategoryFilter;
-import com.onurbcd.eruservice.service.impl.CategoryService;
+import com.onurbcd.eruservice.service.CategoryService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

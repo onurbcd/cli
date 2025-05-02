@@ -8,7 +8,7 @@ import com.onurbcd.eruservice.dto.billtype.BillTypePatchDto;
 import com.onurbcd.eruservice.dto.billtype.BillTypeSaveDto;
 import com.onurbcd.eruservice.dto.filter.BillTypeFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
-import com.onurbcd.eruservice.service.impl.CategoryService;
+import com.onurbcd.eruservice.service.CategoryService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
