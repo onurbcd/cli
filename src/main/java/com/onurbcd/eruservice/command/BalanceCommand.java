@@ -11,7 +11,7 @@ import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.service.CategoryService;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.EnumUtil;
-import com.onurbcd.eruservice.util.FileUtils;
+import com.onurbcd.eruservice.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -47,7 +47,7 @@ public class BalanceCommand {
             UUID id
     ) {
         var balanceSaveDto = runSaveFlow(id);
-        var multipartFiles = FileUtils.filesToMultipartFiles(balanceSaveDto.getFilesNames());
+        var multipartFiles = FileUtil.filesToMultipartFiles(balanceSaveDto.getFilesNames());
         var returnId = service.save(balanceSaveDto, multipartFiles.toArray(new MultipartFile[0]), id);
         return "Balance with id: '%s' saved with success.".formatted(returnId);
     }
@@ -67,7 +67,7 @@ public class BalanceCommand {
         var sourceItems = sourceService.getItems(null);
         var categoryItems = categoryService.getItems(null);
         var balanceTypeItems = EnumUtil.getItems(BalanceType.values());
-        var filesNames = FileUtils.getFiles(config.getFilesPath());
+        var filesNames = FileUtil.getFiles(config.getFilesPath());
 
         var result = flowBuilder.clone().reset()
                 .withStringInput(NAME).name(NAME_LABEL).defaultValue(name).and()

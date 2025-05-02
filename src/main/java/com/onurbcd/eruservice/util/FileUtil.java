@@ -20,7 +20,7 @@ import java.util.Objects;
 import static com.onurbcd.eruservice.validation.Action.checkIfNotEmpty;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class FileUtils {
+public final class FileUtil {
 
     public static List<SelectItem> getFiles(String pathName) {
         var files = new File(pathName)
