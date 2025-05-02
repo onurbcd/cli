@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.validation.validator;
 
-import com.onurbcd.eruservice.validation.constraint.MaxYear;
+import com.onurbcd.eruservice.annotation.MaxYear;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import jakarta.validation.ConstraintValidator;
