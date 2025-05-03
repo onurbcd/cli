@@ -1,17 +1,18 @@
 package com.onurbcd.eruservice.command;
 
-import com.onurbcd.eruservice.model.MultipartFile;
-import com.onurbcd.eruservice.helper.ShellHelper;
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.config.property.AdminProperties;
+import com.onurbcd.eruservice.helper.ShellHelper;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.service.BalanceService;
-import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.service.CategoryService;
+import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.EnumUtil;
 import com.onurbcd.eruservice.util.FileUtil;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -50,6 +51,16 @@ public class BalanceCommand {
         var multipartFiles = FileUtil.filesToMultipartFiles(balanceSaveDto.getFilesNames());
         var returnId = service.save(balanceSaveDto, multipartFiles.toArray(new MultipartFile[0]), id);
         return "Balance with id: '%s' saved with success.".formatted(returnId);
+    }
+
+    @ShellMethod(key = "balance-delete", value = "Delete balance by id.")
+    public String delete(
+            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @NotNull
+            UUID id
+    ) {
+        service.delete(id);
+        return "Balance with id: '%s' deleted with success.".formatted(id);
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
