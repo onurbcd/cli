@@ -1,5 +1,6 @@
 package com.onurbcd.eruservice.command;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
@@ -61,6 +62,15 @@ public class BalanceCommand {
     ) {
         service.delete(id);
         return "Balance with id: '%s' deleted with success.".formatted(id);
+    }
+
+    @ShellMethod(key = "balance-get", value = "Get balance by id.")
+    public String get(
+            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @NotNull
+            UUID id
+    ) throws JsonProcessingException {
+        return shellHelper.printJson(service.getById(id));
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
