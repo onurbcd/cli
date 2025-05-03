@@ -53,7 +53,7 @@ public class BalanceCommand {
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
-        var balance = Optional.ofNullable(id).map(i -> (BalanceDto) service.getById(i)).orElse(null);
+        var balance = Optional.ofNullable(id).map(service::getById).orElse(null);
 
         var name = Optional.ofNullable(balance).map(BalanceDto::getName).orElse(null);
         var day = Optional.ofNullable(balance).map(BalanceDto::getDayCalendarDate).map(DateUtil::formatDate).orElse(null);
