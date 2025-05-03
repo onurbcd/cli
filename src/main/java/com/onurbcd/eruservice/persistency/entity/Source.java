@@ -1,24 +1,16 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.enums.CurrencyType;
 import com.onurbcd.eruservice.enums.SourceType;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -49,8 +41,8 @@ public class Source extends Prime {
 
     @NotNull
     @Column(name = "balance", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(DtoConstant.AMOUNT_MIN)
-    @DecimalMax(DtoConstant.AMOUNT_MAX)
+    @DecimalMin(Constant.AMOUNT_MIN)
+    @DecimalMax(Constant.AMOUNT_MAX)
     private BigDecimal balance;
 
     @Override

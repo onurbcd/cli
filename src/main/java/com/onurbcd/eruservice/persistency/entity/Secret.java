@@ -1,16 +1,15 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.URL;
-
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @NoArgsConstructor
@@ -20,15 +19,15 @@ import jakarta.validation.constraints.Size;
 @SuperBuilder
 public class Secret extends Prime {
 
-    @Size(min = DtoConstant.SIZE_5, max = DtoConstant.SIZE_250)
+    @Size(min = 5, max = 250)
     private String description;
 
-    @URL(regexp = DtoConstant.REGEXP_URL)
-    @Size(min = DtoConstant.SIZE_7, max = DtoConstant.SIZE_2048)
+    @URL(regexp = Constant.REGEXP_URL)
+    @Size(min = 7, max = 2048)
     private String link;
 
     @NotNull
-    @Size(min = DtoConstant.SIZE_3, max = DtoConstant.SIZE_50)
+    @Size(min = 3, max = 50)
     private String username;
 
     @NotNull

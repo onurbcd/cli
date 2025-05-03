@@ -1,29 +1,10 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.enums.BalanceType;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -70,17 +51,17 @@ public class Balance extends Prime implements SequenceEntity {
 
     @NotNull
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(DtoConstant.AMOUNT_MIN)
-    @DecimalMax(DtoConstant.AMOUNT_MAX)
+    @DecimalMin(Constant.AMOUNT_MIN)
+    @DecimalMax(Constant.AMOUNT_MAX)
     private BigDecimal amount;
 
     @NotNull
-    @Size(max = DtoConstant.SIZE_150)
-    @Column(name = "code", nullable = false, length = DtoConstant.SIZE_150)
+    @Size(max = 150)
+    @Column(name = "code", nullable = false, length = 150)
     private String code;
 
-    @Size(max = DtoConstant.SIZE_250)
-    @Column(name = "description", length = DtoConstant.SIZE_250)
+    @Size(max = 250)
+    @Column(name = "description", length = 250)
     private String description;
 
     @NotNull

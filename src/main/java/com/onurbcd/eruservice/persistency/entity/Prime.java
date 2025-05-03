@@ -1,6 +1,11 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +14,6 @@ import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -29,7 +28,7 @@ public class Prime extends Audit implements Entityable {
 
     @Column(unique = true)
     @NotNull
-    @Size(min = DtoConstant.SIZE_3, max = DtoConstant.SIZE_50)
+    @Size(min = 3, max = 50)
     @Getter
     @Setter
     private String name;

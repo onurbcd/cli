@@ -1,10 +1,9 @@
 package com.onurbcd.eruservice.dto.bill;
 
-import com.onurbcd.eruservice.util.Constant;
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.ReferenceType;
+import com.onurbcd.eruservice.util.Constant;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,7 +31,7 @@ public class BillOpenDto extends PrimeSaveDto {
     @NotNull
     private LocalDate dueDateCalendarDate;
 
-    @Size(max = DtoConstant.SIZE_250)
+    @Size(max = 250)
     private String observation;
 
     @Min(1)

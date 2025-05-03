@@ -1,25 +1,14 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.annotation.MaxYear;
 import com.onurbcd.eruservice.annotation.MinYear;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -61,8 +50,8 @@ public class Budget extends Prime implements SequenceEntity {
 
     @NotNull
     @Column(precision = 19, scale = 4)
-    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(DtoConstant.AMOUNT_MAX)
+    @DecimalMin(Constant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(Constant.AMOUNT_MAX)
     private BigDecimal amount;
 
     @NotNull

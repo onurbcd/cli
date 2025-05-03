@@ -29,8 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.constant.CommandConstant.NAME;
-import static com.onurbcd.eruservice.constant.CommandConstant.NAME_LABEL;
+import static com.onurbcd.eruservice.util.Constant.NAME;
+import static com.onurbcd.eruservice.util.Constant.NAME_LABEL;
 
 @ShellComponent
 @ShellCommandGroup("Source")

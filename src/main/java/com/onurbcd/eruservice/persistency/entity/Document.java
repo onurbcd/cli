@@ -1,11 +1,6 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -30,17 +25,17 @@ public class Document implements Persistable<UUID> {
     private UUID id;
 
     @NotNull
-    @Size(max = DtoConstant.SIZE_100)
-    @Column(name = "name", nullable = false, updatable = false, length = DtoConstant.SIZE_100)
+    @Size(max = 100)
+    @Column(name = "name", nullable = false, updatable = false, length = 100)
     private String name;
 
     @NotNull
-    @Size(max = DtoConstant.SIZE_250)
-    @Column(name = "path", nullable = false, updatable = false, length = DtoConstant.SIZE_250)
+    @Size(max = 250)
+    @Column(name = "path", nullable = false, updatable = false, length = 250)
     private String path;
 
     @NotNull
-    @Size(max = DtoConstant.SIZE_255)
+    @Size(max = 255)
     @Column(name = "mime_type", nullable = false, updatable = false)
     private String mimeType;
 
@@ -49,8 +44,8 @@ public class Document implements Persistable<UUID> {
     private Long size;
 
     @NotNull
-    @Size(max = DtoConstant.SIZE_32)
-    @Column(name = "hash", nullable = false, updatable = false, length = DtoConstant.SIZE_32)
+    @Size(max = 32)
+    @Column(name = "hash", nullable = false, updatable = false, length = 32)
     private String hash;
 
     @Override

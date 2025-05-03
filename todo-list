@@ -13,5 +13,3 @@
 - version: Show version info - adicionar informação no comando version
 
 - configurar o workflow / pipeline de qualidade, apontando para um sonarqube instalado na minha máquina antiga
-
-- juntar todas as constantes em um arquivo Constants no package util

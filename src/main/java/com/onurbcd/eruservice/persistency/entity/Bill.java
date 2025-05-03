@@ -1,25 +1,11 @@
 package com.onurbcd.eruservice.persistency.entity;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
 import com.onurbcd.eruservice.enums.ReferenceType;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,8 +61,8 @@ public class Bill extends Prime {
      */
     @NotNull
     @Column(name = "value", nullable = false, precision = 19, scale = 4)
-    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(DtoConstant.AMOUNT_MAX)
+    @DecimalMin(Constant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(Constant.AMOUNT_MAX)
     private BigDecimal value;
 
     /**
@@ -101,8 +87,8 @@ public class Bill extends Prime {
     @JoinColumn(name = "receipt_id")
     private Document receipt;
 
-    @Size(max = DtoConstant.SIZE_250)
-    @Column(name = "observation", length = DtoConstant.SIZE_250)
+    @Size(max = 250)
+    @Column(name = "observation", length = 250)
     private String observation;
 
     /**

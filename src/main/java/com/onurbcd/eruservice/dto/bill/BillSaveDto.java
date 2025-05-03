@@ -1,15 +1,11 @@
 package com.onurbcd.eruservice.dto.bill;
 
-import com.onurbcd.eruservice.constant.DtoConstant;
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.DocumentType;
 import com.onurbcd.eruservice.enums.PaymentType;
 import com.onurbcd.eruservice.enums.ReferenceType;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.onurbcd.eruservice.util.Constant;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -32,8 +28,8 @@ public class BillSaveDto extends PrimeSaveDto {
     private LocalDate dueDateCalendarDate;
 
     @NotNull
-    @DecimalMin(DtoConstant.POSITIVE_AMOUNT_MIN)
-    @DecimalMax(DtoConstant.AMOUNT_MAX)
+    @DecimalMin(Constant.POSITIVE_AMOUNT_MIN)
+    @DecimalMax(Constant.AMOUNT_MAX)
     private BigDecimal value;
 
     private LocalDate paymentDateCalendarDate;
@@ -42,7 +38,7 @@ public class BillSaveDto extends PrimeSaveDto {
 
     private UUID receiptId;
 
-    @Size(max = DtoConstant.SIZE_250)
+    @Size(max = 250)
     private String observation;
 
     @Min(1)
