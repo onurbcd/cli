@@ -1,7 +1,9 @@
 package com.onurbcd.eruservice.dto.filter;
 
+import com.onurbcd.eruservice.util.Extension;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.ExtensionMethod;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
@@ -9,6 +11,7 @@ import java.util.UUID;
 @SuperBuilder
 @Getter
 @Setter
+@ExtensionMethod({Extension.class})
 public class BudgetFilter extends AbstractFilterable {
 
     private Short refYear;
@@ -23,8 +26,8 @@ public class BudgetFilter extends AbstractFilterable {
                 .builder()
                 .active(active)
                 .search(search)
-                .refYear(refYear)
-                .refMonth(refMonth)
+                .refYear(refYear.orIfNullCurrentYear())
+                .refMonth(refMonth.orIfNullCurrentMonth())
                 .billTypeId(billTypeId)
                 .paid(paid)
                 .build();

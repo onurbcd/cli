@@ -4,6 +4,7 @@ import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
@@ -34,6 +35,10 @@ public final class DateUtil {
     }
 
     public static LocalDate parseLocalDate(String text) {
+        if (StringUtils.isBlank(text)) {
+            return null;
+        }
+
         try {
             return LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException e) {

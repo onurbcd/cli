@@ -1,14 +1,14 @@
 package com.onurbcd.eruservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.onurbcd.eruservice.enums.EruTable;
-import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
 import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
-import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
+import com.onurbcd.eruservice.enums.Direction;
+import com.onurbcd.eruservice.enums.EruTable;
+import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
 import jakarta.validation.constraints.Min;
@@ -82,7 +82,7 @@ public class BudgetCommand {
             @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "name")
+            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "sequence")
             String property,
 
             @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
