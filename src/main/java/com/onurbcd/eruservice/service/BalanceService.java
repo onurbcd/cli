@@ -1,7 +1,7 @@
 package com.onurbcd.eruservice.service;
 
 import com.onurbcd.eruservice.annotation.PrimeService;
-import com.onurbcd.eruservice.util.Constant;
+import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.Dtoable;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
@@ -22,6 +22,7 @@ import com.onurbcd.eruservice.persistency.entity.Entityable;
 import com.onurbcd.eruservice.persistency.predicate.BalancePredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BalanceRepository;
 import com.onurbcd.eruservice.util.CollectionUtil;
+import com.onurbcd.eruservice.util.Constant;
 import com.onurbcd.eruservice.util.NumberUtil;
 import com.onurbcd.eruservice.validator.BalanceValidator;
 import com.querydsl.core.types.Predicate;
@@ -48,12 +49,14 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
     private final BalanceDocumentService balanceDocumentService;
     private final EntityManager entityManager;
     private final BalanceSourceService balanceSourceService;
+    private final AdminProperties config;
 
     public BalanceService(BalanceRepository repository, BalanceToEntityMapper toEntityMapper,
                           BalanceValidator validationService,
                           @PrimeService(Domain.BALANCE_SEQUENCE) SequenceService sequenceService,
                           DayService dayService, BalanceDocumentService balanceDocumentService,
-                          EntityManager entityManager, BalanceSourceService balanceSourceService) {
+                          EntityManager entityManager, BalanceSourceService balanceSourceService,
+                          AdminProperties config) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, BalancePredicateBuilder.class);
         this.repository = repository;
@@ -63,6 +66,7 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
         this.balanceDocumentService = balanceDocumentService;
         this.entityManager = entityManager;
         this.balanceSourceService = balanceSourceService;
+        this.config = config;
     }
 
     @Transactional
@@ -116,7 +120,14 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
     public BalanceDto getById(UUID id) {
         var balanceDto = (BalanceDto) super.getById(id);
         var documents = repository.getDocumentsById(id);
-        balanceDto.setDocuments(CollectionUtil.isEmpty(documents) ? null : documents);
+
+        if (CollectionUtil.isEmpty(documents)) {
+            balanceDto.setDocuments(null);
+        } else {
+            documents.forEach(document -> document.setStoragePath(config.getStoragePath()));
+            balanceDto.setDocuments(documents);
+        }
+
         return balanceDto;
     }
 

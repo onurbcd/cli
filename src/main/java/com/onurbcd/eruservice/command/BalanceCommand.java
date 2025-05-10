@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
+import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.service.BalanceService;
@@ -13,8 +15,11 @@ import com.onurbcd.eruservice.service.SourceService;
 import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.EnumUtil;
 import com.onurbcd.eruservice.util.FileUtil;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -71,6 +76,55 @@ public class BalanceCommand {
             UUID id
     ) throws JsonProcessingException {
         return shellHelper.printJson(service.getById(id));
+    }
+
+    @ShellMethod(key = "balance-get-all", value = "Get balance's list.")
+    public String getAll(
+            @ShellOption(value = {"pageNumber", "-n"}, help = "The page's number.", defaultValue = "1")
+            @Min(1)
+            Integer pageNumber,
+
+            @ShellOption(value = {"pageSize", "-s"}, help = "The page's size.", defaultValue = "10")
+            @Min(1)
+            Integer pageSize,
+
+            @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
+            Sort.Direction direction,
+
+            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "sequence")
+            String property,
+
+            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            Boolean active,
+
+            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            String search,
+
+            @ShellOption(value = {"sourceId", "-i"}, help = "Filter's source id.", defaultValue = ShellOption.NULL)
+            UUID sourceId,
+
+            @ShellOption(value = {"categoryId", "-c"}, help = "Filter's category id.", defaultValue = ShellOption.NULL)
+            UUID categoryId,
+
+            @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
+            BalanceType balanceType,
+
+            @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
+            Short year,
+
+            @ShellOption(value = {"month", "-m"}, help = "Filter's month.", defaultValue = ShellOption.NULL)
+            Short month,
+
+            @ShellOption(value = {"day", "-g"}, help = "Filter's day.", defaultValue = ShellOption.NULL)
+            Short day
+    ) {
+        return shellHelper.printTable(
+                service.getAll(
+                        PageRequest.of(pageNumber - 1, pageSize, direction, property),
+                        BalanceFilter.of(active, search, sourceId, categoryId, balanceType).and(year, month, day)
+                ),
+                EruTable.BALANCE
+        );
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {

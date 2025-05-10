@@ -1,9 +1,10 @@
 package com.onurbcd.eruservice.dto.filter;
 
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.DateUtil;
+import com.onurbcd.eruservice.util.Extension;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.ExtensionMethod;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @SuperBuilder
 @Getter
 @Setter
+@ExtensionMethod({Extension.class})
 public class BalanceFilter extends AbstractFilterable {
 
     private LocalDate dayCalendarDate;
@@ -22,17 +24,21 @@ public class BalanceFilter extends AbstractFilterable {
     private Short dayCalendarMonth;
     private Short dayCalendarDayInMonth;
 
-    public static BalanceFilter of(Boolean active, String search, String dayCalendarDate, UUID sourceId,
-                                   UUID categoryId, BalanceType balanceType) {
-
+    public static BalanceFilter of(Boolean active, String search, UUID sourceId, UUID categoryId, BalanceType balanceType) {
         return BalanceFilter
                 .builder()
                 .active(active)
                 .search(search)
-                .dayCalendarDate(DateUtil.parseLocalDate(dayCalendarDate))
                 .sourceId(sourceId)
                 .categoryId(categoryId)
                 .balanceType(balanceType)
                 .build();
+    }
+
+    public BalanceFilter and(Short year, Short month, Short day) {
+        this.dayCalendarYear = year.orIfNullCurrentYear();
+        this.dayCalendarMonth = month.orIfNullCurrentMonth();
+        this.dayCalendarDayInMonth = day;
+        return this;
     }
 }

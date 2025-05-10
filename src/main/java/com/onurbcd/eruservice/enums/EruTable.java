@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_HEADER;
+
 @RequiredArgsConstructor
 @Getter
 public enum EruTable {
@@ -17,13 +20,14 @@ public enum EruTable {
     SOURCE(getSourceHeaders()),
     SOURCE_BALANCE_SUM(getSourceBalanceSumHeaders()),
     BUDGET(getBudgetHeaders()),
-    BUDGET_SUM_MONTH(getBudgetSumMonthHeaders());
+    BUDGET_SUM_MONTH(getBudgetSumMonthHeaders()),
+    BALANCE(getBalanceHeaders());
 
     private final LinkedHashMap<String, Object> headers;
 
     private static LinkedHashMap<String, Object> getSecretHeaders() {
         var secretHeaders = getDefaultHeaders(9);
-        secretHeaders.put("description", "Description");
+        secretHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
         secretHeaders.put("link", "Link");
         secretHeaders.put("username", "Username");
         secretHeaders.put("password", "Password");
@@ -47,7 +51,7 @@ public enum EruTable {
         categoryHeaders.put("parentName", "Parent Name");
         categoryHeaders.put("level", "Level");
         categoryHeaders.put("lastBranch", "Last Branch");
-        categoryHeaders.put("description", "Description");
+        categoryHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
         return categoryHeaders;
     }
 
@@ -93,6 +97,20 @@ public enum EruTable {
         budgetSumMonthHeaders.put("type", "Type");
         budgetSumMonthHeaders.put("value", "Value");
         return budgetSumMonthHeaders;
+    }
+
+    private static LinkedHashMap<String, Object> getBalanceHeaders() {
+        var balanceHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(9);
+        balanceHeaders.put("id", "Id");
+        balanceHeaders.put("sequence", "Sequence");
+        balanceHeaders.put("dayCalendarDate", "Date");
+        balanceHeaders.put("sourceName", "Source");
+        balanceHeaders.put("categoryName", "Category");
+        balanceHeaders.put("amount", "Amount");
+        balanceHeaders.put("code", "Code");
+        balanceHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
+        balanceHeaders.put("balanceType", "Type");
+        return balanceHeaders;
     }
 
     private static LinkedHashMap<String, Object> getDefaultHeaders(int numMappings) {

@@ -1,8 +1,9 @@
 package com.onurbcd.eruservice.util;
 
-import com.onurbcd.eruservice.model.MultipartFile;
+import com.onurbcd.eruservice.dto.document.DocumentDto;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.exception.ApiException;
+import com.onurbcd.eruservice.model.MultipartFile;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -49,6 +50,24 @@ public final class FileUtil {
                     }
                 })
                 .toList();
+    }
+
+    public static String getHyperlink(DocumentDto document) {
+        var extension = org.springframework.util.StringUtils.getFilenameExtension(document.getName());
+        var fileNameBuilder = new StringBuilder();
+
+        fileNameBuilder
+                .append(document.getStoragePath())
+                .append("/")
+                .append(document.getPath())
+                .append("/")
+                .append(document.getHash());
+
+        if (extension != null && !extension.isEmpty()) {
+            fileNameBuilder.append('.').append(extension);
+        }
+
+        return "file://" + fileNameBuilder;
     }
 
     private static MultipartFile fileToMultipartFile(String filePath) throws IOException {
