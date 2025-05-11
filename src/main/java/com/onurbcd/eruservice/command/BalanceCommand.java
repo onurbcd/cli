@@ -3,6 +3,7 @@ package com.onurbcd.eruservice.command;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
+import com.onurbcd.eruservice.dto.balance.BalancePatchDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.enums.BalanceType;
@@ -125,6 +126,19 @@ public class BalanceCommand {
                 ),
                 EruTable.BALANCE
         );
+    }
+
+    @ShellMethod(key = "balance-update", value = "Update balance's status by id.")
+    public String update(
+            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"active", "-a"}, help = "The balance's status.", defaultValue = "false")
+            Boolean active
+    ) {
+        service.update(BalancePatchDto.of(active), id);
+        return String.format("Balance with id: '%s' updated with success.", id);
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
