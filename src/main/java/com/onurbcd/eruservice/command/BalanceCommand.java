@@ -7,6 +7,7 @@ import com.onurbcd.eruservice.dto.balance.BalancePatchDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.model.MultipartFile;
@@ -139,6 +140,20 @@ public class BalanceCommand {
     ) {
         service.update(BalancePatchDto.of(active), id);
         return String.format("Balance with id: '%s' updated with success.", id);
+    }
+
+    @ShellMethod(key = "balance-update-sequence", value = "Update balance's sequence by id.")
+    public String updateSequence(
+            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"direction", "-d"}, help = "The sequence's direction.")
+            @NotNull
+            Direction direction
+    ) {
+        service.updateSequence(id, direction);
+        return "Balance with id: '%s' updated with success (sequence).".formatted(id);
     }
 
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
