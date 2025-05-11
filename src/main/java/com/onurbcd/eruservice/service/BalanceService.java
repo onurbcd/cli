@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -81,17 +81,15 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
         return newBalance.getId().toString();
     }
 
-    public Set<BalanceSumDto> getSum(BalanceFilter filter) {
+    public List<BalanceSumDto> getSum(BalanceFilter filter) {
         var incomeValue = getSumByBalanceType(filter, BalanceType.INCOME);
         var outcomeValue = getSumByBalanceType(filter, BalanceType.OUTCOME);
         var diffValue = NumberUtil.subtract(incomeValue, outcomeValue);
-        var sizeValue = repository.maxSequence(filter);
 
-        return Set.of(
+        return List.of(
                 BalanceSumDto.income(incomeValue),
                 BalanceSumDto.outcome(outcomeValue),
-                BalanceSumDto.diff(diffValue),
-                BalanceSumDto.size(sizeValue)
+                BalanceSumDto.diff(diffValue)
         );
     }
 
@@ -197,7 +195,6 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
 
     public BigDecimal getSumByBalanceType(BalanceFilter filter, BalanceType balanceType) {
         filter.setBalanceType(balanceType);
-        var incomePredicate = BalancePredicateBuilder.all(filter);
-        return repository.getSum(incomePredicate);
+        return repository.getSum(BalancePredicateBuilder.all(filter));
     }
 }

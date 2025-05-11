@@ -170,6 +170,38 @@ public class BalanceCommand {
         return "Balance with id: '%s' updated with success (position).".formatted(id);
     }
 
+    @ShellMethod(key = "balance-sum", value = "Get balance's sum.")
+    public String getSum(
+            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            Boolean active,
+
+            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            String search,
+
+            @ShellOption(value = {"sourceId", "-i"}, help = "Filter's source id.", defaultValue = ShellOption.NULL)
+            UUID sourceId,
+
+            @ShellOption(value = {"categoryId", "-c"}, help = "Filter's category id.", defaultValue = ShellOption.NULL)
+            UUID categoryId,
+
+            @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
+            BalanceType balanceType,
+
+            @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
+            Short year,
+
+            @ShellOption(value = {"month", "-m"}, help = "Filter's month.", defaultValue = ShellOption.NULL)
+            Short month,
+
+            @ShellOption(value = {"day", "-g"}, help = "Filter's day.", defaultValue = ShellOption.NULL)
+            Short day
+    ) {
+        return shellHelper.printTable(
+                service.getSum(BalanceFilter.of(active, search, sourceId, categoryId, balanceType).and(year, month, day)),
+                EruTable.BALANCE_SUM
+        );
+    }
+
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
         var balance = Optional.ofNullable(id).map(service::getById).orElse(null);
 

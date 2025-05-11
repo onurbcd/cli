@@ -164,12 +164,10 @@ public class BudgetCommand {
             @ShellOption(value = {"search", "-s"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
             String search,
 
-            @ShellOption(value = {"refYear", "-y"}, help = "Filter's reference year.")
-            @NotNull
+            @ShellOption(value = {"refYear", "-y"}, help = "Filter's reference year.", defaultValue = ShellOption.NULL)
             Short refYear,
 
-            @ShellOption(value = {"refMonth", "-m"}, help = "Filter's reference month.")
-            @NotNull
+            @ShellOption(value = {"refMonth", "-m"}, help = "Filter's reference month.", defaultValue = ShellOption.NULL)
             Short refMonth,
 
             @ShellOption(value = {"billTypeId", "-b"}, help = "Filter's bill type id.", defaultValue = ShellOption.NULL)

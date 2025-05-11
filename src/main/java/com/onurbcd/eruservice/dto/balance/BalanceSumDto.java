@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 public class BalanceSumDto {
 
     private BalanceSumType type;
-
     private BigDecimal value;
 
     private BalanceSumDto(BalanceSumType type, @Nullable BigDecimal value) {
@@ -32,9 +31,5 @@ public class BalanceSumDto {
 
     public static BalanceSumDto diff(@Nullable BigDecimal value) {
         return new BalanceSumDto(BalanceSumType.DIFF, value);
-    }
-
-    public static BalanceSumDto size(@Nullable Long value) {
-        return new BalanceSumDto(BalanceSumType.SIZE, value != null ? BigDecimal.valueOf(value) : null);
     }
 }

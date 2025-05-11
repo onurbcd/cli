@@ -4,6 +4,5 @@ public enum BalanceSumType {
 
     INCOME,
     OUTCOME,
-    DIFF,
-    SIZE
+    DIFF
 }

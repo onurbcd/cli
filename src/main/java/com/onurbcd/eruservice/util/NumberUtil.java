@@ -48,7 +48,7 @@ public final class NumberUtil {
         }
 
         if (bd1 == null) {
-            return bd2;
+            return bd2.negate();
         }
 
         if (bd2 == null) {

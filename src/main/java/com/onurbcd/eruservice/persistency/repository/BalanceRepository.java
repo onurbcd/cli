@@ -2,10 +2,9 @@ package com.onurbcd.eruservice.persistency.repository;
 
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.document.DocumentDto;
-import com.onurbcd.eruservice.dto.filter.BalanceFilter;
+import com.onurbcd.eruservice.model.SequenceParam;
 import com.onurbcd.eruservice.persistency.entity.Balance;
 import com.onurbcd.eruservice.persistency.entity.Document;
-import com.onurbcd.eruservice.model.SequenceParam;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -70,14 +69,6 @@ public interface BalanceRepository extends EruRepository<Balance, BalanceDto>, S
             " and b.sequence > :#{#sequenceParam.sequence}" +
             " and b.balanceType = :#{#sequenceParam.balanceType}")
     long countNextSequences(SequenceParam sequenceParam);
-
-    @Query("select count(*)" +
-            " from Balance b" +
-            " inner join b.day d" +
-            " where b.balanceType = :#{#filter.balanceType}" +
-            " and d.calendarYear = :#{#filter.dayCalendarYear}" +
-            " and d.calendarMonth = :#{#filter.dayCalendarMonth}")
-    long maxSequence(@Param("filter") BalanceFilter filter);
 
     @Query("select new com.onurbcd.eruservice.dto.document.DocumentDto(d.id, d.name, d.path, d.mimeType, d.size, d.hash)" +
             " from Balance b" +
