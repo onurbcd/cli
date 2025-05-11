@@ -156,6 +156,20 @@ public class BalanceCommand {
         return "Balance with id: '%s' updated with success (sequence).".formatted(id);
     }
 
+    @ShellMethod(key = "balance-swap-position", value = "Swap balance's position by id.")
+    public String swapPosition(
+            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @NotNull
+            UUID id,
+
+            @ShellOption(value = {"targetSequence", "-t"}, help = "The target sequence.")
+            @NotNull
+            Short targetSequence
+    ) {
+        service.swapPosition(id, targetSequence);
+        return "Balance with id: '%s' updated with success (position).".formatted(id);
+    }
+
     private BalanceSaveDto runSaveFlow(@Nullable UUID id) {
         var balance = Optional.ofNullable(id).map(service::getById).orElse(null);
 
