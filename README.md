@@ -15,7 +15,7 @@ docker run -p5432:5432 --name postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_U
 $ ./mvnw --version
 
 # update to latest version
-$ ./mvnw -N wrapper:wrapper -Dmaven=3.9.9
+$ ./mvnw -N wrapper:wrapper -Dmaven=3.9.11
 
 # confirm update
 $ ./mvnw --version
