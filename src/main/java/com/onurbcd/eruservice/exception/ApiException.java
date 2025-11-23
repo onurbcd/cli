@@ -1,10 +1,11 @@
 package com.onurbcd.eruservice.exception;
 
-import com.onurbcd.eruservice.enums.Error;
-import lombok.Getter;
-
 import java.io.Serial;
 import java.util.function.Supplier;
+
+import com.onurbcd.eruservice.enums.Error;
+
+import lombok.Getter;
 
 @Getter
 public class ApiException extends RuntimeException implements Supplier<ApiException> {
@@ -14,13 +15,14 @@ public class ApiException extends RuntimeException implements Supplier<ApiExcept
 
     private final Error error;
 
-    public ApiException(Error error, String errorMessage) {
-        super(errorMessage);
+    public ApiException(Error error, Object... args) {
+        super(error.format(args));
         this.error = error;
     }
 
-    public ApiException(Error error, Object... args) {
-        this(error, error.format(args));
+    public ApiException(Error error, Throwable cause) {
+        super(error.format(cause.getMessage()), cause);
+        this.error = error;
     }
 
     public static ApiException notFound(Object... args) {

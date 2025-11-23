@@ -32,7 +32,7 @@ public class StorageService {
             Files.copy(inputStream, filePath);
         } catch (IOException e) {
             log.error("Storage File Save", e);
-            throw new ApiException(Error.STORAGE_FILE_SAVE, e.toString());
+            throw new ApiException(Error.STORAGE_FILE_SAVE, e);
         }
     }
 
@@ -42,7 +42,7 @@ public class StorageService {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             log.error("Storage File Delete", e);
-            throw new ApiException(Error.STORAGE_FILE_DELETE, e.toString());
+            throw new ApiException(Error.STORAGE_FILE_DELETE, e);
         }
     }
 
@@ -54,7 +54,7 @@ public class StorageService {
             return Files.readAllBytes(filePath);
         } catch (IOException e) {
             log.error("Storage File Get", e);
-            throw new ApiException(Error.STORAGE_FILE_GET, e.toString());
+            throw new ApiException(Error.STORAGE_FILE_GET, e);
         }
     }
 

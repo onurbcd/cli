@@ -1,11 +1,16 @@
 package com.onurbcd.eruservice.util;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.lang.Nullable;
 
-import java.math.BigDecimal;
+import com.onurbcd.eruservice.enums.Error;
+import com.onurbcd.eruservice.exception.ApiException;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NumberUtil {
@@ -56,5 +61,18 @@ public final class NumberUtil {
         }
 
         return bd1.subtract(bd2);
+    }
+
+    @Nullable
+    public static Short parseShort(@Nullable String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+
+        try {
+            return Short.parseShort(value);
+        } catch (NumberFormatException e) {
+            throw new ApiException(Error.PARSE_SHORT, e);
+        }
     }
 }

@@ -38,5 +38,5 @@ admin:
     key2: G+KaPdSgVkYp3s6v
     transformation: AES/CBC/PKCS5PADDING
   minYear: 2013
-  storagePath: /home/bruno/Documents/storage
-  filesPath: /home/bruno/Downloads
+  storagePath: /media/bruno-domingues/UUI/storage
+  filesPath: /home/bruno-domingues/Downloads

@@ -114,7 +114,7 @@ public class DocumentService {
             messageDigest.update(transformedName.getBytes(StandardCharsets.UTF_8));
             return new BigInteger(1, messageDigest.digest()).toString(RADIX);
         } catch (NoSuchAlgorithmException e) {
-            throw new ApiException(Error.DOCUMENT_GENERATE_HASH, e.toString());
+            throw new ApiException(Error.DOCUMENT_GENERATE_HASH, e);
         }
     }
 }

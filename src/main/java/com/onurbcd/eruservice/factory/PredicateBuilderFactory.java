@@ -17,7 +17,7 @@ public final class PredicateBuilderFactory {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
                  InstantiationException | InvocationTargetException | ExceptionInInitializerError e) {
 
-            throw new ApiException(Error.INTERNAL_SERVER_ERROR, e.toString());
+            throw new ApiException(Error.INTERNAL_SERVER_ERROR, e);
         }
     }
 }

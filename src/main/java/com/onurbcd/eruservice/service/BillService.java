@@ -32,8 +32,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 @Service
-public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicateBuilder, BillOpenDto>
-        implements CrudService {
+public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicateBuilder, BillOpenDto> {
 
     private final BillRepository repository;
     private final BillOpenToEntityMapper toEntityMapper;

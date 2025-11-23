@@ -40,7 +40,7 @@ import java.util.function.Supplier;
 
 @Service
 public class BalanceService extends AbstractCrudService<Balance, BalanceDto, BalancePredicateBuilder, BalanceSaveDto>
-        implements CrudService, Sequenceable {
+        implements Sequenceable {
 
     private final BalanceRepository repository;
     private final BalanceValidator validationService;

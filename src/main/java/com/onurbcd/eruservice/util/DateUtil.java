@@ -42,7 +42,7 @@ public final class DateUtil {
         try {
             return LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException e) {
-            throw new ApiException(Error.PARSE_LOCAL_DATE, text);
+            throw new ApiException(Error.PARSE_LOCAL_DATE, e);
         }
     }
 

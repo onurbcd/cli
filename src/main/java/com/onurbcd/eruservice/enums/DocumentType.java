@@ -1,11 +1,9 @@
 package com.onurbcd.eruservice.enums;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter
-public enum DocumentType {
+public enum DocumentType implements Codeable {
 
     /**
      * Boleto
@@ -23,7 +21,7 @@ public enum DocumentType {
     BILL("conta"),
 
     /**
-     * Documento de Arrecadação de Receitas Federais
+     * Documento de Arrecadação da Receita Federal
      */
     DARF("darf"),
 
@@ -48,4 +46,9 @@ public enum DocumentType {
     IPTU("iptu");
 
     private final String code;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

@@ -58,7 +58,7 @@ public interface CustomRepository<D extends Dtoable, E extends Entityable> {
                 : mainQuery(predicate).select(Projections.appending(entityPathBase().count())).fetchFirst();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private OrderSpecifier<?>[] orderBy(Sort sort, String alias) {
         var size = (int) sort.stream().count();
         var result = new OrderSpecifier[size];

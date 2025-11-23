@@ -19,8 +19,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
-public class SourceService extends AbstractCrudService<Source, SourceDto, SourcePredicateBuilder, SourceSaveDto>
-        implements CrudService {
+public class SourceService extends AbstractCrudService<Source, SourceDto, SourcePredicateBuilder, SourceSaveDto> {
 
     private final SourceRepository repository;
 

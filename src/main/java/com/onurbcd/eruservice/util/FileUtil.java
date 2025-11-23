@@ -46,7 +46,7 @@ public final class FileUtil {
                     try {
                         return fileToMultipartFile(filePath);
                     } catch (IOException e) {
-                        throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, filePath);
+                        throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, e);
                     }
                 })
                 .toList();

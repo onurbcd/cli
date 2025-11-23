@@ -47,7 +47,7 @@ public class CryptoHelper {
                  NoSuchPaddingException e) {
 
             log.error("crypt", e);
-            throw new ApiException(Error.CRYPTO, e.toString());
+            throw new ApiException(Error.CRYPTO, e);
         }
     }
 
@@ -57,7 +57,7 @@ public class CryptoHelper {
             return Base64.getEncoder().encodeToString(cipherText);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("encrypt", e);
-            throw new ApiException(Error.CRYPTO, e.toString());
+            throw new ApiException(Error.CRYPTO, e);
         }
     }
 
@@ -68,7 +68,7 @@ public class CryptoHelper {
             return new String(plainText);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("decrypt", e);
-            throw new ApiException(Error.CRYPTO, e.toString());
+            throw new ApiException(Error.CRYPTO, e);
         }
     }
 }

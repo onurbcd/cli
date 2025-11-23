@@ -47,7 +47,7 @@ public class CategoryService
         var category = fillValues(categorySaveDto, current, parent);
         category = repository.save(category);
 
-        if (id == null && Boolean.TRUE.equals(parent.getLastBranch())) {
+        if (id == null && parent != null && Boolean.TRUE.equals(parent.getLastBranch())) {
             repository.updateLastBranch(Boolean.FALSE, parent.getId());
         }
 

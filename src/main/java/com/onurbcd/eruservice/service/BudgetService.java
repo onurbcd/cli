@@ -1,8 +1,25 @@
 package com.onurbcd.eruservice.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.SelectItem;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.onurbcd.eruservice.annotation.PrimeService;
 import com.onurbcd.eruservice.dto.Dtoable;
-import com.onurbcd.eruservice.dto.budget.*;
+import com.onurbcd.eruservice.dto.budget.BudgetDto;
+import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
+import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
+import com.onurbcd.eruservice.dto.budget.BudgetSumDto;
+import com.onurbcd.eruservice.dto.budget.BudgetValuesDto;
+import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
+import com.onurbcd.eruservice.dto.budget.SumDto;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.dto.filter.Filterable;
 import com.onurbcd.eruservice.enums.Direction;
@@ -17,23 +34,15 @@ import com.onurbcd.eruservice.persistency.entity.Entityable;
 import com.onurbcd.eruservice.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.eruservice.persistency.repository.BudgetRepository;
 import com.onurbcd.eruservice.util.CollectionUtil;
+import com.onurbcd.eruservice.util.Extension;
 import com.onurbcd.eruservice.util.NumberUtil;
 import com.onurbcd.eruservice.validator.Action;
 import com.onurbcd.eruservice.validator.BudgetValidator;
 import com.querydsl.core.types.Predicate;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 @Service
 public class BudgetService extends AbstractCrudService<Budget, BudgetDto, BudgetPredicateBuilder, BudgetSaveDto>
-        implements CrudService, Sequenceable {
+        implements Sequenceable {
 
     private final BudgetRepository repository;
     private final BudgetToEntityMapper toEntityMapper;
@@ -42,9 +51,9 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
     private final SourceService sourceService;
 
     public BudgetService(BudgetRepository repository, BudgetToEntityMapper toEntityMapper,
-                         BudgetValidator validationService,
-                         @PrimeService(Domain.BUDGET_SEQUENCE) SequenceService sequenceService,
-                         SourceService sourceService) {
+            BudgetValidator validationService,
+            @PrimeService(Domain.BUDGET_SEQUENCE) SequenceService sequenceService,
+            SourceService sourceService) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, BudgetPredicateBuilder.class);
         this.repository = repository;
@@ -89,6 +98,15 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
                 .orElseThrow(ApiException.notFound(id));
     }
 
+    public List<SelectItem> getMonthlyBudget(@Nullable Short refYear, @Nullable Short refMonth) {
+        return repository
+                .getMonthlyBudget(Extension.orIfNullCurrentYear(refYear), Extension.orIfNullCurrentMonth(refMonth))
+                .stream()
+                .map(monthlyBudgetDto -> SelectItem.of(monthlyBudgetDto.compoundName(),
+                        monthlyBudgetDto.id().toString()))
+                .toList();
+    }
+
     @Override
     public void validate(Dtoable dto, @Nullable Entityable entity, @Nullable UUID id) {
         validationService.validate((BudgetSaveDto) dto, (Budget) entity, id);
@@ -112,7 +130,8 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
         var updatedRowsCount = 0;
 
         if (patchDto.isActive() != null && patchDto.getPaid() != null) {
-            updatedRowsCount = repository.updateActiveAndPaid(id, patchDto.isActive(), patchDto.getPaid(), LocalDateTime.now());
+            updatedRowsCount = repository.updateActiveAndPaid(id, patchDto.isActive(), patchDto.getPaid(),
+                    LocalDateTime.now());
         } else if (patchDto.isActive() != null) {
             updatedRowsCount = repository.updateActive(id, patchDto.isActive());
         } else if (patchDto.getPaid() != null) {

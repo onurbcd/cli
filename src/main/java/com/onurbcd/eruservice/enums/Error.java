@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum Error {
 
-    INTERNAL_SERVER_ERROR("Internal Server Error"),
-    CRYPTO("Crypto"),
+    INTERNAL_SERVER_ERROR("Internal server error: %s"),
+    CRYPTO("Crypto error: %s"),
     CONSTRAINT_VIOLATION("Constraint Violation"),
     PSQL("PSQL Exception"),
     ENTITY_DOES_NOT_EXIST("Entity with id '%s' does not exist in the database"),
     SIZE_NOT_BETWEEN("%s: size must be between %d and %d"),
-    SEQUENCE_CHANGED("the sequence cannot be changed by a PUT request; use PATCH instead; current value: '%d'; new value: '%d'"),
+    SEQUENCE_CHANGED("The sequence cannot be changed. Current value: '%d'; new value: '%d'"),
     REFERENCE_CHANGED("reference year and month cannot be changed"),
     WRONG_DIRETION_UP("The sequence cannot get any lower"),
     WRONG_DIRETION_DOWN("The sequence cannot get any higher"),
@@ -35,7 +35,7 @@ public enum Error {
     CATEGORY_PARENT_IS_UNCHANGEABLE("Category parent cannot be changed"),
     MONTH_ALREADY_EXISTS("Month %02d/%d already exists"),
     BAD_REQUEST("Invalid Arguments"),
-    DOCUMENT_GENERATE_HASH("No Such Algorithm Exception"),
+    DOCUMENT_GENERATE_HASH("No Such Algorithm Exception: %s"),
     HTTP_MEDIA_TYPE_NOT_SUPPORTED("Http Media Type Not Supported"),
     MISSING_SERVLET_REQUEST_PART("MissingServletRequestPart"),
     DOCUMENT_IS_EMPTY("Document is empty"),
@@ -43,8 +43,8 @@ public enum Error {
     DOCUMENT_MIME_TYPE_IS_BLANK("Document mime type is mandatory"),
     DOCUMENT_SIZE_IS_ZERO("Document size is zero (empty file)"),
     FILE_ALREADY_EXISTS("File %s already exists in storage"),
-    STORAGE_FILE_SAVE("Storage File Save"),
-    STORAGE_FILE_DELETE("Storage File Delete"),
+    STORAGE_FILE_SAVE("Storage file save error: %s"),
+    STORAGE_FILE_DELETE("Storage file delete error: %s"),
     DAY_CHANGED("Balance day cannot be changed"),
     DAY_SOURCE_CHANGED("Balance source cannot be changed"),
     DAY_BALANCE_TYPE_CHANGED("Balance type cannot be changed"),
@@ -52,13 +52,16 @@ public enum Error {
     DAY_IN_FUTURE("Balance day cannot be greater than today"),
     MAX_UPLOAD_SIZE_EXCEEDED("MaxUploadSizeExceeded"),
     FILE_DOES_NOT_EXIST("File %s does not exist in storage"),
-    STORAGE_FILE_GET("Storage File Get"),
+    STORAGE_FILE_GET("Storage file get error: %s"),
     BILL_ALREADY_CLOSED("Bill is already closed"),
     BILL_ALREADY_PAID("Bill is already paid"),
     BILL_ALREADY_OPENED("Bill is already opened"),
     FOLDER_IS_EMPTY_OR_DOES_NOT_EXIST("Folder %s is empty or does not exist"),
     PARSE_LOCAL_DATE("Invalid date format: %s"),
-    CONVERTING_TO_MULTIPART_FILE("Error converting to MultipartFile: %s");
+    CONVERTING_TO_MULTIPART_FILE("Error converting to MultipartFile: %s"),
+    PARSE_SHORT("Invalid short format: %s"),
+    INVALID_ENUM_VALUE("Invalid enum value: %s"),
+    INVALID_UUID("Invalid UUID: %s");
 
     private final String message;
 
