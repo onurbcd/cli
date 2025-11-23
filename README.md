@@ -4,13 +4,17 @@
 
 ## Postgres in Docker
 
-```
-docker run -p5432:5432 --name postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=admin -e POSTGRES_DB=eru-service -d postgres:15
+```bash
+docker run -p5432:5432 --name postgres \
+  -e POSTGRES_PASSWORD=secret \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_DB=eru-service \
+  -d postgres:17
 ```
 
 ## Update Maven Wrapper Version
 
-```shell
+```bash
 # verify current version
 $ ./mvnw --version
 
