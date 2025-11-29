@@ -7,10 +7,13 @@ import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.enums.Direction;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
+import com.onurbcd.eruservice.validator.Action;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -219,16 +222,16 @@ public class BudgetCommand {
     }
 
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
-        var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
+        var billTypeItems = billTypeService.getItems(null);
+        Action.checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
 
+        var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
         var name = Optional.ofNullable(budget).map(BudgetDto::getName).orElse(null);
         var refYear = Optional.ofNullable(budget).map(BudgetDto::getRefYear).map(ref -> Short.toString(ref)).orElse(null);
         var refMonth = Optional.ofNullable(budget).map(BudgetDto::getRefMonth).map(ref -> Short.toString(ref)).orElse(null);
         var billType = Optional.ofNullable(budget).map(BudgetDto::getBillTypeName).orElse(null);
         var amount = Optional.ofNullable(budget).map(BudgetDto::getAmount).map(BigDecimal::toString).orElse(null);
         var paid = Optional.ofNullable(budget).map(BudgetDto::getPaid).orElse(Boolean.FALSE);
-
-        var billTypeItems = billTypeService.getItems(null);
 
         var result = flowBuilder.clone().reset()
                 .withStringInput(NAME).name(NAME_LABEL).defaultValue(name).and()

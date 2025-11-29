@@ -1,16 +1,15 @@
 package com.onurbcd.eruservice.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.onurbcd.eruservice.enums.EruTable;
-import com.onurbcd.eruservice.helper.ShellHelper;
-import com.onurbcd.eruservice.dto.category.CategoryDto;
-import com.onurbcd.eruservice.dto.category.CategoryPatchDto;
-import com.onurbcd.eruservice.dto.category.CategorySaveDto;
-import com.onurbcd.eruservice.dto.filter.CategoryFilter;
-import com.onurbcd.eruservice.service.CategoryService;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_LABEL;
+import static com.onurbcd.eruservice.util.Constant.NAME;
+import static com.onurbcd.eruservice.util.Constant.NAME_LABEL;
+import static com.onurbcd.eruservice.util.Constant.PARENT_ID;
+import static com.onurbcd.eruservice.util.Constant.PARENT_ID_LABEL;
+
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -20,10 +19,19 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.onurbcd.eruservice.dto.category.CategoryDto;
+import com.onurbcd.eruservice.dto.category.CategoryPatchDto;
+import com.onurbcd.eruservice.dto.category.CategorySaveDto;
+import com.onurbcd.eruservice.dto.filter.CategoryFilter;
+import com.onurbcd.eruservice.enums.EruTable;
+import com.onurbcd.eruservice.helper.ShellHelper;
+import com.onurbcd.eruservice.service.CategoryService;
+import com.onurbcd.eruservice.util.FlowUtil;
 
-import static com.onurbcd.eruservice.util.Constant.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @ShellComponent
 @ShellCommandGroup("Category")
@@ -40,6 +48,11 @@ public class CategoryCommand {
             UUID id
     ) {
         var categorySaveDto = runSaveFlow(id);
+
+        if (categorySaveDto == null) {
+            return "Operation cancelled";
+        }
+
         var returnId = service.save(categorySaveDto, id);
         return "Category with id: '%s' saved with success.".formatted(returnId);
     }
@@ -116,6 +129,7 @@ public class CategoryCommand {
         return String.format("Category with id: '%s' updated with success.", id);
     }
 
+    @Nullable
     private CategorySaveDto runSaveFlow(@Nullable UUID id) {
         var category = Optional.ofNullable(id).map(i -> (CategoryDto) service.getById(i)).orElse(null);
         var name = Optional.ofNullable(category).map(CategoryDto::getName).orElse(null);
@@ -123,14 +137,14 @@ public class CategoryCommand {
         var description = Optional.ofNullable(category).map(CategoryDto::getDescription).orElse(ShellOption.NULL);
         var items = service.getItems(id);
 
-        var result = flowBuilder.clone().reset()
+        var flowResult = FlowUtil.runFlowSafely(() -> 
+            flowBuilder.clone().reset()
                 .withStringInput(NAME).name(NAME_LABEL).defaultValue(name).and()
                 .withSingleItemSelector(PARENT_ID).name(PARENT_ID_LABEL).selectItems(items).defaultSelect(parent).max(items.size()).and()
                 .withStringInput(DESCRIPTION).name(DESCRIPTION_LABEL).defaultValue(description).and()
-                .build().run().getContext();
+                .build().run()
+        );
 
-        return CategorySaveDto.of(result.get(NAME, String.class),
-                Optional.ofNullable(category).map(CategoryDto::isActive).orElse(Boolean.TRUE),
-                result.get(PARENT_ID, String.class), result.get(DESCRIPTION, String.class));
+        return flowResult != null ? CategorySaveDto.of(flowResult.getContext(), category) : null;
     }
 }

@@ -75,4 +75,17 @@ public final class NumberUtil {
             throw new ApiException(Error.PARSE_SHORT, e);
         }
     }
+
+    @Nullable
+    public static BigDecimal toBigDecimal(@Nullable String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+
+        try {
+            return new BigDecimal(value);
+        } catch (NumberFormatException e) {
+            throw new ApiException(Error.INVALID_BIG_DECIMAL, e);
+        }
+    }
 }

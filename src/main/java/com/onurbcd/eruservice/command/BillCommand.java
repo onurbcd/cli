@@ -10,12 +10,15 @@ import org.springframework.shell.standard.ShellOption;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.bill.BillOpenDto;
 import com.onurbcd.eruservice.enums.DocumentType;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.ReferenceType;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.service.BillService;
 import com.onurbcd.eruservice.service.BudgetService;
 import com.onurbcd.eruservice.util.EnumUtil;
+import com.onurbcd.eruservice.util.Extension;
 import com.onurbcd.eruservice.util.FileUtil;
+import com.onurbcd.eruservice.validator.Action;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,8 +49,11 @@ public class BillCommand {
     }
 
     private BillOpenDto runOpenBillFlow(@Nullable Short refYear, @Nullable Short refMonth) {
+        var year = Extension.orIfNullCurrentYear(refYear);
+        var month = Extension.orIfNullCurrentMonth(refMonth);
+        var budgetItems = budgetService.getMonthlyBudget(year, month);
+        Action.checkIfNotEmpty(budgetItems).orElseThrow(Error.BUDGET_REQUIRED, month, year);
         var documentTypeItems = EnumUtil.getCodeableItems(DocumentType.values());
-        var budgetItems = budgetService.getMonthlyBudget(refYear, refMonth);
         var referenceTypeItems = EnumUtil.getCodeableItems(ReferenceType.values());
         var filesNames = FileUtil.getFiles(config.getFilesPath());
 

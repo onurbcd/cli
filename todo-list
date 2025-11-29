@@ -1,12 +1,18 @@
-1 - aprender a injectar beans nos contraints validators
+- Altera o get items do category para só não trazer o item pai de todos, fora do category command
 
-2 - Refatorar a lógica do sequence service: não precisa ter o método de update sequence, basta ter o swap sequence
+- Criar um FlowFactory para criar todos os flows de save dos comandos
 
-3 - Implementar testes unitários
+- Criar validators para as classes de comandos, ao fazer o save
 
-4 - Implementar testes de integração, com uma base de dados real ou em memória
+- aprender a injectar beans nos contraints validators
 
-5 - Remover arquivo ou arquivos do storage se der um erro numa transação que inclui documentos multipart;
+- Refatorar a lógica do sequence service: não precisa ter o método de update sequence, basta ter o swap sequence
+
+- Implementar testes unitários
+
+- Implementar testes de integração, com uma base de dados real ou em memória
+
+- Remover arquivo ou arquivos do storage se der um erro numa transação que inclui documentos multipart;
     OU
     Criar o documento, mas só gravar no storage no final da transação de base de dados.
 

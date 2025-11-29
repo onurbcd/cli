@@ -61,7 +61,11 @@ public enum Error {
     CONVERTING_TO_MULTIPART_FILE("Error converting to MultipartFile: %s"),
     PARSE_SHORT("Invalid short format: %s"),
     INVALID_ENUM_VALUE("Invalid enum value: %s"),
-    INVALID_UUID("Invalid UUID: %s");
+    INVALID_UUID("Invalid UUID: %s"),
+    BUDGET_REQUIRED("Create a budget for %02d/%d before proceeding"),
+    INVALID_BIG_DECIMAL("Invalid big decimal format: %s"),
+    BILL_TYPE_REQUIRED("Create a bill type before proceeding"),
+    CATEGORY_REQUIRED("Create a category before proceeding");
 
     private final String message;
 

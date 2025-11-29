@@ -1,18 +1,20 @@
 package com.onurbcd.eruservice.dto.billtype;
 
+import java.util.UUID;
+
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
+import com.onurbcd.eruservice.util.Converter;
 import com.onurbcd.eruservice.util.Extension;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
-
 @SuperBuilder
 @Getter
 @Setter
-@ExtensionMethod({Extension.class})
+@ExtensionMethod({ Extension.class })
 public class BillTypeSaveDto extends PrimeSaveDto {
 
     private String path;
@@ -24,7 +26,7 @@ public class BillTypeSaveDto extends PrimeSaveDto {
                 .name(name.normalizeSpace())
                 .active(active)
                 .path(path.normalizeSpace())
-                .categoryId(UUID.fromString(categoryId))
+                .categoryId(Converter.toUUID(categoryId))
                 .build();
     }
 }

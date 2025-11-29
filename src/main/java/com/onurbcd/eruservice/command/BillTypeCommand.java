@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.EruTable;
 import com.onurbcd.eruservice.helper.ShellHelper;
 import com.onurbcd.eruservice.dto.billtype.BillTypeDto;
@@ -9,6 +10,8 @@ import com.onurbcd.eruservice.dto.billtype.BillTypeSaveDto;
 import com.onurbcd.eruservice.dto.filter.BillTypeFilter;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.CategoryService;
+import com.onurbcd.eruservice.validator.Action;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -110,11 +113,13 @@ public class BillTypeCommand {
     }
 
     private BillTypeSaveDto runSaveFlow(@Nullable UUID id) {
+        var items = categoryService.getItems(null);
+        Action.checkIfNotEmpty(items).orElseThrow(Error.CATEGORY_REQUIRED);
+
         var billType = Optional.ofNullable(id).map(i -> (BillTypeDto) service.getById(i)).orElse(null);
         var name = Optional.ofNullable(billType).map(BillTypeDto::getName).orElse(null);
         var path = Optional.ofNullable(billType).map(BillTypeDto::getPath).orElse(null);
         var category = Optional.ofNullable(billType).map(BillTypeDto::getCategoryName).orElse(null);
-        var items = categoryService.getItems(null);
 
         var result = flowBuilder.clone().reset()
                 .withStringInput(NAME).name(NAME_LABEL).defaultValue(name).and()
@@ -122,8 +127,11 @@ public class BillTypeCommand {
                 .withSingleItemSelector(CATEGORY_ID).name(CATEGORY_ID_LABEL).selectItems(items).defaultSelect(category).max(items.size()).and()
                 .build().run().getContext();
 
-        return BillTypeSaveDto.of(result.get(NAME, String.class),
+        return BillTypeSaveDto.of(
+                result.get(NAME, String.class),
                 Optional.ofNullable(billType).map(BillTypeDto::isActive).orElse(Boolean.TRUE),
-                result.get(PATH, String.class), result.get(CATEGORY_ID, String.class));
+                result.get(PATH, String.class),
+                result.get(CATEGORY_ID, String.class)
+        );
     }
 }
