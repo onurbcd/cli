@@ -31,4 +31,5 @@ public final class Constant {
     public static final String AMOUNT_MAX = "999999999999999";
     public static final String REGEXP_PATH = "^[a-z|A-Z|0-9|-]+$";
     public static final String DESCRIPTION_HEADER = "Description";
+    public static final String OPERATION_CANCELLED = "Operation cancelled";
 }

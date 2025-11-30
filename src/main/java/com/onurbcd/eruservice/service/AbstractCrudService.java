@@ -1,39 +1,36 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.dto.Dtoable;
-import com.onurbcd.eruservice.persistency.entity.Entityable;
-import com.onurbcd.eruservice.persistency.predicate.BasePredicateBuilder;
-import com.onurbcd.eruservice.factory.PredicateBuilderFactory;
-import com.onurbcd.eruservice.persistency.repository.EruRepository;
-import com.onurbcd.eruservice.enums.QueryType;
-import com.onurbcd.eruservice.dto.filter.Filterable;
-import com.onurbcd.eruservice.mapper.EntityMapper;
-import com.onurbcd.eruservice.validator.Action;
-import com.querydsl.core.types.Predicate;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
+import com.onurbcd.eruservice.dto.Dtoable;
+import com.onurbcd.eruservice.dto.filter.Filterable;
+import com.onurbcd.eruservice.enums.QueryType;
+import com.onurbcd.eruservice.factory.PredicateBuilderFactory;
+import com.onurbcd.eruservice.mapper.EntityMapper;
+import com.onurbcd.eruservice.persistency.entity.Entityable;
+import com.onurbcd.eruservice.persistency.predicate.BasePredicateBuilder;
+import com.onurbcd.eruservice.persistency.repository.EruRepository;
+import com.onurbcd.eruservice.validator.Action;
+import com.querydsl.core.types.Predicate;
 
 public abstract class AbstractCrudService<E extends Entityable, D extends Dtoable, P extends BasePredicateBuilder, S extends Dtoable>
         implements CrudService {
 
     private final EruRepository<E, D> repository;
-
     private Function<E, D> toDtoMapper;
-
     private final EntityMapper<S, E> toEntityMapper;
-
     private final QueryType queryType;
-
     private final Class<P> predicateClass;
 
     protected AbstractCrudService(EruRepository<E, D> repository, Function<E, D> toDtoMapper,
-                                  EntityMapper<S, E> toEntityMapper, QueryType queryType, Class<P> predicateClass) {
+            EntityMapper<S, E> toEntityMapper, QueryType queryType, Class<P> predicateClass) {
 
         this.repository = repository;
         this.toDtoMapper = toDtoMapper;
@@ -43,7 +40,7 @@ public abstract class AbstractCrudService<E extends Entityable, D extends Dtoabl
     }
 
     protected AbstractCrudService(EruRepository<E, D> repository, EntityMapper<S, E> toEntityMapper,
-                                  QueryType queryType, Class<P> predicateClass) {
+            QueryType queryType, Class<P> predicateClass) {
 
         this.repository = repository;
         this.toEntityMapper = toEntityMapper;
@@ -55,7 +52,8 @@ public abstract class AbstractCrudService<E extends Entityable, D extends Dtoabl
     public String save(Dtoable dto, @Nullable UUID id) {
         var currentEntity = id != null ? repository.findById(id).orElse(null) : null;
         validate(dto, currentEntity, id);
-        @SuppressWarnings("unchecked") var newEntity = (E) fillValues(dto, currentEntity);
+        @SuppressWarnings("unchecked")
+        var newEntity = (E) fillValues(dto, currentEntity);
         newEntity = repository.save(newEntity);
         return newEntity.getId().toString();
     }
@@ -67,7 +65,8 @@ public abstract class AbstractCrudService<E extends Entityable, D extends Dtoabl
 
     @Override
     public Entityable fillValues(Dtoable dto, Entityable entity) {
-        @SuppressWarnings("unchecked") var newEntity = toEntityMapper.apply((S) dto);
+        @SuppressWarnings("unchecked")
+        var newEntity = toEntityMapper.apply((S) dto);
         newEntity.setId(entity != null ? entity.getId() : null);
         newEntity.setCreatedDate(entity != null ? entity.getCreatedDate() : null);
         return newEntity;

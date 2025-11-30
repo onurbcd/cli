@@ -4,6 +4,7 @@ import java.io.InterruptedIOException;
 import java.util.function.Supplier;
 
 import org.springframework.lang.Nullable;
+import org.springframework.shell.component.context.ComponentContext;
 import org.springframework.shell.component.flow.ComponentFlow;
 
 import lombok.AccessLevel;
@@ -38,5 +39,10 @@ public final class FlowUtil {
 
             throw e;
         }
+    }
+
+    @Nullable
+    public static String getString(ComponentContext<?> context, String key) {
+        return context.containsKey(key) ? context.get(key, String.class) : null;
     }
 }

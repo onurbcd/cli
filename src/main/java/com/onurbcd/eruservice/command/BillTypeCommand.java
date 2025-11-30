@@ -113,7 +113,7 @@ public class BillTypeCommand {
     }
 
     private BillTypeSaveDto runSaveFlow(@Nullable UUID id) {
-        var items = categoryService.getItems(null);
+        var items = categoryService.getCategoryItems(null, true);
         Action.checkIfNotEmpty(items).orElseThrow(Error.CATEGORY_REQUIRED);
 
         var billType = Optional.ofNullable(id).map(i -> (BillTypeDto) service.getById(i)).orElse(null);

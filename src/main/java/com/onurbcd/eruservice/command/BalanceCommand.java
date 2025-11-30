@@ -215,7 +215,7 @@ public class BalanceCommand {
         var balanceType = Optional.ofNullable(balance).map(BalanceDto::getBalanceType).map(BalanceType::name).orElse(null);
 
         var sourceItems = sourceService.getItems(null);
-        var categoryItems = categoryService.getItems(null);
+        var categoryItems = categoryService.getCategoryItems(null, true);
         var balanceTypeItems = EnumUtil.getItems(BalanceType.values());
         var filesNames = FileUtil.getFiles(config.getFilesPath());
 

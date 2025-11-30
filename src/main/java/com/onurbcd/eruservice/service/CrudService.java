@@ -1,16 +1,17 @@
 package com.onurbcd.eruservice.service;
 
-import com.onurbcd.eruservice.dto.Dtoable;
-import com.onurbcd.eruservice.persistency.entity.Entityable;
-import com.onurbcd.eruservice.dto.filter.Filterable;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import com.onurbcd.eruservice.dto.Dtoable;
+import com.onurbcd.eruservice.dto.filter.Filterable;
+import com.onurbcd.eruservice.persistency.entity.Entityable;
 
 public interface CrudService {
 

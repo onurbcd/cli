@@ -32,12 +32,10 @@ public interface CategoryRepository extends EruRepository<Category, CategoryDto>
         @Query("update Category c set c.active = :active where c.id = :id")
         int updateActive(UUID id, Boolean active);
 
-        @Override
         @Query("select new com.onurbcd.eruservice.dto.ItemDto(c.id, c.name)" +
                         " from Category c" +
-                        " where (:id is null" +
-                        " or c.id != :id)" +
-                        " and c.name != 'Atar'" +
+                        " where (:id is null or c.id != :id)" +
+                        " and (:excludeAtar = false or c.name != 'Atar')" +
                         " order by c.name")
-        List<ItemDto> getItems(UUID id);
+        List<ItemDto> getCategoryItems(@Param("id") UUID id, @Param("excludeAtar") boolean excludeAtar);
 }
