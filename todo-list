@@ -3,7 +3,8 @@
     - Bill
     - Budget
     - Secret
-    - Source
+
+- Criar mensagens customizadas para os erros da base de dados, como constraint violation e outros.
 
 - aprender a injectar beans nos contraints validators
 

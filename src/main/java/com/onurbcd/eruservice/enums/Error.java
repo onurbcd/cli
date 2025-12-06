@@ -65,7 +65,8 @@ public enum Error {
     BUDGET_REQUIRED("Create a budget for %02d/%d before proceeding"),
     INVALID_BIG_DECIMAL("Invalid big decimal format: %s"),
     BILL_TYPE_REQUIRED("Create a bill type before proceeding"),
-    CATEGORY_REQUIRED("Create a category before proceeding");
+    CATEGORY_REQUIRED("Create a category before proceeding"),
+    INCOME_SOURCE_REQUIRED("Create an income source before proceeding");
 
     private final String message;
 

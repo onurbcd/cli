@@ -32,4 +32,12 @@ public final class Constant {
     public static final String REGEXP_PATH = "^[a-z|A-Z|0-9|-]+$";
     public static final String DESCRIPTION_HEADER = "Description";
     public static final String OPERATION_CANCELLED = "Operation cancelled";
+    public static final String INCOME_SOURCE_ID = "incomeSourceId";
+    public static final String INCOME_SOURCE_ID_LABEL = "* Income Source";
+    public static final String SOURCE_TYPE = "sourceType";
+    public static final String SOURCE_TYPE_LABEL = "* Source Type";
+    public static final String CURRENCY_TYPE = "currencyType";
+    public static final String CURRENCY_TYPE_LABEL = "* Currency Type";
+    public static final String BALANCE = "balance";
+    public static final String BALANCE_LABEL = "* Balance";
 }
