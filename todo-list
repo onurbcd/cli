@@ -1,8 +1,9 @@
-- Altera o get items do category para só não trazer o item pai de todos, fora do category command
-
-- Criar um FlowFactory para criar todos os flows de save dos comandos
-
-- Criar validators para as classes de comandos, ao fazer o save
+- Refatorar a lógica dos save flows:
+    - Balance
+    - Bill
+    - Budget
+    - Secret
+    - Source
 
 - aprender a injectar beans nos contraints validators
 

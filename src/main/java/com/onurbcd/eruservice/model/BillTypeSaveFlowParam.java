@@ -3,6 +3,7 @@ package com.onurbcd.eruservice.model;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.shell.standard.ShellOption;
 
@@ -20,7 +21,7 @@ public class BillTypeSaveFlowParam {
     private List<SelectItem> categoryItems;
     private String category;
 
-    public static BillTypeSaveFlowParam of(BillTypeDto billType, List<SelectItem> categoryItems) {
+    public static BillTypeSaveFlowParam of(@Nullable BillTypeDto billType, List<SelectItem> categoryItems) {
         return BillTypeSaveFlowParam
                 .builder()
                 .name(Optional.ofNullable(billType).map(BillTypeDto::getName).orElse(ShellOption.NULL))

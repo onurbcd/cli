@@ -17,6 +17,7 @@ import org.springframework.shell.component.flow.ComponentFlow;
 
 import com.onurbcd.eruservice.model.BillTypeSaveFlowParam;
 import com.onurbcd.eruservice.model.CategorySaveFlowParam;
+import com.onurbcd.eruservice.model.IncomeSourceSaveFlowParam;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,16 @@ public final class FlowFactory {
                     .withStringInput(PATH).name(PATH_LABEL).defaultValue(params.getPath()).and()
                     .withSingleItemSelector(CATEGORY_ID).name(CATEGORY_ID_LABEL).selectItems(params.getCategoryItems())
                     .defaultSelect(params.getCategory()).max(params.getCategoryItems().size()).and()
+                    .build().run();
+        };
+    }
+
+    public static final Supplier<ComponentFlow.ComponentFlowResult> createIncomeSourceSaveFlow(
+            ComponentFlow.Builder flowBuilder, IncomeSourceSaveFlowParam params) {
+
+        return () -> {
+            return flowBuilder.clone().reset()
+                    .withStringInput(NAME).name(NAME_LABEL).defaultValue(params.getName()).and()
                     .build().run();
         };
     }

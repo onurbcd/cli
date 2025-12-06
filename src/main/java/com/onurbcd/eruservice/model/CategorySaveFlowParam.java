@@ -3,6 +3,7 @@ package com.onurbcd.eruservice.model;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.shell.standard.ShellOption;
 
@@ -20,7 +21,7 @@ public class CategorySaveFlowParam {
     private List<SelectItem> items;
     private String parent;
 
-    public static CategorySaveFlowParam of(CategoryDto category, List<SelectItem> items) {
+    public static CategorySaveFlowParam of(@Nullable CategoryDto category, List<SelectItem> items) {
         return CategorySaveFlowParam
                 .builder()
                 .name(Optional.ofNullable(category).map(CategoryDto::getName).orElse(ShellOption.NULL))
