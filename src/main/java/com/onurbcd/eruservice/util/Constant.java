@@ -26,6 +26,8 @@ public final class Constant {
     public static final String CATEGORY_ID_LABEL = "* Category:";
     public static final String DOCUMENTS = "documents";
     public static final String DOCUMENTS_LABEL = "Documents:";
+    public static final String DOCUMENTS_IDS = "documentsIds";
+    public static final String DOCUMENTS_IDS_LABEL = "Linked Documents:";
     public static final String REGEXP_URL = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
     public static final String POSITIVE_AMOUNT_MIN = "0.0001";
     public static final String AMOUNT_MIN = "-999999999999999";

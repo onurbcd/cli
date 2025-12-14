@@ -3,6 +3,8 @@ package com.onurbcd.eruservice.model;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
@@ -32,9 +34,17 @@ public class BalanceSaveFlowParam {
     private List<SelectItem> categoryItems;
     private List<SelectItem> balanceTypeItems;
     private List<SelectItem> filesNames;
+    private List<SelectItem> linkedDocuments;
+    private List<String> linkedDocumentsDefault;
 
     public static BalanceSaveFlowParam of(@Nullable BalanceDto balance, List<SelectItem> sourceItems,
             List<SelectItem> categoryItems, String filesPath) {
+
+        var linkedIds = Optional.ofNullable(balance)
+                .map(BalanceDto::getDocumentsIds)
+                .map(ids -> ids.stream().map(UUID::toString).collect(Collectors.toSet()))
+                .orElse(java.util.Collections.emptySet());
+
         return BalanceSaveFlowParam
                 .builder()
                 .day(Optional.ofNullable(balance).map(BalanceDto::getDayCalendarDate).map(DateUtil::formatDate)
@@ -51,6 +61,19 @@ public class BalanceSaveFlowParam {
                 .categoryItems(categoryItems)
                 .balanceTypeItems(EnumUtil.getItems(BalanceType.values()))
                 .filesNames(FileUtil.getFiles(filesPath))
+                .linkedDocuments(Optional.ofNullable(balance)
+                        .map(BalanceDto::getDocuments)
+                        .map(docs -> docs.stream()
+                                .map(doc -> {
+                                    var id = doc.getId().toString();
+                                    return SelectItem.of(doc.getName(), id, true, linkedIds.contains(id));
+                                })
+                                .collect(Collectors.toList()))
+                        .orElse(List.of()))
+                .linkedDocumentsDefault(Optional.ofNullable(balance)
+                        .map(BalanceDto::getDocumentsIds)
+                        .map(ids -> ids.stream().map(UUID::toString).collect(Collectors.toList()))
+                        .orElse(List.of()))
                 .build();
     }
 }

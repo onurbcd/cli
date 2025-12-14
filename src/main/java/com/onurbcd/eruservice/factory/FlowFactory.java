@@ -19,6 +19,8 @@ import static com.onurbcd.eruservice.util.Constant.DAY_LABEL;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_LABEL;
 import static com.onurbcd.eruservice.util.Constant.DOCUMENTS;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS_LABEL;
 import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_LABEL;
 import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID;
 import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID_LABEL;
@@ -109,7 +111,7 @@ public final class FlowFactory {
             ComponentFlow.Builder flowBuilder, BalanceSaveFlowParam params) {
 
         return () -> {
-            return flowBuilder.clone().reset()
+            var builder = flowBuilder.clone().reset()
                     .withStringInput(DAY).name(DAY_LABEL).defaultValue(params.getDay()).and()
                     .withSingleItemSelector(SOURCE).name(SOURCE_LABEL).selectItems(params.getSourceItems())
                     .defaultSelect(params.getSource()).max(params.getSourceItems().size()).and()
@@ -120,7 +122,16 @@ public final class FlowFactory {
                     .withStringInput(DESCRIPTION).name(DESCRIPTION_LABEL).defaultValue(params.getDescription()).and()
                     .withSingleItemSelector(BALANCE_TYPE).name(BALANCE_TYPE_LABEL)
                     .selectItems(params.getBalanceTypeItems()).defaultSelect(params.getBalanceType())
-                    .max(params.getBalanceTypeItems().size()).and()
+                    .max(params.getBalanceTypeItems().size()).and();
+
+            if (params.getLinkedDocuments() != null && !params.getLinkedDocuments().isEmpty()) {
+                builder = builder.withMultiItemSelector(DOCUMENTS_IDS).name(DOCUMENTS_IDS_LABEL)
+                        .selectItems(params.getLinkedDocuments())
+                        .resultValues(params.getLinkedDocumentsDefault())
+                        .max(params.getLinkedDocuments().size()).and();
+            }
+
+            return builder
                     .withMultiItemSelector(DOCUMENTS).name(DOCUMENTS_LABEL).selectItems(params.getFilesNames())
                     .max(params.getFilesNames().size()).and()
                     .build().run();

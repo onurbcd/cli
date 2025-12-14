@@ -7,6 +7,7 @@ import static com.onurbcd.eruservice.util.Constant.CODE;
 import static com.onurbcd.eruservice.util.Constant.DAY;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
 import static com.onurbcd.eruservice.util.Constant.DOCUMENTS;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS;
 import static com.onurbcd.eruservice.util.Constant.SOURCE;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.context.ComponentContext;
@@ -75,6 +77,18 @@ public class BalanceSaveDto extends PrimeSaveDto {
     private List<String> filesNames;
 
     public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
+        var documentsIdsList = FlowUtil.getStringList(context, DOCUMENTS_IDS);
+        Set<UUID> documentsIds = null;
+
+        if (documentsIdsList != null) {
+            documentsIds = documentsIdsList.stream()
+                    .map(Converter::toUUID)
+                    .filter(java.util.Objects::nonNull)
+                    .collect(Collectors.toSet());
+        } else {
+            documentsIds = Optional.ofNullable(balance).map(BalanceDto::getDocumentsIds).orElse(null);
+        }
+
         return BalanceSaveDto
                 .builder()
                 .name(Constant.BOGUS_NAME)
@@ -87,7 +101,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
                 .code(StringUtil.normalizeSpace(FlowUtil.getString(context, CODE)))
                 .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION)))
                 .balanceType(EnumUtil.valueOf(BalanceType.class, FlowUtil.getString(context, BALANCE_TYPE)))
-                .documentsIds(Optional.ofNullable(balance).map(BalanceDto::getDocumentsIds).orElse(null))
+                .documentsIds(documentsIds)
                 .filesNames(FlowUtil.getStringList(context, DOCUMENTS))
                 .build();
     }

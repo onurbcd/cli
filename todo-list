@@ -1,6 +1,3 @@
-- Ao atualizar um balance, caso ele tenha arquivos, eles precisam de aparecer na lista de arquivos do flow save.
-  Caso sejam removidos, precisam de ser tirados da lista de documentsIds.
-
 - Refatorar a lógica dos save flows:
     - Balance
     - Bill
