@@ -25,6 +25,7 @@ public final class Constant {
     public static final String CATEGORY_ID = "categoryId";
     public static final String CATEGORY_ID_LABEL = "* Category:";
     public static final String DOCUMENTS = "documents";
+    public static final String DOCUMENTS_LABEL = "Documents:";
     public static final String REGEXP_URL = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
     public static final String POSITIVE_AMOUNT_MIN = "0.0001";
     public static final String AMOUNT_MIN = "-999999999999999";
@@ -40,4 +41,16 @@ public final class Constant {
     public static final String CURRENCY_TYPE_LABEL = "* Currency Type";
     public static final String BALANCE = "balance";
     public static final String BALANCE_LABEL = "* Balance";
+    public static final String DAY = "day";
+    public static final String DAY_LABEL = "* Day (yyyy-MM-dd):";
+    public static final String SOURCE = "source";
+    public static final String SOURCE_LABEL = "* Source:";
+    public static final String CATEGORY = "category";
+    public static final String CATEGORY_LABEL = "* Category:";
+    public static final String AMOUNT = "amount";
+    public static final String AMOUNT_LABEL = "* Amount:";
+    public static final String CODE = "code";
+    public static final String CODE_LABEL = "* Code:";
+    public static final String BALANCE_TYPE = "balanceType";
+    public static final String BALANCE_TYPE_LABEL = "* Balance Type";
 }

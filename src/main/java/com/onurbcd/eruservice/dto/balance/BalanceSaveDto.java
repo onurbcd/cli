@@ -1,56 +1,94 @@
 package com.onurbcd.eruservice.dto.balance;
 
-import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.DateUtil;
-import com.onurbcd.eruservice.util.Extension;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.ExtensionMethod;
-import lombok.experimental.SuperBuilder;
-import org.springframework.lang.Nullable;
+import static com.onurbcd.eruservice.util.Constant.AMOUNT;
+import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE;
+import static com.onurbcd.eruservice.util.Constant.CATEGORY;
+import static com.onurbcd.eruservice.util.Constant.CODE;
+import static com.onurbcd.eruservice.util.Constant.DAY;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS;
+import static com.onurbcd.eruservice.util.Constant.SOURCE;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.context.ComponentContext;
+import org.springframework.validation.annotation.Validated;
+
+import com.onurbcd.eruservice.dto.PrimeSaveDto;
+import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.util.Constant;
+import com.onurbcd.eruservice.util.Converter;
+import com.onurbcd.eruservice.util.DateUtil;
+import com.onurbcd.eruservice.util.EnumUtil;
+import com.onurbcd.eruservice.util.FlowUtil;
+import com.onurbcd.eruservice.util.NumberUtil;
+import com.onurbcd.eruservice.util.StringUtil;
+
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
 @Setter
-@ExtensionMethod({Extension.class})
+@Validated
 public class BalanceSaveDto extends PrimeSaveDto {
 
+    @Min(value = 1, message = "Sequence must be greater than 0.")
     private Short sequence;
+
+    @NotNull(message = "Day calendar date is required.")
     private LocalDate dayCalendarDate;
+
+    @NotNull(message = "Source is required.")
     private UUID sourceId;
+
+    @NotNull(message = "Category is required.")
     private UUID categoryId;
+
+    @NotNull(message = "Amount is required.")
+    @DecimalMin(value = Constant.AMOUNT_MIN, message = "Amount must be greater than {value}")
+    @DecimalMax(value = Constant.AMOUNT_MAX, message = "Amount must be less than {value}")
     private BigDecimal amount;
+
+    @Size(max = 150, message = "Code must be less than {max} characters.")
     private String code;
+
+    @Size(max = 250, message = "Description must be less than {max} characters.")
     private String description;
+
+    @NotNull(message = "Balance type is required.")
     private BalanceType balanceType;
+
     private Set<UUID> documentsIds;
     private List<String> filesNames;
 
-    public static BalanceSaveDto of(String name, Boolean active, @Nullable Short sequence, String dayCalendarDate,
-                                    String sourceId, String categoryId, String amount, String code,
-                                    @Nullable String description, String balanceType, @Nullable Set<UUID> documentsIds,
-                                    @Nullable List<String> filesNames) {
+    public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
         return BalanceSaveDto
                 .builder()
-                .name(name.normalizeSpace())
-                .active(active)
-                .sequence(sequence)
-                .dayCalendarDate(DateUtil.parseLocalDate(dayCalendarDate))
-                .sourceId(UUID.fromString(sourceId))
-                .categoryId(UUID.fromString(categoryId))
-                .amount(new BigDecimal(amount))
-                .code(code.normalizeSpace())
-                .description(description.defaultToNull())
-                .balanceType(BalanceType.valueOf(balanceType))
-                .documentsIds(documentsIds)
-                .filesNames(filesNames)
+                .name(Constant.BOGUS_NAME)
+                .active(Optional.ofNullable(balance).map(BalanceDto::isActive).orElse(Boolean.TRUE))
+                .sequence(Optional.ofNullable(balance).map(BalanceDto::getSequence).orElse(null))
+                .dayCalendarDate(DateUtil.parseLocalDate(FlowUtil.getString(context, DAY)))
+                .sourceId(Converter.toUUID(FlowUtil.getString(context, SOURCE)))
+                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY)))
+                .amount(NumberUtil.toBigDecimal(FlowUtil.getString(context, AMOUNT)))
+                .code(StringUtil.normalizeSpace(FlowUtil.getString(context, CODE)))
+                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION)))
+                .balanceType(EnumUtil.valueOf(BalanceType.class, FlowUtil.getString(context, BALANCE_TYPE)))
+                .documentsIds(Optional.ofNullable(balance).map(BalanceDto::getDocumentsIds).orElse(null))
+                .filesNames(FlowUtil.getStringList(context, DOCUMENTS))
                 .build();
     }
 

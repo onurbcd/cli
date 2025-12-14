@@ -1,13 +1,25 @@
 package com.onurbcd.eruservice.factory;
 
+import static com.onurbcd.eruservice.util.Constant.AMOUNT;
+import static com.onurbcd.eruservice.util.Constant.AMOUNT_LABEL;
 import static com.onurbcd.eruservice.util.Constant.BALANCE;
 import static com.onurbcd.eruservice.util.Constant.BALANCE_LABEL;
+import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE;
+import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE_LABEL;
+import static com.onurbcd.eruservice.util.Constant.CATEGORY;
 import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID;
 import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID_LABEL;
+import static com.onurbcd.eruservice.util.Constant.CATEGORY_LABEL;
+import static com.onurbcd.eruservice.util.Constant.CODE;
+import static com.onurbcd.eruservice.util.Constant.CODE_LABEL;
 import static com.onurbcd.eruservice.util.Constant.CURRENCY_TYPE;
 import static com.onurbcd.eruservice.util.Constant.CURRENCY_TYPE_LABEL;
+import static com.onurbcd.eruservice.util.Constant.DAY;
+import static com.onurbcd.eruservice.util.Constant.DAY_LABEL;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_LABEL;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_LABEL;
 import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID;
 import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID_LABEL;
 import static com.onurbcd.eruservice.util.Constant.NAME;
@@ -16,6 +28,8 @@ import static com.onurbcd.eruservice.util.Constant.PARENT_ID;
 import static com.onurbcd.eruservice.util.Constant.PARENT_ID_LABEL;
 import static com.onurbcd.eruservice.util.Constant.PATH;
 import static com.onurbcd.eruservice.util.Constant.PATH_LABEL;
+import static com.onurbcd.eruservice.util.Constant.SOURCE;
+import static com.onurbcd.eruservice.util.Constant.SOURCE_LABEL;
 import static com.onurbcd.eruservice.util.Constant.SOURCE_TYPE;
 import static com.onurbcd.eruservice.util.Constant.SOURCE_TYPE_LABEL;
 
@@ -23,6 +37,7 @@ import java.util.function.Supplier;
 
 import org.springframework.shell.component.flow.ComponentFlow;
 
+import com.onurbcd.eruservice.model.BalanceSaveFlowParam;
 import com.onurbcd.eruservice.model.BillTypeSaveFlowParam;
 import com.onurbcd.eruservice.model.CategorySaveFlowParam;
 import com.onurbcd.eruservice.model.IncomeSourceSaveFlowParam;
@@ -86,6 +101,28 @@ public final class FlowFactory {
                     .selectItems(params.getCurrencyTypeItems()).defaultSelect(params.getCurrencyType())
                     .max(params.getCurrencyTypeItems().size()).and()
                     .withStringInput(BALANCE).name(BALANCE_LABEL).defaultValue(params.getBalance()).and()
+                    .build().run();
+        };
+    }
+
+    public static final Supplier<ComponentFlow.ComponentFlowResult> createBalanceSaveFlow(
+            ComponentFlow.Builder flowBuilder, BalanceSaveFlowParam params) {
+
+        return () -> {
+            return flowBuilder.clone().reset()
+                    .withStringInput(DAY).name(DAY_LABEL).defaultValue(params.getDay()).and()
+                    .withSingleItemSelector(SOURCE).name(SOURCE_LABEL).selectItems(params.getSourceItems())
+                    .defaultSelect(params.getSource()).max(params.getSourceItems().size()).and()
+                    .withSingleItemSelector(CATEGORY).name(CATEGORY_LABEL).selectItems(params.getCategoryItems())
+                    .defaultSelect(params.getCategory()).max(params.getCategoryItems().size()).and()
+                    .withStringInput(AMOUNT).name(AMOUNT_LABEL).defaultValue(params.getAmount()).and()
+                    .withStringInput(CODE).name(CODE_LABEL).defaultValue(params.getCode()).and()
+                    .withStringInput(DESCRIPTION).name(DESCRIPTION_LABEL).defaultValue(params.getDescription()).and()
+                    .withSingleItemSelector(BALANCE_TYPE).name(BALANCE_TYPE_LABEL)
+                    .selectItems(params.getBalanceTypeItems()).defaultSelect(params.getBalanceType())
+                    .max(params.getBalanceTypeItems().size()).and()
+                    .withMultiItemSelector(DOCUMENTS).name(DOCUMENTS_LABEL).selectItems(params.getFilesNames())
+                    .max(params.getFilesNames().size()).and()
                     .build().run();
         };
     }

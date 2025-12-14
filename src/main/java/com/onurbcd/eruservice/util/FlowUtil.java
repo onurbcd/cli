@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.util;
 
 import java.io.InterruptedIOException;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.springframework.lang.Nullable;
@@ -15,7 +16,7 @@ public final class FlowUtil {
 
     /**
      * Executes a ComponentFlow and handles user interruption (Ctrl+C) gracefully.
-     * 
+     *
      * @param flowSupplier Supplier that builds and runs the flow
      * @return ComponentFlow.ComponentFlowResult if successful, null if cancelled by
      *         user
@@ -44,5 +45,10 @@ public final class FlowUtil {
     @Nullable
     public static String getString(ComponentContext<?> context, String key) {
         return context.containsKey(key) ? context.get(key, String.class) : null;
+    }
+
+    @Nullable
+    public static List<String> getStringList(ComponentContext<?> context, String key) {
+        return context.containsKey(key) ? context.get(key) : null;
     }
 }
