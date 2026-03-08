@@ -3,7 +3,7 @@ spring:
     banner-mode: OFF
     web-application-type: NONE
   datasource:
-    url: jdbc:postgresql://localhost:5432/eru-service
+    url: jdbc:postgresql://localhost:5432/erucli
     username: admin
     password: secret
     driver-class-name: org.postgresql.Driver

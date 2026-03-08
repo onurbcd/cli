@@ -1,7 +1,5 @@
 # Eru Service
 
-[![Java Maven Sonar CI](https://github.com/onurbcd/eruservice/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/onurbcd/eruservice/actions/workflows/build.yml)
-
 ## Postgres in Docker
 
 ```bash
