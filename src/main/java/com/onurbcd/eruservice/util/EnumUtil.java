@@ -1,18 +1,17 @@
 package com.onurbcd.eruservice.util;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.onurbcd.eruservice.enums.Codeable;
+import com.onurbcd.eruservice.enums.Error;
+import com.onurbcd.eruservice.exception.ApiException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
 
-import com.onurbcd.eruservice.enums.Codeable;
-import com.onurbcd.eruservice.enums.Error;
-import com.onurbcd.eruservice.exception.ApiException;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnumUtil {
@@ -21,7 +20,7 @@ public final class EnumUtil {
         return Arrays
                 .stream(values)
                 .map(value -> SelectItem.of(value.name(), value.name()))
-                .sorted((a, b) -> a.name().compareTo(b.name()))
+                .sorted(Comparator.comparing(SelectItem::name))
                 .toList();
     }
 
@@ -29,7 +28,7 @@ public final class EnumUtil {
         return Arrays
                 .stream(values)
                 .map(value -> SelectItem.of(value.getCode(), value.name()))
-                .sorted((a, b) -> a.name().compareTo(b.name()))
+                .sorted(Comparator.comparing(SelectItem::name))
                 .toList();
     }
 

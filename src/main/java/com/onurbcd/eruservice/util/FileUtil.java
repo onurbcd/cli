@@ -16,22 +16,25 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
-import static com.onurbcd.eruservice.validator.Action.checkIfNotEmpty;
+import static com.onurbcd.eruservice.validator.Action.checkIf;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FileUtil {
 
     public static List<SelectItem> getFiles(String pathName) {
+        var path = Path.of(pathName);
+
+        checkIf(Files.exists(path) && Files.isDirectory(path))
+                .orElseThrow(Error.FOLDER_DOES_NOT_EXIST, pathName);
+
         var files = new File(pathName)
                 .listFiles(File::isFile);
 
-        checkIfNotEmpty(files)
-                .orElseThrow(Error.FOLDER_IS_EMPTY_OR_DOES_NOT_EXIST, pathName);
-
-        return Arrays
-                .stream(Objects.requireNonNull(files))
+        return Optional.ofNullable(files)
+                .stream()
+                .flatMap(Arrays::stream)
                 .map(file -> SelectItem.of(file.getName(), file.getPath()))
                 .toList();
     }

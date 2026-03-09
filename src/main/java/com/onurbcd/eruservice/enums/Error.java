@@ -56,7 +56,7 @@ public enum Error {
     BILL_ALREADY_CLOSED("Bill is already closed"),
     BILL_ALREADY_PAID("Bill is already paid"),
     BILL_ALREADY_OPENED("Bill is already opened"),
-    FOLDER_IS_EMPTY_OR_DOES_NOT_EXIST("Folder %s is empty or does not exist"),
+    FOLDER_DOES_NOT_EXIST("Folder %s does not exist"),
     PARSE_LOCAL_DATE("Invalid date format: %s"),
     CONVERTING_TO_MULTIPART_FILE("Error converting to MultipartFile: %s"),
     PARSE_SHORT("Invalid short format: %s"),

@@ -1,16 +1,15 @@
 package com.onurbcd.eruservice.model;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.shell.standard.ShellOption;
-
 import com.onurbcd.eruservice.dto.category.CategoryDto;
-
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.SelectItem;
+
+import java.util.List;
+
+import static com.onurbcd.eruservice.util.FlowParamUtil.getNullString;
+import static com.onurbcd.eruservice.util.FlowParamUtil.getString;
 
 @Builder
 @Getter
@@ -22,12 +21,11 @@ public class CategorySaveFlowParam {
     private String parent;
 
     public static CategorySaveFlowParam of(@Nullable CategoryDto category, List<SelectItem> items) {
-        return CategorySaveFlowParam
-                .builder()
-                .name(Optional.ofNullable(category).map(CategoryDto::getName).orElse(ShellOption.NULL))
-                .description(Optional.ofNullable(category).map(CategoryDto::getDescription).orElse(ShellOption.NULL))
+        return CategorySaveFlowParam.builder()
+                .name(getString(category, CategoryDto::getName))
+                .description(getString(category, CategoryDto::getDescription))
                 .items(items)
-                .parent(Optional.ofNullable(category).map(CategoryDto::getParentName).orElse(null))
+                .parent(getNullString(category, CategoryDto::getParentName))
                 .build();
     }
 }

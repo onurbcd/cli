@@ -1,15 +1,15 @@
 package com.onurbcd.eruservice.util;
 
-import java.io.InterruptedIOException;
-import java.util.List;
-import java.util.function.Supplier;
-
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.context.ComponentContext;
 import org.springframework.shell.component.flow.ComponentFlow;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.io.IOError;
+import java.io.InterruptedIOException;
+import java.util.List;
+import java.util.function.Supplier;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FlowUtil {
@@ -19,7 +19,7 @@ public final class FlowUtil {
      *
      * @param flowSupplier Supplier that builds and runs the flow
      * @return ComponentFlow.ComponentFlowResult if successful, null if cancelled by
-     *         user
+     * user
      */
     @Nullable
     public static ComponentFlow.ComponentFlowResult runFlowSafely(
@@ -27,13 +27,7 @@ public final class FlowUtil {
 
         try {
             return flowSupplier.get();
-        } catch (Exception e) {
-            if (e.getCause() instanceof InterruptedIOException) {
-                return null;
-            }
-
-            throw e;
-        } catch (java.io.IOError e) {
+        } catch (Exception | IOError e) {
             if (e.getCause() instanceof InterruptedIOException) {
                 return null;
             }

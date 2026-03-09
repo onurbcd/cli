@@ -1,16 +1,15 @@
 package com.onurbcd.eruservice.model;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.shell.standard.ShellOption;
-
 import com.onurbcd.eruservice.dto.billtype.BillTypeDto;
-
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.SelectItem;
+
+import java.util.List;
+
+import static com.onurbcd.eruservice.util.FlowParamUtil.getNullString;
+import static com.onurbcd.eruservice.util.FlowParamUtil.getString;
 
 @Builder
 @Getter
@@ -22,12 +21,11 @@ public class BillTypeSaveFlowParam {
     private String category;
 
     public static BillTypeSaveFlowParam of(@Nullable BillTypeDto billType, List<SelectItem> categoryItems) {
-        return BillTypeSaveFlowParam
-                .builder()
-                .name(Optional.ofNullable(billType).map(BillTypeDto::getName).orElse(ShellOption.NULL))
-                .path(Optional.ofNullable(billType).map(BillTypeDto::getPath).orElse(ShellOption.NULL))
+        return BillTypeSaveFlowParam.builder()
+                .name(getString(billType, BillTypeDto::getName))
+                .path(getString(billType, BillTypeDto::getPath))
                 .categoryItems(categoryItems)
-                .category(Optional.ofNullable(billType).map(BillTypeDto::getCategoryName).orElse(null))
+                .category(getNullString(billType, BillTypeDto::getCategoryName))
                 .build();
     }
 }

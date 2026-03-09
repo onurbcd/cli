@@ -2,21 +2,18 @@ package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.DateUtil;
 import com.onurbcd.eruservice.util.EnumUtil;
 import com.onurbcd.eruservice.util.FileUtil;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.shell.standard.ShellOption;
 
-import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static com.onurbcd.eruservice.util.FlowParamUtil.*;
 
 @Builder
 @Getter
@@ -39,40 +36,34 @@ public class BalanceSaveFlowParam {
     public static BalanceSaveFlowParam of(@Nullable BalanceDto balance, List<SelectItem> sourceItems,
                                           List<SelectItem> categoryItems, String filesPath) {
 
-        var linkedIds = Optional.ofNullable(balance)
-                .map(BalanceDto::getDocumentsIds)
-                .map(ids -> ids.stream().map(UUID::toString).collect(Collectors.toSet()))
-                .orElse(Collections.emptySet());
+        var linkedIds = getUUIDCollection(balance, BalanceDto::getDocumentsIds);
 
-        return BalanceSaveFlowParam
-                .builder()
-                .day(Optional.ofNullable(balance).map(BalanceDto::getDayCalendarDate).map(DateUtil::formatDate)
-                        .orElse(ShellOption.NULL))
-                .source(Optional.ofNullable(balance).map(BalanceDto::getSourceName).orElse(ShellOption.NULL))
-                .category(Optional.ofNullable(balance).map(BalanceDto::getCategoryName).orElse(ShellOption.NULL))
-                .amount(Optional.ofNullable(balance).map(BalanceDto::getAmount).map(BigDecimal::toString)
-                        .orElse(ShellOption.NULL))
-                .code(Optional.ofNullable(balance).map(BalanceDto::getCode).orElse(ShellOption.NULL))
-                .description(Optional.ofNullable(balance).map(BalanceDto::getDescription).orElse(ShellOption.NULL))
-                .balanceType(Optional.ofNullable(balance).map(BalanceDto::getBalanceType).map(BalanceType::name)
-                        .orElse(ShellOption.NULL))
+        return BalanceSaveFlowParam.builder()
+                .day(getLocalDate(balance, BalanceDto::getDayCalendarDate))
+                .source(getString(balance, BalanceDto::getSourceName))
+                .category(getString(balance, BalanceDto::getCategoryName))
+                .amount(getBigDecimal(balance, BalanceDto::getAmount))
+                .code(getString(balance, BalanceDto::getCode))
+                .description(getString(balance, BalanceDto::getDescription))
+                .balanceType(getEnum(balance, BalanceDto::getBalanceType))
                 .sourceItems(sourceItems)
                 .categoryItems(categoryItems)
                 .balanceTypeItems(EnumUtil.getItems(BalanceType.values()))
                 .filesNames(FileUtil.getFiles(filesPath))
-                .linkedDocuments(Optional.ofNullable(balance)
-                        .map(BalanceDto::getDocuments)
-                        .map(docs -> docs.stream()
-                                .map(doc -> {
-                                    var id = doc.getId().toString();
-                                    return SelectItem.of(doc.getName(), id, true, linkedIds.contains(id));
-                                })
-                                .toList())
-                        .orElse(List.of()))
-                .linkedDocumentsDefault(Optional.ofNullable(balance)
-                        .map(BalanceDto::getDocumentsIds)
-                        .map(ids -> ids.stream().map(UUID::toString).toList())
-                        .orElse(List.of()))
+                .linkedDocuments(getLinkedDocuments(balance, linkedIds))
+                .linkedDocumentsDefault(linkedIds)
                 .build();
+    }
+
+    private static List<SelectItem> getLinkedDocuments(@Nullable BalanceDto balance, List<String> linkedIds) {
+        return Optional.ofNullable(balance)
+                .map(BalanceDto::getDocuments)
+                .map(docs -> docs.stream()
+                        .map(doc -> {
+                            var id = doc.getId().toString();
+                            return SelectItem.of(doc.getName(), id, true, linkedIds.contains(id));
+                        })
+                        .toList())
+                .orElseGet(ArrayList::new);
     }
 }
