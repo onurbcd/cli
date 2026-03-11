@@ -1,8 +1,8 @@
 package com.onurbcd.eruservice.dto.billtype;
 
-import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID;
-import static com.onurbcd.eruservice.util.Constant.NAME;
-import static com.onurbcd.eruservice.util.Constant.PATH;
+import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID_ID;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
+import static com.onurbcd.eruservice.util.Constant.PATH_ID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -41,10 +41,10 @@ public class BillTypeSaveDto extends PrimeSaveDto {
     public static BillTypeSaveDto of(ComponentContext<?> context, @Nullable BillTypeDto billType) {
         return BillTypeSaveDto
                 .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME)))
+                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
                 .active(Optional.ofNullable(billType).map(BillTypeDto::isActive).orElse(Boolean.TRUE))
-                .path(StringUtil.normalizeSpace(FlowUtil.getString(context, PATH)))
-                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY_ID)))
+                .path(StringUtil.normalizeSpace(FlowUtil.getString(context, PATH_ID)))
+                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY_ID_ID)))
                 .build();
     }
 }

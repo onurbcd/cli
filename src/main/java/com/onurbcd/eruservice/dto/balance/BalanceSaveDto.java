@@ -1,14 +1,14 @@
 package com.onurbcd.eruservice.dto.balance;
 
-import static com.onurbcd.eruservice.util.Constant.AMOUNT;
-import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE;
-import static com.onurbcd.eruservice.util.Constant.CATEGORY;
-import static com.onurbcd.eruservice.util.Constant.CODE;
-import static com.onurbcd.eruservice.util.Constant.DAY;
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
-import static com.onurbcd.eruservice.util.Constant.DOCUMENTS;
-import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS;
-import static com.onurbcd.eruservice.util.Constant.SOURCE;
+import static com.onurbcd.eruservice.util.Constant.AMOUNT_ID;
+import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE_ID;
+import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID;
+import static com.onurbcd.eruservice.util.Constant.CODE_ID;
+import static com.onurbcd.eruservice.util.Constant.DAY_ID;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_ID;
+import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS_ID;
+import static com.onurbcd.eruservice.util.Constant.SOURCE_ID;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -77,7 +77,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
     private List<String> filesNames;
 
     public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
-        var documentsIdsList = FlowUtil.getStringList(context, DOCUMENTS_IDS);
+        var documentsIdsList = FlowUtil.getStringList(context, DOCUMENTS_IDS_ID);
         Set<UUID> documentsIds = null;
 
         if (documentsIdsList != null) {
@@ -94,15 +94,15 @@ public class BalanceSaveDto extends PrimeSaveDto {
                 .name(Constant.BOGUS_NAME)
                 .active(Optional.ofNullable(balance).map(BalanceDto::isActive).orElse(Boolean.TRUE))
                 .sequence(Optional.ofNullable(balance).map(BalanceDto::getSequence).orElse(null))
-                .dayCalendarDate(DateUtil.parseLocalDate(FlowUtil.getString(context, DAY)))
-                .sourceId(Converter.toUUID(FlowUtil.getString(context, SOURCE)))
-                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY)))
-                .amount(NumberUtil.toBigDecimal(FlowUtil.getString(context, AMOUNT)))
-                .code(StringUtil.normalizeSpace(FlowUtil.getString(context, CODE)))
-                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION)))
-                .balanceType(EnumUtil.valueOf(BalanceType.class, FlowUtil.getString(context, BALANCE_TYPE)))
+                .dayCalendarDate(DateUtil.parseLocalDate(FlowUtil.getString(context, DAY_ID)))
+                .sourceId(Converter.toUUID(FlowUtil.getString(context, SOURCE_ID)))
+                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY_ID)))
+                .amount(NumberUtil.toBigDecimal(FlowUtil.getString(context, AMOUNT_ID)))
+                .code(StringUtil.normalizeSpace(FlowUtil.getString(context, CODE_ID)))
+                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION_ID)))
+                .balanceType(EnumUtil.valueOf(BalanceType.class, FlowUtil.getString(context, BALANCE_TYPE_ID)))
                 .documentsIds(documentsIds)
-                .filesNames(FlowUtil.getStringList(context, DOCUMENTS))
+                .filesNames(FlowUtil.getStringList(context, DOCUMENTS_ID))
                 .build();
     }
 

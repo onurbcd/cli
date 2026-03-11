@@ -1,6 +1,6 @@
 package com.onurbcd.eruservice.dto.incomesource;
 
-import static com.onurbcd.eruservice.util.Constant.NAME;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
 
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ public class IncomeSourceSaveDto extends PrimeSaveDto {
     public static IncomeSourceSaveDto of(ComponentContext<?> context, @Nullable IncomeSourceDto incomeSource) {
         return IncomeSourceSaveDto
                 .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME)))
+                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
                 .active(Optional.ofNullable(incomeSource).map(IncomeSourceDto::isActive).orElse(Boolean.TRUE))
                 .build();
     }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
 import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_HEADER;
 
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public enum EruTable {
 
     private static LinkedHashMap<String, Object> getSecretHeaders() {
         var secretHeaders = getDefaultHeaders(9);
-        secretHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
+        secretHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
         secretHeaders.put("link", "Link");
         secretHeaders.put("username", "Username");
         secretHeaders.put("password", "Password");
@@ -52,7 +52,7 @@ public enum EruTable {
         categoryHeaders.put("parentName", "Parent Name");
         categoryHeaders.put("level", "Level");
         categoryHeaders.put("lastBranch", "Last Branch");
-        categoryHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
+        categoryHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
         return categoryHeaders;
     }
 
@@ -109,7 +109,7 @@ public enum EruTable {
         balanceHeaders.put("categoryName", "Category");
         balanceHeaders.put("amount", "Amount");
         balanceHeaders.put("code", "Code");
-        balanceHeaders.put(DESCRIPTION, DESCRIPTION_HEADER);
+        balanceHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
         balanceHeaders.put("balanceType", "Type");
         return balanceHeaders;
     }

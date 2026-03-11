@@ -1,10 +1,10 @@
 package com.onurbcd.eruservice.dto.source;
 
-import static com.onurbcd.eruservice.util.Constant.BALANCE;
-import static com.onurbcd.eruservice.util.Constant.CURRENCY_TYPE;
-import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID;
-import static com.onurbcd.eruservice.util.Constant.NAME;
-import static com.onurbcd.eruservice.util.Constant.SOURCE_TYPE;
+import static com.onurbcd.eruservice.util.Constant.BALANCE_ID;
+import static com.onurbcd.eruservice.util.Constant.CURRENCY_TYPE_ID;
+import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID_ID;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
+import static com.onurbcd.eruservice.util.Constant.SOURCE_TYPE_ID;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -54,12 +54,12 @@ public class SourceSaveDto extends PrimeSaveDto {
     public static SourceSaveDto of(ComponentContext<?> context, @Nullable SourceDto source) {
         return SourceSaveDto
                 .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME)))
+                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
                 .active(Optional.ofNullable(source).map(SourceDto::isActive).orElse(Boolean.TRUE))
-                .incomeSourceId(Converter.toUUID(FlowUtil.getString(context, INCOME_SOURCE_ID)))
-                .sourceType(EnumUtil.valueOf(SourceType.class, FlowUtil.getString(context, SOURCE_TYPE)))
-                .currencyType(EnumUtil.valueOf(CurrencyType.class, FlowUtil.getString(context, CURRENCY_TYPE)))
-                .balance(NumberUtil.toBigDecimal(FlowUtil.getString(context, BALANCE)))
+                .incomeSourceId(Converter.toUUID(FlowUtil.getString(context, INCOME_SOURCE_ID_ID)))
+                .sourceType(EnumUtil.valueOf(SourceType.class, FlowUtil.getString(context, SOURCE_TYPE_ID)))
+                .currencyType(EnumUtil.valueOf(CurrencyType.class, FlowUtil.getString(context, CURRENCY_TYPE_ID)))
+                .balance(NumberUtil.toBigDecimal(FlowUtil.getString(context, BALANCE_ID)))
                 .build();
     }
 }

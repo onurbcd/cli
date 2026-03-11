@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.util.Constant.NAME;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
 import static com.onurbcd.eruservice.util.Constant.NAME_LABEL;
 
 @ShellComponent
@@ -234,7 +234,7 @@ public class BudgetCommand {
         var paid = Optional.ofNullable(budget).map(BudgetDto::getPaid).orElse(Boolean.FALSE);
 
         var result = flowBuilder.clone().reset()
-                .withStringInput(NAME).name(NAME_LABEL).defaultValue(name).and()
+                .withStringInput(NAME_ID).name(NAME_LABEL).defaultValue(name).and()
                 .withStringInput("refYear").name("* Reference Year:").defaultValue(refYear).and()
                 .withStringInput("refMonth").name("* Reference Month:").defaultValue(refMonth).and()
                 .withSingleItemSelector("billTypeId").name("* Bill Type:").selectItems(billTypeItems).defaultSelect(billType).max(billTypeItems.size()).and()
@@ -243,7 +243,7 @@ public class BudgetCommand {
                 .build().run().getContext();
 
         return BudgetSaveDto.of(
-                result.get(NAME, String.class),
+                result.get(NAME_ID, String.class),
                 Optional.ofNullable(budget).map(BudgetDto::isActive).orElse(Boolean.TRUE),
                 Optional.ofNullable(budget).map(BudgetDto::getSequence).orElse(null),
                 result.get("refYear", String.class),

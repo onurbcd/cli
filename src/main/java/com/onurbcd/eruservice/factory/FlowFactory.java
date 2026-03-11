@@ -1,89 +1,65 @@
 package com.onurbcd.eruservice.factory;
 
+import com.onurbcd.eruservice.enums.FlowField;
 import com.onurbcd.eruservice.model.*;
+import com.onurbcd.eruservice.util.CollectionUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.shell.component.flow.ComponentFlow;
 
-import java.util.function.Supplier;
-
-import static com.onurbcd.eruservice.util.Constant.*;
+import static com.onurbcd.eruservice.util.FlowBuilderWrapper.init;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FlowFactory {
 
-    public static Supplier<ComponentFlow.ComponentFlowResult> createCategorySaveFlow(
-            ComponentFlow.Builder flowBuilder, CategorySaveFlowParam params) {
-
-        return () -> flowBuilder.clone().reset()
-                .withStringInput(NAME).name(NAME_LABEL).defaultValue(params.getName()).and()
-                .withStringInput(DESCRIPTION).name(DESCRIPTION_LABEL).defaultValue(params.getDescription()).and()
-                .withSingleItemSelector(PARENT_ID).name(PARENT_ID_LABEL).selectItems(params.getItems())
-                .defaultSelect(params.getParent()).max(params.getItems().size()).and()
-                .build().run();
+    public static FlowSupplier createCategorySaveFlow(ComponentFlow.Builder builder, CategorySaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .input(FlowField.DESCRIPTION, params.getDescription())
+                .select(FlowField.PARENT_ID, params.getItems(), params.getParent())
+                .execute();
     }
 
-    public static Supplier<ComponentFlow.ComponentFlowResult> createBillTypeSaveFlow(
-            ComponentFlow.Builder flowBuilder, BillTypeSaveFlowParam params) {
-
-        return () -> flowBuilder.clone().reset()
-                .withStringInput(NAME).name(NAME_LABEL).defaultValue(params.getName()).and()
-                .withStringInput(PATH).name(PATH_LABEL).defaultValue(params.getPath()).and()
-                .withSingleItemSelector(CATEGORY_ID).name(CATEGORY_ID_LABEL).selectItems(params.getCategoryItems())
-                .defaultSelect(params.getCategory()).max(params.getCategoryItems().size()).and()
-                .build().run();
+    public static FlowSupplier createBillTypeSaveFlow(ComponentFlow.Builder builder, BillTypeSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .input(FlowField.PATH, params.getPath())
+                .select(FlowField.CATEGORY_ID, params.getCategoryItems(), params.getCategory())
+                .execute();
     }
 
-    public static Supplier<ComponentFlow.ComponentFlowResult> createIncomeSourceSaveFlow(
-            ComponentFlow.Builder flowBuilder, IncomeSourceSaveFlowParam params) {
-
-        return () -> flowBuilder.clone().reset()
-                .withStringInput(NAME).name(NAME_LABEL).defaultValue(params.getName()).and()
-                .build().run();
+    public static FlowSupplier createIncomeSourceSaveFlow(ComponentFlow.Builder builder, IncomeSourceSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .execute();
     }
 
-    public static Supplier<ComponentFlow.ComponentFlowResult> createSourceSaveFlow(
-            ComponentFlow.Builder flowBuilder, SourceSaveFlowParam params) {
-
-        return () -> flowBuilder.clone().reset()
-                .withStringInput(NAME).name(NAME_LABEL).defaultValue(params.getName()).and()
-                .withSingleItemSelector(INCOME_SOURCE_ID).name(INCOME_SOURCE_ID_LABEL)
-                .selectItems(params.getIncomeSourceItems()).defaultSelect(params.getIncomeSource())
-                .max(params.getIncomeSourceItems().size()).and()
-                .withSingleItemSelector(SOURCE_TYPE).name(SOURCE_TYPE_LABEL)
-                .selectItems(params.getSourceTypeItems()).defaultSelect(params.getSourceType())
-                .max(params.getSourceTypeItems().size()).and()
-                .withSingleItemSelector(CURRENCY_TYPE).name(CURRENCY_TYPE_LABEL)
-                .selectItems(params.getCurrencyTypeItems()).defaultSelect(params.getCurrencyType())
-                .max(params.getCurrencyTypeItems().size()).and()
-                .withStringInput(BALANCE).name(BALANCE_LABEL).defaultValue(params.getBalance()).and()
-                .build().run();
+    public static FlowSupplier createSourceSaveFlow(ComponentFlow.Builder builder, SourceSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .select(FlowField.INCOME_SOURCE_ID, params.getIncomeSourceItems(), params.getIncomeSource())
+                .select(FlowField.SOURCE_TYPE, params.getSourceTypeItems(), params.getSourceType())
+                .select(FlowField.CURRENCY_TYPE, params.getCurrencyTypeItems(), params.getCurrencyType())
+                .input(FlowField.BALANCE, params.getBalance())
+                .execute();
     }
 
-    public static Supplier<ComponentFlow.ComponentFlowResult> createBalanceSaveFlow(
-            ComponentFlow.Builder flowBuilder, BalanceSaveFlowParam params) {
-
+    public static FlowSupplier createBalanceSaveFlow(ComponentFlow.Builder builder, BalanceSaveFlowParam params) {
         return () -> {
-            var builder = flowBuilder.clone().reset()
-                    .withStringInput(DAY).name(DAY_LABEL).defaultValue(params.getDay()).and()
-                    .withSingleItemSelector(SOURCE).name(SOURCE_LABEL).selectItems(params.getSourceItems()).defaultSelect(params.getSource()).max(params.getSourceItems().size()).and()
-                    .withSingleItemSelector(CATEGORY).name(CATEGORY_LABEL).selectItems(params.getCategoryItems()).defaultSelect(params.getCategory()).max(params.getCategoryItems().size()).and()
-                    .withStringInput(AMOUNT).name(AMOUNT_LABEL).defaultValue(params.getAmount()).and()
-                    .withStringInput(CODE).name(CODE_LABEL).defaultValue(params.getCode()).and()
-                    .withStringInput(DESCRIPTION).name(DESCRIPTION_LABEL).defaultValue(params.getDescription()).and()
-                    .withSingleItemSelector(BALANCE_TYPE).name(BALANCE_TYPE_LABEL).selectItems(params.getBalanceTypeItems()).defaultSelect(params.getBalanceType()).max(params.getBalanceTypeItems().size()).and();
+            var wrapper = init(builder)
+                    .input(FlowField.DAY, params.getDay())
+                    .select(FlowField.SOURCE, params.getSourceItems(), params.getSource())
+                    .select(FlowField.CATEGORY, params.getCategoryItems(), params.getCategory())
+                    .input(FlowField.AMOUNT, params.getAmount())
+                    .input(FlowField.CODE, params.getCode())
+                    .input(FlowField.DESCRIPTION, params.getDescription())
+                    .select(FlowField.BALANCE_TYPE, params.getBalanceTypeItems(), params.getBalanceType());
 
-            if (params.getLinkedDocuments() != null && !params.getLinkedDocuments().isEmpty()) {
-                builder = builder.withMultiItemSelector(DOCUMENTS_IDS).name(DOCUMENTS_IDS_LABEL)
-                        .selectItems(params.getLinkedDocuments())
-                        .resultValues(params.getLinkedDocumentsDefault())
-                        .max(params.getLinkedDocuments().size()).and();
+            if (CollectionUtil.isNotEmpty(params.getLinkedDocuments())) {
+                wrapper.multiSelect(FlowField.DOCUMENTS_IDS, params.getLinkedDocuments(), params.getLinkedDocumentsDefault());
             }
 
-            return builder
-                    .withMultiItemSelector(DOCUMENTS).name(DOCUMENTS_LABEL).selectItems(params.getFilesNames())
-                    .max(params.getFilesNames().size()).and()
-                    .build().run();
+            return wrapper.multiSelect(FlowField.DOCUMENTS, params.getFilesNames()).execute();
         };
     }
 }

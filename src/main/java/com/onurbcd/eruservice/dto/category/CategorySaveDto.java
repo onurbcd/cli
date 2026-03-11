@@ -1,8 +1,8 @@
 package com.onurbcd.eruservice.dto.category;
 
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION;
-import static com.onurbcd.eruservice.util.Constant.NAME;
-import static com.onurbcd.eruservice.util.Constant.PARENT_ID;
+import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
+import static com.onurbcd.eruservice.util.Constant.PARENT_ID_ID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -37,10 +37,10 @@ public class CategorySaveDto extends PrimeSaveDto {
     public static CategorySaveDto of(ComponentContext<?> context, @Nullable CategoryDto category) {
         return CategorySaveDto
                 .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME)))
+                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
                 .active(Optional.ofNullable(category).map(CategoryDto::isActive).orElse(Boolean.TRUE))
-                .parentId(Converter.toUUID(FlowUtil.getString(context, PARENT_ID)))
-                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION)))
+                .parentId(Converter.toUUID(FlowUtil.getString(context, PARENT_ID_ID)))
+                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION_ID)))
                 .build();
     }
 }
