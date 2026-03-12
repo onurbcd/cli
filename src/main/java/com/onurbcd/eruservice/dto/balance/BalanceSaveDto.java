@@ -1,14 +1,15 @@
 package com.onurbcd.eruservice.dto.balance;
 
-import static com.onurbcd.eruservice.util.Constant.AMOUNT_ID;
-import static com.onurbcd.eruservice.util.Constant.BALANCE_TYPE_ID;
-import static com.onurbcd.eruservice.util.Constant.CATEGORY_ID;
-import static com.onurbcd.eruservice.util.Constant.CODE_ID;
-import static com.onurbcd.eruservice.util.Constant.DAY_ID;
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
-import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_ID;
-import static com.onurbcd.eruservice.util.Constant.DOCUMENTS_IDS_ID;
-import static com.onurbcd.eruservice.util.Constant.SOURCE_ID;
+import com.onurbcd.eruservice.dto.PrimeSaveDto;
+import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.util.*;
+import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.context.ComponentContext;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,28 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
-import org.springframework.validation.annotation.Validated;
-
-import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.Constant;
-import com.onurbcd.eruservice.util.Converter;
-import com.onurbcd.eruservice.util.DateUtil;
-import com.onurbcd.eruservice.util.EnumUtil;
-import com.onurbcd.eruservice.util.FlowUtil;
-import com.onurbcd.eruservice.util.NumberUtil;
-import com.onurbcd.eruservice.util.StringUtil;
-
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import static com.onurbcd.eruservice.util.Constant.*;
 
 @SuperBuilder
 @Getter
@@ -78,7 +58,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
 
     public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
         var documentsIdsList = FlowUtil.getStringList(context, DOCUMENTS_IDS_ID);
-        Set<UUID> documentsIds = null;
+        Set<UUID> documentsIds;
 
         if (documentsIdsList != null) {
             documentsIds = documentsIdsList.stream()

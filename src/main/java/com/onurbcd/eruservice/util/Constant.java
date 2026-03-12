@@ -12,9 +12,84 @@ public final class Constant {
     public static final String BOGUS_NAME = "bogus";
 
     /*
-     * HEADERS
+     * HEADERS KEYS
      */
-    public static final String DESCRIPTION_HEADER = "Description";
+    public static final String ID_KEY = "id";
+    public static final String NAME_KEY = "name";
+    public static final String ACTIVE_KEY = "active";
+    public static final String DESCRIPTION_KEY = "description";
+    public static final String LINK_KEY = "link";
+    public static final String USERNAME_KEY = "username";
+    public static final String PASSWORD_KEY = "password";
+    public static final String CALENDAR_YEAR_KEY = "calendarYear";
+    public static final String CALENDAR_MONTH_KEY = "calendarMonth";
+    public static final String PARENT_ID_KEY = "parentId";
+    public static final String PARENT_NAME_KEY = "parentName";
+    public static final String LEVEL_KEY = "level";
+    public static final String LAST_BRANCH_KEY = "lastBranch";
+    public static final String PATH_KEY = "path";
+    public static final String CATEGORY_ID_KEY = "categoryId";
+    public static final String CATEGORY_NAME_KEY = "categoryName";
+    public static final String INCOME_SOURCE_ID_KEY = "incomeSourceId";
+    public static final String INCOME_SOURCE_NAME_KEY = "incomeSourceName";
+    public static final String SOURCE_TYPE_KEY = "sourceType";
+    public static final String CURRENCY_TYPE_KEY = "currencyType";
+    public static final String BALANCE_KEY = "balance";
+    public static final String PARTIAL_KEY = "partial";
+    public static final String TOTAL_KEY = "total";
+    public static final String SEQUENCE_KEY = "sequence";
+    public static final String REF_YEAR_KEY = "refYear";
+    public static final String REF_MONTH_KEY = "refMonth";
+    public static final String BILL_TYPE_ID_KEY = "billTypeId";
+    public static final String BILL_TYPE_NAME_KEY = "billTypeName";
+    public static final String AMOUNT_KEY = "amount";
+    public static final String PAID_KEY = "paid";
+    public static final String TYPE_KEY = "type";
+    public static final String VALUE_KEY = "value";
+    public static final String DAY_CALENDAR_DATE_KEY = "dayCalendarDate";
+    public static final String SOURCE_NAME_KEY = "sourceName";
+    public static final String CODE_KEY = "code";
+    public static final String BALANCE_TYPE_KEY = "balanceType";
+
+    /*
+     * HEADERS VALUES
+     */
+    public static final String ID_VALUE = "Id";
+    public static final String NAME_VALUE = "Name";
+    public static final String ACTIVE_VALUE = "Active";
+    public static final String DESCRIPTION_VALUE = "Description";
+    public static final String LINK_VALUE = "Link";
+    public static final String USERNAME_VALUE = "Username";
+    public static final String PASSWORD_VALUE = "Password";
+    public static final String CALENDAR_YEAR_VALUE = "Calendar Year";
+    public static final String CALENDAR_MONTH_VALUE = "Calendar Month";
+    public static final String PARENT_ID_VALUE = "Parent Id";
+    public static final String PARENT_NAME_VALUE = "Parent Name";
+    public static final String LEVEL_VALUE = "Level";
+    public static final String LAST_BRANCH_VALUE = "Last Branch";
+    public static final String PATH_VALUE = "Path";
+    public static final String CATEGORY_ID_VALUE = "Category Id";
+    public static final String CATEGORY_NAME_VALUE = "Category Name";
+    public static final String INCOME_SOURCE_ID_VALUE = "Income Source Id";
+    public static final String INCOME_SOURCE_NAME_VALUE = "Income Source Name";
+    public static final String SOURCE_TYPE_VALUE = "Source Type";
+    public static final String CURRENCY_TYPE_VALUE = "Currency Type";
+    public static final String BALANCE_VALUE = "Balance";
+    public static final String PARTIAL_VALUE = "Partial";
+    public static final String TOTAL_VALUE = "Total";
+    public static final String SEQUENCE_VALUE = "Sequence";
+    public static final String REF_YEAR_VALUE = "Ref Year";
+    public static final String REF_MONTH_VALUE = "Ref Month";
+    public static final String BILL_TYPE_ID_VALUE = "Bill Type Id";
+    public static final String BILL_TYPE_NAME_VALUE = "Bill Type Name";
+    public static final String AMOUNT_VALUE = "Amount";
+    public static final String PAID_VALUE = "Paid";
+    public static final String TYPE_VALUE = "Type";
+    public static final String VALUE_VALUE = "Value";
+    public static final String DATE_VALUE = "Date";
+    public static final String SOURCE_VALUE = "Source";
+    public static final String CATEGORY_VALUE = "Category";
+    public static final String CODE_VALUE = "Code";
 
     /*
      * MESSAGES

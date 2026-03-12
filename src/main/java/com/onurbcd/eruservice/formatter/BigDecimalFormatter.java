@@ -1,4 +1,4 @@
-package com.onurbcd.eruservice.util;
+package com.onurbcd.eruservice.formatter;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

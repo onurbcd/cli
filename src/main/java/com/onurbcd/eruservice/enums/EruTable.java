@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
 
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_HEADER;
+import static com.onurbcd.eruservice.util.Constant.*;
 
 @RequiredArgsConstructor
 @Getter
@@ -27,107 +26,105 @@ public enum EruTable {
     private final LinkedHashMap<String, Object> headers;
 
     private static LinkedHashMap<String, Object> getSecretHeaders() {
-        var secretHeaders = getDefaultHeaders(9);
-        secretHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
-        secretHeaders.put("link", "Link");
-        secretHeaders.put("username", "Username");
-        secretHeaders.put("password", "Password");
+        var secretHeaders = getDefaultHeaders(7);
+        secretHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
+        secretHeaders.put(LINK_KEY, LINK_VALUE);
+        secretHeaders.put(USERNAME_KEY, USERNAME_VALUE);
+        secretHeaders.put(PASSWORD_KEY, PASSWORD_VALUE);
         return secretHeaders;
     }
 
     private static LinkedHashMap<String, Object> getDayHeaders() {
         var dayHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
-        dayHeaders.put("calendarYear", "Calendar Year");
-        dayHeaders.put("calendarMonth", "Calendar Month");
+        dayHeaders.put(CALENDAR_YEAR_KEY, CALENDAR_YEAR_VALUE);
+        dayHeaders.put(CALENDAR_MONTH_KEY, CALENDAR_MONTH_VALUE);
         return dayHeaders;
     }
 
     private static LinkedHashMap<String, Object> getIncomeSourceHeaders() {
-        return getDefaultHeaders(5);
+        return getDefaultHeaders(3);
     }
 
     private static LinkedHashMap<String, Object> getCategoryHeaders() {
-        var categoryHeaders = getDefaultHeaders(10);
-        categoryHeaders.put("parentId", "Parent Id");
-        categoryHeaders.put("parentName", "Parent Name");
-        categoryHeaders.put("level", "Level");
-        categoryHeaders.put("lastBranch", "Last Branch");
-        categoryHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
+        var categoryHeaders = getDefaultHeaders(8);
+        categoryHeaders.put(PARENT_ID_KEY, PARENT_ID_VALUE);
+        categoryHeaders.put(PARENT_NAME_KEY, PARENT_NAME_VALUE);
+        categoryHeaders.put(LEVEL_KEY, LEVEL_VALUE);
+        categoryHeaders.put(LAST_BRANCH_KEY, LAST_BRANCH_VALUE);
+        categoryHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
         return categoryHeaders;
     }
 
     private static LinkedHashMap<String, Object> getBillTypeHeaders() {
-        var categoryHeaders = getDefaultHeaders(8);
-        categoryHeaders.put("path", "Path");
-        categoryHeaders.put("categoryId", "Category Id");
-        categoryHeaders.put("categoryName", "Category Name");
+        var categoryHeaders = getDefaultHeaders(6);
+        categoryHeaders.put(PATH_KEY, PATH_VALUE);
+        categoryHeaders.put(CATEGORY_ID_KEY, CATEGORY_ID_VALUE);
+        categoryHeaders.put(CATEGORY_NAME_KEY, CATEGORY_NAME_VALUE);
         return categoryHeaders;
     }
 
     private static LinkedHashMap<String, Object> getSourceHeaders() {
-        var sourceHeaders = getDefaultHeaders(10);
-        sourceHeaders.put("incomeSourceId", "Income Source Id");
-        sourceHeaders.put("incomeSourceName", "Income Source Name");
-        sourceHeaders.put("sourceType", "Source Type");
-        sourceHeaders.put("currencyType", "Currency Type");
-        sourceHeaders.put("balance", "Balance");
+        var sourceHeaders = getDefaultHeaders(8);
+        sourceHeaders.put(INCOME_SOURCE_ID_KEY, INCOME_SOURCE_ID_VALUE);
+        sourceHeaders.put(INCOME_SOURCE_NAME_KEY, INCOME_SOURCE_NAME_VALUE);
+        sourceHeaders.put(SOURCE_TYPE_KEY, SOURCE_TYPE_VALUE);
+        sourceHeaders.put(CURRENCY_TYPE_KEY, CURRENCY_TYPE_VALUE);
+        sourceHeaders.put(BALANCE_KEY, BALANCE_VALUE);
         return sourceHeaders;
     }
 
     private static LinkedHashMap<String, Object> getSourceBalanceSumHeaders() {
         var sourceBalanceSumHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
-        sourceBalanceSumHeaders.put("partial", "Partial");
-        sourceBalanceSumHeaders.put("total", "Total");
+        sourceBalanceSumHeaders.put(PARTIAL_KEY, PARTIAL_VALUE);
+        sourceBalanceSumHeaders.put(TOTAL_KEY, TOTAL_VALUE);
         return sourceBalanceSumHeaders;
     }
 
     private static LinkedHashMap<String, Object> getBudgetHeaders() {
-        var budgetHeaders = getDefaultHeaders(12);
-        budgetHeaders.put("sequence", "Sequence");
-        budgetHeaders.put("refYear", "Ref Year");
-        budgetHeaders.put("refMonth", "Ref Month");
-        budgetHeaders.put("billTypeId", "Bill Type Id");
-        budgetHeaders.put("billTypeName", "Bill Type Name");
-        budgetHeaders.put("amount", "Amount");
-        budgetHeaders.put("paid", "Paid");
+        var budgetHeaders = getDefaultHeaders(10);
+        budgetHeaders.put(SEQUENCE_KEY, SEQUENCE_VALUE);
+        budgetHeaders.put(REF_YEAR_KEY, REF_YEAR_VALUE);
+        budgetHeaders.put(REF_MONTH_KEY, REF_MONTH_VALUE);
+        budgetHeaders.put(BILL_TYPE_ID_KEY, BILL_TYPE_ID_VALUE);
+        budgetHeaders.put(BILL_TYPE_NAME_KEY, BILL_TYPE_NAME_VALUE);
+        budgetHeaders.put(AMOUNT_KEY, AMOUNT_VALUE);
+        budgetHeaders.put(PAID_KEY, PAID_VALUE);
         return budgetHeaders;
     }
 
     private static LinkedHashMap<String, Object> getBudgetSumMonthHeaders() {
         var budgetSumMonthHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
-        budgetSumMonthHeaders.put("type", "Type");
-        budgetSumMonthHeaders.put("value", "Value");
+        budgetSumMonthHeaders.put(TYPE_KEY, TYPE_VALUE);
+        budgetSumMonthHeaders.put(VALUE_KEY, VALUE_VALUE);
         return budgetSumMonthHeaders;
     }
 
     private static LinkedHashMap<String, Object> getBalanceHeaders() {
         var balanceHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(9);
-        balanceHeaders.put("id", "Id");
-        balanceHeaders.put("sequence", "Sequence");
-        balanceHeaders.put("dayCalendarDate", "Date");
-        balanceHeaders.put("sourceName", "Source");
-        balanceHeaders.put("categoryName", "Category");
-        balanceHeaders.put("amount", "Amount");
-        balanceHeaders.put("code", "Code");
-        balanceHeaders.put(DESCRIPTION_ID, DESCRIPTION_HEADER);
-        balanceHeaders.put("balanceType", "Type");
+        balanceHeaders.put(ID_KEY, ID_VALUE);
+        balanceHeaders.put(SEQUENCE_KEY, SEQUENCE_VALUE);
+        balanceHeaders.put(DAY_CALENDAR_DATE_KEY, DATE_VALUE);
+        balanceHeaders.put(SOURCE_NAME_KEY, SOURCE_VALUE);
+        balanceHeaders.put(CATEGORY_NAME_KEY, CATEGORY_VALUE);
+        balanceHeaders.put(AMOUNT_KEY, AMOUNT_VALUE);
+        balanceHeaders.put(CODE_KEY, CODE_VALUE);
+        balanceHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
+        balanceHeaders.put(BALANCE_TYPE_KEY, TYPE_VALUE);
         return balanceHeaders;
     }
 
     private static LinkedHashMap<String, Object> getBalanceSumHeaders() {
         var balanceSumHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
-        balanceSumHeaders.put("type", "Type");
-        balanceSumHeaders.put("value", "Value");
+        balanceSumHeaders.put(TYPE_KEY, TYPE_VALUE);
+        balanceSumHeaders.put(VALUE_KEY, VALUE_VALUE);
         return balanceSumHeaders;
     }
 
     private static LinkedHashMap<String, Object> getDefaultHeaders(int numMappings) {
         var headers = LinkedHashMap.<String, Object>newLinkedHashMap(numMappings);
-        headers.put("id", "Id");
-        headers.put("name", "Name");
-        headers.put("active", "Active");
-        headers.put("createdDate", "Created Date");
-        headers.put("lastModifiedDate", "Last Modified Date");
+        headers.put(ID_KEY, ID_VALUE);
+        headers.put(NAME_KEY, NAME_VALUE);
+        headers.put(ACTIVE_KEY, ACTIVE_VALUE);
         return headers;
     }
 }

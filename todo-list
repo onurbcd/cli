@@ -1,3 +1,12 @@
+- Acrescentar mais tipos de pagamento no enum PaymentType:
+    - Cartão de crédito
+    - Cartão de débito
+    - Dinheiro
+    - O TRANSFER pode ser removido
+
+- Alterar o path do bill type para poder ser um path composto
+    - vai poder ter 1 ou várias barras / no nome
+
 - Refatorar a lógica dos save flows:
     - Bill
     - Budget

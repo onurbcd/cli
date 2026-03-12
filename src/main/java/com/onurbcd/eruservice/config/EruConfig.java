@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.onurbcd.eruservice.util.BigDecimalFormatter;
-import com.onurbcd.eruservice.util.LocalDateTimeFormatter;
+import com.onurbcd.eruservice.formatter.BigDecimalFormatter;
+import com.onurbcd.eruservice.formatter.LocalDateTimeFormatter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
