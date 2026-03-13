@@ -1,20 +1,17 @@
 package com.onurbcd.eruservice.dto.incomesource;
 
-import static com.onurbcd.eruservice.util.Constant.NAME_ID;
-
-import java.util.Optional;
-
+import com.onurbcd.eruservice.dto.PrimeSaveDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 import org.springframework.shell.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
-import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.util.FlowUtil;
-import com.onurbcd.eruservice.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import static com.onurbcd.eruservice.util.Constant.NAME_ID;
+import static com.onurbcd.eruservice.util.FlowParamUtil.getBoolean;
+import static com.onurbcd.eruservice.util.FlowUtil.getString;
+import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 
 @SuperBuilder
 @Getter
@@ -23,10 +20,9 @@ import lombok.experimental.SuperBuilder;
 public class IncomeSourceSaveDto extends PrimeSaveDto {
 
     public static IncomeSourceSaveDto of(ComponentContext<?> context, @Nullable IncomeSourceDto incomeSource) {
-        return IncomeSourceSaveDto
-                .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
-                .active(Optional.ofNullable(incomeSource).map(IncomeSourceDto::isActive).orElse(Boolean.TRUE))
+        return IncomeSourceSaveDto.builder()
+                .name(normalizeSpace(getString(context, NAME_ID)))
+                .active(getBoolean(incomeSource, IncomeSourceDto::isActive))
                 .build();
     }
 }

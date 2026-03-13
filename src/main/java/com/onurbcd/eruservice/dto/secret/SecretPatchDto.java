@@ -5,4 +5,10 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 public class SecretPatchDto extends PrimePatchDto {
+
+    public static SecretPatchDto of(Boolean active) {
+        return SecretPatchDto.builder()
+                .active(active)
+                .build();
+    }
 }

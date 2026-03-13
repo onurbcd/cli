@@ -115,7 +115,7 @@ public class IncomeSourceCommand {
         var incomeSource = (IncomeSourceDto) Optional.ofNullable(id).map(service::getById).orElse(null);
         var params = IncomeSourceSaveFlowParam.of(incomeSource);
         var flow = FlowFactory.createIncomeSourceSaveFlow(flowBuilder, params);
-        var flowResult = FlowUtil.runFlowSafely(flow);
-        return flowResult != null ? IncomeSourceSaveDto.of(flowResult.getContext(), incomeSource) : null;
+        var result = FlowUtil.runFlowSafely(flow);
+        return result != null ? IncomeSourceSaveDto.of(result.getContext(), incomeSource) : null;
     }
 }

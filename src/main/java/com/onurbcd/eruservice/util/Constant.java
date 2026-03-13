@@ -144,6 +144,9 @@ public final class Constant {
     public static final String AMOUNT_ID = "amount";
     public static final String CODE_ID = "code";
     public static final String BALANCE_TYPE_ID = "balanceType";
+    public static final String LINK_ID = "link";
+    public static final String USERNAME_ID = "username";
+    public static final String PASSWORD_ID = "password";
 
     /*
      * FLOW LABELS
@@ -165,4 +168,7 @@ public final class Constant {
     public static final String AMOUNT_LABEL = "* Amount:";
     public static final String CODE_LABEL = "* Code:";
     public static final String BALANCE_TYPE_LABEL = "* Balance Type";
+    public static final String LINK_LABEL = "Link:";
+    public static final String USERNAME_LABEL = "* Username:";
+    public static final String PASSWORD_LABEL = "* Password:";
 }

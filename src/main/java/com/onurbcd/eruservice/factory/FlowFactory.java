@@ -62,4 +62,14 @@ public final class FlowFactory {
             return wrapper.multiSelect(FlowField.DOCUMENTS, params.getFilesNames()).execute();
         };
     }
+
+    public static FlowSupplier createSecretSaveFlow(ComponentFlow.Builder builder, SecretSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .input(FlowField.DESCRIPTION, params.getDescription())
+                .input(FlowField.LINK, params.getLink())
+                .input(FlowField.USERNAME, params.getUsername())
+                .input(FlowField.PASSWORD, params.getPassword())
+                .execute();
+    }
 }

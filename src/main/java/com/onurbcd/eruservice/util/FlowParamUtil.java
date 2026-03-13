@@ -53,4 +53,10 @@ public final class FlowParamUtil {
                 .map(ids -> ids.stream().map(UUID::toString).toList())
                 .orElseGet(ArrayList::new);
     }
+
+    public static <T> Boolean getBoolean(@Nullable T input, Function<T, Boolean> fn) {
+        return Optional.ofNullable(input)
+                .map(fn)
+                .orElse(Boolean.TRUE);
+    }
 }
