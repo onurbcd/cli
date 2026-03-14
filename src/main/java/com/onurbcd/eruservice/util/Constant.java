@@ -12,6 +12,11 @@ public final class Constant {
     public static final String BOGUS_NAME = "bogus";
 
     /*
+     * COMMANDS
+     */
+    public static final String BALANCE = "Balance";
+
+    /*
      * HEADERS KEYS
      */
     public static final String ID_KEY = "id";
@@ -96,6 +101,9 @@ public final class Constant {
      */
     public static final String BILL_CLOSE_CODE = "created by bill close";
     public static final String OPERATION_CANCELLED = "Operation cancelled";
+    public static final String SAVE_SUCCESS = "%s with id %s saved with success.";
+    public static final String DELETE_SUCCESS = "%s with id %s deleted with success.";
+    public static final String UPDATE_SUCCESS = "%s with id %s updated with success.";
 
     /*
      * PATHS
