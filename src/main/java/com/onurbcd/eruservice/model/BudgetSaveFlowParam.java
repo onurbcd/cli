@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.budget.BudgetDto;
+import com.onurbcd.eruservice.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -12,7 +13,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
 @Getter
-public class BudgetSaveFlowParam {
+public class BudgetSaveFlowParam implements Paramable {
 
     private String name;
     private String refYear;
@@ -32,5 +33,10 @@ public class BudgetSaveFlowParam {
                 .paid(getBoolean(budgetDto, BudgetDto::getPaid, Boolean.FALSE))
                 .billTypeItems(billTypeItems)
                 .build();
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.BUDGET;
     }
 }

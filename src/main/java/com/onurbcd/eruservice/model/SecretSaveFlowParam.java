@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.secret.SecretDto;
+import com.onurbcd.eruservice.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -9,7 +10,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.getString;
 
 @Builder
 @Getter
-public class SecretSaveFlowParam {
+public class SecretSaveFlowParam implements Paramable {
 
     private String name;
     private String description;
@@ -25,5 +26,10 @@ public class SecretSaveFlowParam {
                 .username(getString(secretDto, SecretDto::getUsername))
                 .password(getString(secretDto, SecretDto::getPassword))
                 .build();
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.SECRET;
     }
 }

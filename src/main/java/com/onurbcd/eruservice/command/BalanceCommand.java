@@ -3,31 +3,26 @@ package com.onurbcd.eruservice.command;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.eruservice.config.property.AdminProperties;
 import com.onurbcd.eruservice.dto.balance.BalancePatchDto;
-import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.filter.BalanceFilter;
 import com.onurbcd.eruservice.enums.BalanceType;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.EruTable;
-import com.onurbcd.eruservice.factory.FlowFactory;
 import com.onurbcd.eruservice.helper.ShellHelper;
-import com.onurbcd.eruservice.model.BalanceSaveFlowParam;
+import com.onurbcd.eruservice.model.SaveFlowParam;
 import com.onurbcd.eruservice.service.BalanceService;
 import com.onurbcd.eruservice.service.CategoryService;
 import com.onurbcd.eruservice.service.SourceService;
-import com.onurbcd.eruservice.util.FlowUtil;
 import com.onurbcd.eruservice.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.onurbcd.eruservice.util.Constant.BALANCE;
@@ -192,16 +187,12 @@ public class BalanceCommand extends BaseCommand {
                 EruTable.BALANCE_SUM);
     }
 
-    @Nullable
     @Override
-    protected BalanceSaveDto runSaveFlow(@Nullable UUID id) {
+    protected SaveFlowParam preSaveFlow() {
         var sourceItems = sourceService.getItems(null);
         Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
         var categoryItems = categoryService.getCategoryItems(null, true);
         Action.checkIfNotEmpty(categoryItems).orElseThrow(Error.CATEGORY_REQUIRED);
-        var balance = Optional.ofNullable(id).map(service::getById).orElse(null);
-        var params = BalanceSaveFlowParam.of(balance, sourceItems, categoryItems, config.getFilesPath());
-        var flowResult = FlowUtil.runFlowSafely(FlowFactory.createBalanceSaveFlow(flowBuilder, params));
-        return flowResult != null ? BalanceSaveDto.of(flowResult.getContext(), balance) : null;
+        return SaveFlowParam.balance(sourceItems, categoryItems, config.getFilesPath());
     }
 }

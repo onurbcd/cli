@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.billtype.BillTypeDto;
+import com.onurbcd.eruservice.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -13,7 +14,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.getString;
 
 @Builder
 @Getter
-public class BillTypeSaveFlowParam {
+public class BillTypeSaveFlowParam implements Paramable {
 
     private String name;
     private String path;
@@ -27,5 +28,10 @@ public class BillTypeSaveFlowParam {
                 .categoryItems(categoryItems)
                 .category(getNullString(billType, BillTypeDto::getCategoryName))
                 .build();
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.BILL_TYPE;
     }
 }

@@ -1,7 +1,5 @@
 package com.onurbcd.eruservice.dto;
 
-import org.springframework.validation.annotation.Validated;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -9,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.validation.annotation.Validated;
 
 @AllArgsConstructor
 @SuperBuilder

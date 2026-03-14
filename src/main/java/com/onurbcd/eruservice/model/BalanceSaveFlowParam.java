@@ -2,6 +2,7 @@ package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -17,7 +18,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
 @Getter
-public class BalanceSaveFlowParam {
+public class BalanceSaveFlowParam implements Paramable {
 
     private String day;
     private String source;
@@ -33,9 +34,7 @@ public class BalanceSaveFlowParam {
     private List<SelectItem> linkedDocuments;
     private List<String> linkedDocumentsDefault;
 
-    public static BalanceSaveFlowParam of(@Nullable BalanceDto balance, List<SelectItem> sourceItems,
-                                          List<SelectItem> categoryItems, String filesPath) {
-
+    public static BalanceSaveFlowParam of(@Nullable BalanceDto balance, SaveFlowParam params) {
         var linkedIds = getUUIDCollection(balance, BalanceDto::getDocumentsIds);
 
         return BalanceSaveFlowParam.builder()
@@ -46,10 +45,10 @@ public class BalanceSaveFlowParam {
                 .code(getString(balance, BalanceDto::getCode))
                 .description(getString(balance, BalanceDto::getDescription))
                 .balanceType(getEnum(balance, BalanceDto::getBalanceType))
-                .sourceItems(sourceItems)
-                .categoryItems(categoryItems)
+                .sourceItems(params.getSourceItems())
+                .categoryItems(params.getCategoryItems())
                 .balanceTypeItems(getItems(BalanceType.values()))
-                .filesNames(getFiles(filesPath))
+                .filesNames(getFiles(params.getFilesPath()))
                 .linkedDocuments(getLinkedDocuments(balance, linkedIds))
                 .linkedDocumentsDefault(linkedIds)
                 .build();
@@ -65,5 +64,10 @@ public class BalanceSaveFlowParam {
                         })
                         .toList())
                 .orElseGet(ArrayList::new);
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.BALANCE;
     }
 }

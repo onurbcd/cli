@@ -12,6 +12,18 @@ import static com.onurbcd.eruservice.util.FlowBuilderWrapper.init;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FlowFactory {
 
+    public static FlowSupplier create(ComponentFlow.Builder builder, Paramable params) {
+        return switch (params.getType()) {
+            case CATEGORY -> createCategorySaveFlow(builder, (CategorySaveFlowParam) params);
+            case BILL_TYPE -> createBillTypeSaveFlow(builder, (BillTypeSaveFlowParam) params);
+            case INCOME_SOURCE -> createIncomeSourceSaveFlow(builder, (IncomeSourceSaveFlowParam) params);
+            case SOURCE -> createSourceSaveFlow(builder, (SourceSaveFlowParam) params);
+            case BALANCE -> createBalanceSaveFlow(builder, (BalanceSaveFlowParam) params);
+            case SECRET -> createSecretSaveFlow(builder, (SecretSaveFlowParam) params);
+            case BUDGET -> createBudgetSaveFlow(builder, (BudgetSaveFlowParam) params);
+        };
+    }
+
     public static FlowSupplier createCategorySaveFlow(ComponentFlow.Builder builder, CategorySaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
@@ -44,7 +56,7 @@ public final class FlowFactory {
                 .execute();
     }
 
-    public static FlowSupplier createBalanceSaveFlow(ComponentFlow.Builder builder, BalanceSaveFlowParam params) {
+    private static FlowSupplier createBalanceSaveFlow(ComponentFlow.Builder builder, BalanceSaveFlowParam params) {
         return () -> {
             var wrapper = init(builder)
                     .input(FlowField.DAY, params.getDay())

@@ -2,6 +2,7 @@ package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.source.SourceDto;
 import com.onurbcd.eruservice.enums.CurrencyType;
+import com.onurbcd.eruservice.enums.FlowType;
 import com.onurbcd.eruservice.enums.SourceType;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
 @Getter
-public class SourceSaveFlowParam {
+public class SourceSaveFlowParam implements Paramable {
 
     private String name;
     private String incomeSource;
@@ -37,5 +38,10 @@ public class SourceSaveFlowParam {
                 .sourceTypeItems(getItems(SourceType.values()))
                 .currencyTypeItems(getItems(CurrencyType.values()))
                 .build();
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.SOURCE;
     }
 }

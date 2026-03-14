@@ -1,6 +1,7 @@
 package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.category.CategoryDto;
+import com.onurbcd.eruservice.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -13,7 +14,7 @@ import static com.onurbcd.eruservice.util.ParamUtil.getString;
 
 @Builder
 @Getter
-public class CategorySaveFlowParam {
+public class CategorySaveFlowParam implements Paramable {
 
     private String name;
     private String description;
@@ -27,5 +28,10 @@ public class CategorySaveFlowParam {
                 .items(items)
                 .parent(getNullString(category, CategoryDto::getParentName))
                 .build();
+    }
+
+    @Override
+    public FlowType getType() {
+        return FlowType.CATEGORY;
     }
 }
