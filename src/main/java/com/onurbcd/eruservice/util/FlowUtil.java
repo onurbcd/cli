@@ -45,4 +45,9 @@ public final class FlowUtil {
     public static List<String> getStringList(ComponentContext<?> context, String key) {
         return context.containsKey(key) ? context.get(key) : null;
     }
+
+    @Nullable
+    public static Boolean getBoolean(ComponentContext<?> context, String key) {
+        return context.containsKey(key) ? context.get(key, Boolean.class) : null;
+    }
 }

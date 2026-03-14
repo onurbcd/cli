@@ -9,11 +9,13 @@ import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.EruTable;
+import com.onurbcd.eruservice.factory.FlowFactory;
 import com.onurbcd.eruservice.helper.ShellHelper;
+import com.onurbcd.eruservice.model.BudgetSaveFlowParam;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
-import com.onurbcd.eruservice.validator.Action;
-
+import com.onurbcd.eruservice.util.FlowUtil;
+import com.onurbcd.eruservice.util.ValidatorUtil;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +28,11 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.util.Constant.NAME_ID;
-import static com.onurbcd.eruservice.util.Constant.NAME_LABEL;
+import static com.onurbcd.eruservice.util.Constant.OPERATION_CANCELLED;
+import static com.onurbcd.eruservice.validator.Action.checkIfNotEmpty;
 
 @ShellComponent
 @ShellCommandGroup("Budget")
@@ -49,8 +50,19 @@ public class BudgetCommand {
             UUID id
     ) {
         var budgetSaveDto = runSaveFlow(id);
+
+        if (budgetSaveDto == null) {
+            return shellHelper.warning(OPERATION_CANCELLED);
+        }
+
+        String violations;
+
+        if ((violations = ValidatorUtil.validate(budgetSaveDto)) != null) {
+            return shellHelper.error(violations);
+        }
+
         var returnId = service.save(budgetSaveDto, id);
-        return "Budget with id: '%s' saved with success.".formatted(returnId);
+        return shellHelper.success("Budget with id: '%s' saved with success.".formatted(returnId));
     }
 
     @ShellMethod(key = "budget-delete", value = "Delete budget by id.")
@@ -60,7 +72,7 @@ public class BudgetCommand {
             UUID id
     ) {
         service.delete(id);
-        return "Budget with id: '%s' deleted with success.".formatted(id);
+        return shellHelper.success("Budget with id: '%s' deleted with success.".formatted(id));
     }
 
     @ShellMethod(key = "budget-get", value = "Get budget by id.")
@@ -128,7 +140,7 @@ public class BudgetCommand {
             Boolean paid
     ) {
         service.update(BudgetPatchDto.of(active, paid), id);
-        return String.format("Budget with id: '%s' updated with success.", id);
+        return shellHelper.success("Budget with id: '%s' updated with success.".formatted(id));
     }
 
     @ShellMethod(key = "budget-update-sequence", value = "Update budget's sequence by id.")
@@ -142,7 +154,7 @@ public class BudgetCommand {
             Direction direction
     ) {
         service.updateSequence(id, direction);
-        return "Budget with id: '%s' updated with success (sequence).".formatted(id);
+        return shellHelper.success("Budget with id: '%s' updated with success (sequence).".formatted(id));
     }
 
     @ShellMethod(key = "budget-swap-position", value = "Swap budget's position by id.")
@@ -156,7 +168,7 @@ public class BudgetCommand {
             Short targetSequence
     ) {
         service.swapPosition(id, targetSequence);
-        return "Budget with id: '%s' updated with success (position).".formatted(id);
+        return shellHelper.success("Budget with id: '%s' updated with success (position).".formatted(id));
     }
 
     @ShellMethod(key = "budget-sum-month", value = "Get budget's sum by month.")
@@ -204,7 +216,7 @@ public class BudgetCommand {
             Short toMonth
     ) {
         service.copy(CopyBudgetDto.of(fromYear, fromMonth, toYear, toMonth));
-        return "Budget copied from %d/%02d to %d/%02d.".formatted(fromYear, fromMonth, toYear, toMonth);
+        return shellHelper.success("Budget copied from %d/%02d to %d/%02d.".formatted(fromYear, fromMonth, toYear, toMonth));
     }
 
     @ShellMethod(key = "budget-delete-all", value = "Delete all budgets by year and month.")
@@ -218,39 +230,17 @@ public class BudgetCommand {
             Short refMonth
     ) {
         service.deleteAll(refYear, refMonth);
-        return "All budgets for %d/%02d deleted.".formatted(refYear, refMonth);
+        return shellHelper.success("All budgets for %d/%02d deleted.".formatted(refYear, refMonth));
     }
 
+    @Nullable
     private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
         var billTypeItems = billTypeService.getItems(null);
-        Action.checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
-
-        var budget = Optional.ofNullable(id).map(i -> (BudgetDto) service.getById(i)).orElse(null);
-        var name = Optional.ofNullable(budget).map(BudgetDto::getName).orElse(null);
-        var refYear = Optional.ofNullable(budget).map(BudgetDto::getRefYear).map(ref -> Short.toString(ref)).orElse(null);
-        var refMonth = Optional.ofNullable(budget).map(BudgetDto::getRefMonth).map(ref -> Short.toString(ref)).orElse(null);
-        var billType = Optional.ofNullable(budget).map(BudgetDto::getBillTypeName).orElse(null);
-        var amount = Optional.ofNullable(budget).map(BudgetDto::getAmount).map(BigDecimal::toString).orElse(null);
-        var paid = Optional.ofNullable(budget).map(BudgetDto::getPaid).orElse(Boolean.FALSE);
-
-        var result = flowBuilder.clone().reset()
-                .withStringInput(NAME_ID).name(NAME_LABEL).defaultValue(name).and()
-                .withStringInput("refYear").name("* Reference Year:").defaultValue(refYear).and()
-                .withStringInput("refMonth").name("* Reference Month:").defaultValue(refMonth).and()
-                .withSingleItemSelector("billTypeId").name("* Bill Type:").selectItems(billTypeItems).defaultSelect(billType).max(billTypeItems.size()).and()
-                .withStringInput("amount").name("* Amount:").defaultValue(amount).and()
-                .withConfirmationInput("paid").name("* Paid:").defaultValue(paid).and()
-                .build().run().getContext();
-
-        return BudgetSaveDto.of(
-                result.get(NAME_ID, String.class),
-                Optional.ofNullable(budget).map(BudgetDto::isActive).orElse(Boolean.TRUE),
-                Optional.ofNullable(budget).map(BudgetDto::getSequence).orElse(null),
-                result.get("refYear", String.class),
-                result.get("refMonth", String.class),
-                result.get("billTypeId", String.class),
-                result.get("amount", String.class),
-                result.get("paid", Boolean.class)
-        );
+        checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
+        var budget = (BudgetDto) Optional.ofNullable(id).map(service::getById).orElse(null);
+        var params = BudgetSaveFlowParam.of(budget, billTypeItems);
+        var flow = FlowFactory.createBudgetSaveFlow(flowBuilder, params);
+        var result = FlowUtil.runFlowSafely(flow);
+        return result != null ? BudgetSaveDto.of(result.getContext(), budget) : null;
     }
 }
