@@ -2,7 +2,7 @@ package com.onurbcd.eruservice.dto.balance;
 
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.*;
+import com.onurbcd.eruservice.util.Constant;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +14,18 @@ import org.springframework.validation.annotation.Validated;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.onurbcd.eruservice.util.Constant.*;
+import static com.onurbcd.eruservice.util.Converter.toUUID;
+import static com.onurbcd.eruservice.util.DateUtil.parseLocalDate;
+import static com.onurbcd.eruservice.util.EnumUtil.valueOf;
+import static com.onurbcd.eruservice.util.FlowUtil.getString;
+import static com.onurbcd.eruservice.util.FlowUtil.getStringList;
+import static com.onurbcd.eruservice.util.NumberUtil.toBigDecimal;
+import static com.onurbcd.eruservice.util.ParamUtil.*;
+import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 
 @SuperBuilder
 @Getter
@@ -57,32 +63,25 @@ public class BalanceSaveDto extends PrimeSaveDto {
     private List<String> filesNames;
 
     public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
-        var documentsIdsList = FlowUtil.getStringList(context, DOCUMENTS_IDS_ID);
-        Set<UUID> documentsIds;
+        var documentsIdsList = getStringList(context, DOCUMENTS_IDS_ID);
 
-        if (documentsIdsList != null) {
-            documentsIds = documentsIdsList.stream()
-                    .map(Converter::toUUID)
-                    .filter(java.util.Objects::nonNull)
-                    .collect(Collectors.toSet());
-        } else {
-            documentsIds = Optional.ofNullable(balance).map(BalanceDto::getDocumentsIds).orElse(null);
-        }
+        var documentsIds = documentsIdsList != null
+                ? getUUIDSet(documentsIdsList)
+                : getNullUUIDSet(balance, BalanceDto::getDocumentsIds);
 
-        return BalanceSaveDto
-                .builder()
+        return BalanceSaveDto.builder()
                 .name(Constant.BOGUS_NAME)
-                .active(Optional.ofNullable(balance).map(BalanceDto::isActive).orElse(Boolean.TRUE))
-                .sequence(Optional.ofNullable(balance).map(BalanceDto::getSequence).orElse(null))
-                .dayCalendarDate(DateUtil.parseLocalDate(FlowUtil.getString(context, DAY_ID)))
-                .sourceId(Converter.toUUID(FlowUtil.getString(context, SOURCE_ID)))
-                .categoryId(Converter.toUUID(FlowUtil.getString(context, CATEGORY_ID)))
-                .amount(NumberUtil.toBigDecimal(FlowUtil.getString(context, AMOUNT_ID)))
-                .code(StringUtil.normalizeSpace(FlowUtil.getString(context, CODE_ID)))
-                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION_ID)))
-                .balanceType(EnumUtil.valueOf(BalanceType.class, FlowUtil.getString(context, BALANCE_TYPE_ID)))
+                .active(getBoolean(balance, BalanceDto::isActive))
+                .sequence(getNullShort(balance, BalanceDto::getSequence))
+                .dayCalendarDate(parseLocalDate(getString(context, DAY_ID)))
+                .sourceId(toUUID(getString(context, SOURCE_ID)))
+                .categoryId(toUUID(getString(context, CATEGORY_ID)))
+                .amount(toBigDecimal(getString(context, AMOUNT_ID)))
+                .code(normalizeSpace(getString(context, CODE_ID)))
+                .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
+                .balanceType(valueOf(BalanceType.class, getString(context, BALANCE_TYPE_ID)))
                 .documentsIds(documentsIds)
-                .filesNames(FlowUtil.getStringList(context, DOCUMENTS_ID))
+                .filesNames(getStringList(context, DOCUMENTS_ID))
                 .build();
     }
 

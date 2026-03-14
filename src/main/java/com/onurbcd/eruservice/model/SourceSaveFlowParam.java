@@ -3,7 +3,6 @@ package com.onurbcd.eruservice.model;
 import com.onurbcd.eruservice.dto.source.SourceDto;
 import com.onurbcd.eruservice.enums.CurrencyType;
 import com.onurbcd.eruservice.enums.SourceType;
-import com.onurbcd.eruservice.util.EnumUtil;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -11,6 +10,7 @@ import org.springframework.shell.component.flow.SelectItem;
 
 import java.util.List;
 
+import static com.onurbcd.eruservice.util.EnumUtil.getItems;
 import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
@@ -34,8 +34,8 @@ public class SourceSaveFlowParam {
                 .currencyType(getEnum(source, SourceDto::getCurrencyType))
                 .balance(getBigDecimal(source, SourceDto::getBalance))
                 .incomeSourceItems(incomeSourceItems)
-                .sourceTypeItems(EnumUtil.getItems(SourceType.values()))
-                .currencyTypeItems(EnumUtil.getItems(CurrencyType.values()))
+                .sourceTypeItems(getItems(SourceType.values()))
+                .currencyTypeItems(getItems(CurrencyType.values()))
                 .build();
     }
 }

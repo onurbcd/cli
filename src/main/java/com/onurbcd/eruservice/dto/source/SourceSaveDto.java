@@ -1,35 +1,29 @@
 package com.onurbcd.eruservice.dto.source;
 
-import static com.onurbcd.eruservice.util.Constant.BALANCE_ID;
-import static com.onurbcd.eruservice.util.Constant.CURRENCY_TYPE_ID;
-import static com.onurbcd.eruservice.util.Constant.INCOME_SOURCE_ID_ID;
-import static com.onurbcd.eruservice.util.Constant.NAME_ID;
-import static com.onurbcd.eruservice.util.Constant.SOURCE_TYPE_ID;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
-import org.springframework.validation.annotation.Validated;
-
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.CurrencyType;
 import com.onurbcd.eruservice.enums.SourceType;
 import com.onurbcd.eruservice.util.Constant;
-import com.onurbcd.eruservice.util.Converter;
-import com.onurbcd.eruservice.util.EnumUtil;
-import com.onurbcd.eruservice.util.FlowUtil;
-import com.onurbcd.eruservice.util.NumberUtil;
-import com.onurbcd.eruservice.util.StringUtil;
-
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.context.ComponentContext;
+import org.springframework.validation.annotation.Validated;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+import static com.onurbcd.eruservice.util.Constant.*;
+import static com.onurbcd.eruservice.util.Converter.toUUID;
+import static com.onurbcd.eruservice.util.EnumUtil.valueOf;
+import static com.onurbcd.eruservice.util.FlowUtil.getString;
+import static com.onurbcd.eruservice.util.NumberUtil.toBigDecimal;
+import static com.onurbcd.eruservice.util.ParamUtil.getBoolean;
+import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 
 @SuperBuilder
 @Getter
@@ -52,14 +46,13 @@ public class SourceSaveDto extends PrimeSaveDto {
     private BigDecimal balance;
 
     public static SourceSaveDto of(ComponentContext<?> context, @Nullable SourceDto source) {
-        return SourceSaveDto
-                .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
-                .active(Optional.ofNullable(source).map(SourceDto::isActive).orElse(Boolean.TRUE))
-                .incomeSourceId(Converter.toUUID(FlowUtil.getString(context, INCOME_SOURCE_ID_ID)))
-                .sourceType(EnumUtil.valueOf(SourceType.class, FlowUtil.getString(context, SOURCE_TYPE_ID)))
-                .currencyType(EnumUtil.valueOf(CurrencyType.class, FlowUtil.getString(context, CURRENCY_TYPE_ID)))
-                .balance(NumberUtil.toBigDecimal(FlowUtil.getString(context, BALANCE_ID)))
+        return SourceSaveDto.builder()
+                .name(normalizeSpace(getString(context, NAME_ID)))
+                .active(getBoolean(source, SourceDto::isActive))
+                .incomeSourceId(toUUID(getString(context, INCOME_SOURCE_ID_ID)))
+                .sourceType(valueOf(SourceType.class, getString(context, SOURCE_TYPE_ID)))
+                .currencyType(valueOf(CurrencyType.class, getString(context, CURRENCY_TYPE_ID)))
+                .balance(toBigDecimal(getString(context, BALANCE_ID)))
                 .build();
     }
 }

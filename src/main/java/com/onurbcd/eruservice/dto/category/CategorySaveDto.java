@@ -1,26 +1,22 @@
 package com.onurbcd.eruservice.dto.category;
 
-import static com.onurbcd.eruservice.util.Constant.DESCRIPTION_ID;
-import static com.onurbcd.eruservice.util.Constant.NAME_ID;
-import static com.onurbcd.eruservice.util.Constant.PARENT_ID_ID;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
-import org.springframework.validation.annotation.Validated;
-
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
-import com.onurbcd.eruservice.util.Converter;
-import com.onurbcd.eruservice.util.FlowUtil;
-import com.onurbcd.eruservice.util.StringUtil;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.context.ComponentContext;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.UUID;
+
+import static com.onurbcd.eruservice.util.Constant.*;
+import static com.onurbcd.eruservice.util.Converter.toUUID;
+import static com.onurbcd.eruservice.util.FlowUtil.getString;
+import static com.onurbcd.eruservice.util.ParamUtil.getBoolean;
+import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 
 @SuperBuilder
 @Getter
@@ -35,12 +31,11 @@ public class CategorySaveDto extends PrimeSaveDto {
     private String description;
 
     public static CategorySaveDto of(ComponentContext<?> context, @Nullable CategoryDto category) {
-        return CategorySaveDto
-                .builder()
-                .name(StringUtil.normalizeSpace(FlowUtil.getString(context, NAME_ID)))
-                .active(Optional.ofNullable(category).map(CategoryDto::isActive).orElse(Boolean.TRUE))
-                .parentId(Converter.toUUID(FlowUtil.getString(context, PARENT_ID_ID)))
-                .description(StringUtil.normalizeSpace(FlowUtil.getString(context, DESCRIPTION_ID)))
+        return CategorySaveDto.builder()
+                .name(normalizeSpace(getString(context, NAME_ID)))
+                .active(getBoolean(category, CategoryDto::isActive))
+                .parentId(toUUID(getString(context, PARENT_ID_ID)))
+                .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
                 .build();
     }
 }

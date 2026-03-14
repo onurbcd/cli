@@ -2,8 +2,6 @@ package com.onurbcd.eruservice.model;
 
 import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.enums.BalanceType;
-import com.onurbcd.eruservice.util.EnumUtil;
-import com.onurbcd.eruservice.util.FileUtil;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.onurbcd.eruservice.util.EnumUtil.getItems;
+import static com.onurbcd.eruservice.util.FileUtil.getFiles;
 import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
@@ -48,8 +48,8 @@ public class BalanceSaveFlowParam {
                 .balanceType(getEnum(balance, BalanceDto::getBalanceType))
                 .sourceItems(sourceItems)
                 .categoryItems(categoryItems)
-                .balanceTypeItems(EnumUtil.getItems(BalanceType.values()))
-                .filesNames(FileUtil.getFiles(filesPath))
+                .balanceTypeItems(getItems(BalanceType.values()))
+                .filesNames(getFiles(filesPath))
                 .linkedDocuments(getLinkedDocuments(balance, linkedIds))
                 .linkedDocumentsDefault(linkedIds)
                 .build();

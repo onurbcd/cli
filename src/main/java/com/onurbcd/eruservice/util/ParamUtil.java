@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParamUtil {
@@ -69,5 +70,24 @@ public final class ParamUtil {
                 .map(fn)
                 .map(s -> Short.toString(s))
                 .orElse(ShellOption.NULL);
+    }
+
+    public static <T> Short getNullShort(@Nullable T input, Function<T, Short> fn) {
+        return Optional.ofNullable(input)
+                .map(fn)
+                .orElse(null);
+    }
+
+    public static Set<UUID> getUUIDSet(Collection<String> collection) {
+        return collection.stream()
+                .map(Converter::toUUID)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
+    public static <T> Set<UUID> getNullUUIDSet(@Nullable T input, Function<T, Set<UUID>> fn) {
+        return Optional.ofNullable(input)
+                .map(fn)
+                .orElse(null);
     }
 }
