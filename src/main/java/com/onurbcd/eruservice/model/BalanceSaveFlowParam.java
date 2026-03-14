@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.onurbcd.eruservice.util.FlowParamUtil.*;
+import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
 @Getter

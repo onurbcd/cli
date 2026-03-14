@@ -147,6 +147,10 @@ public final class Constant {
     public static final String LINK_ID = "link";
     public static final String USERNAME_ID = "username";
     public static final String PASSWORD_ID = "password";
+    public static final String REF_YEAR_ID = "refYear";
+    public static final String REF_MONTH_ID = "refMonth";
+    public static final String BILL_TYPE_ID_ID = "billTypeId";
+    public static final String PAID_ID = "paid";
 
     /*
      * FLOW LABELS
@@ -171,4 +175,8 @@ public final class Constant {
     public static final String LINK_LABEL = "Link:";
     public static final String USERNAME_LABEL = "* Username:";
     public static final String PASSWORD_LABEL = "* Password:";
+    public static final String REF_YEAR_LABEL = "* Reference Year:";
+    public static final String REF_MONTH_LABEL = "* Reference Month:";
+    public static final String BILL_TYPE_ID_LABEL = "* Bill Type:";
+    public static final String PAID_LABEL = "* Paid:";
 }

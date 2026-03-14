@@ -72,4 +72,15 @@ public final class FlowFactory {
                 .input(FlowField.PASSWORD, params.getPassword())
                 .execute();
     }
+
+    public static FlowSupplier createBudgetSaveFlow(ComponentFlow.Builder builder, BudgetSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.NAME, params.getName())
+                .input(FlowField.REF_YEAR, params.getRefYear())
+                .input(FlowField.REF_YEAR, params.getRefMonth())
+                .select(FlowField.BILL_TYPE_ID, params.getBillTypeItems(), params.getBillType())
+                .input(FlowField.AMOUNT, params.getAmount())
+                .confirm(FlowField.PAID, params.getPaid())
+                .execute();
+    }
 }

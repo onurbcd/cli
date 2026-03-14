@@ -11,7 +11,7 @@ import org.springframework.shell.component.flow.SelectItem;
 
 import java.util.List;
 
-import static com.onurbcd.eruservice.util.FlowParamUtil.*;
+import static com.onurbcd.eruservice.util.ParamUtil.*;
 
 @Builder
 @Getter

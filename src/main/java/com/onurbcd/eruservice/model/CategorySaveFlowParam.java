@@ -8,8 +8,8 @@ import org.springframework.shell.component.flow.SelectItem;
 
 import java.util.List;
 
-import static com.onurbcd.eruservice.util.FlowParamUtil.getNullString;
-import static com.onurbcd.eruservice.util.FlowParamUtil.getString;
+import static com.onurbcd.eruservice.util.ParamUtil.getNullString;
+import static com.onurbcd.eruservice.util.ParamUtil.getString;
 
 @Builder
 @Getter

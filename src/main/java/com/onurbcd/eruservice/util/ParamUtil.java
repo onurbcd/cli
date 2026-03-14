@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class FlowParamUtil {
+public final class ParamUtil {
 
     public static <T> String getLocalDate(@Nullable T input, Function<T, LocalDate> fn) {
         return Optional.ofNullable(input)
@@ -55,8 +55,19 @@ public final class FlowParamUtil {
     }
 
     public static <T> Boolean getBoolean(@Nullable T input, Function<T, Boolean> fn) {
+        return getBoolean(input, fn, Boolean.TRUE);
+    }
+
+    public static <T> Boolean getBoolean(@Nullable T input, Function<T, Boolean> fn, Boolean orElse) {
         return Optional.ofNullable(input)
                 .map(fn)
-                .orElse(Boolean.TRUE);
+                .orElse(orElse);
+    }
+
+    public static <T> String getShort(@Nullable T input, Function<T, Short> fn) {
+        return Optional.ofNullable(input)
+                .map(fn)
+                .map(s -> Short.toString(s))
+                .orElse(ShellOption.NULL);
     }
 }

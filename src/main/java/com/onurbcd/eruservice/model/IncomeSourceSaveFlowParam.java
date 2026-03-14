@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 
-import static com.onurbcd.eruservice.util.FlowParamUtil.getString;
+import static com.onurbcd.eruservice.util.ParamUtil.getString;
 
 @Builder
 @Getter

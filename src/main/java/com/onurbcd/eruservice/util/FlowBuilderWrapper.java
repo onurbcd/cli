@@ -53,6 +53,15 @@ public final class FlowBuilderWrapper {
         return this;
     }
 
+    public FlowBuilderWrapper confirm(FlowField field, Boolean defaultValue) {
+        builder.withConfirmationInput(field.getId())
+                .name(field.getName())
+                .defaultValue(defaultValue)
+                .and();
+
+        return this;
+    }
+
     public ComponentFlow.ComponentFlowResult execute() {
         return builder.build().run();
     }

@@ -13,7 +13,7 @@ import org.springframework.shell.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
 import static com.onurbcd.eruservice.util.Constant.*;
-import static com.onurbcd.eruservice.util.FlowParamUtil.getBoolean;
+import static com.onurbcd.eruservice.util.ParamUtil.getBoolean;
 import static com.onurbcd.eruservice.util.FlowUtil.getString;
 import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 
