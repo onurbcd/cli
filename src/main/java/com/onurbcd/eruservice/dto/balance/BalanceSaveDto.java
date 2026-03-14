@@ -2,6 +2,7 @@ package com.onurbcd.eruservice.dto.balance;
 
 import com.onurbcd.eruservice.dto.PrimeSaveDto;
 import com.onurbcd.eruservice.enums.BalanceType;
+import com.onurbcd.eruservice.model.MultipartFile;
 import com.onurbcd.eruservice.util.Constant;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import static com.onurbcd.eruservice.util.Constant.*;
 import static com.onurbcd.eruservice.util.Converter.toUUID;
 import static com.onurbcd.eruservice.util.DateUtil.parseLocalDate;
 import static com.onurbcd.eruservice.util.EnumUtil.valueOf;
+import static com.onurbcd.eruservice.util.FileUtil.filesToMultipartFiles;
 import static com.onurbcd.eruservice.util.FlowUtil.getString;
 import static com.onurbcd.eruservice.util.FlowUtil.getStringList;
 import static com.onurbcd.eruservice.util.NumberUtil.toBigDecimal;
@@ -60,7 +62,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
     private BalanceType balanceType;
 
     private Set<UUID> documentsIds;
-    private List<String> filesNames;
+    private List<MultipartFile> multipartFiles;
 
     public static BalanceSaveDto of(ComponentContext<?> context, @Nullable BalanceDto balance) {
         var documentsIdsList = getStringList(context, DOCUMENTS_IDS_ID);
@@ -81,7 +83,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
                 .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
                 .balanceType(valueOf(BalanceType.class, getString(context, BALANCE_TYPE_ID)))
                 .documentsIds(documentsIds)
-                .filesNames(getStringList(context, DOCUMENTS_ID))
+                .multipartFiles(filesToMultipartFiles(getStringList(context, DOCUMENTS_ID)))
                 .build();
     }
 

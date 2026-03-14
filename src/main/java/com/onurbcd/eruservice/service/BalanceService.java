@@ -70,11 +70,13 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
     }
 
     @Transactional
-    public String save(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles, @Nullable UUID id) {
+    @Override
+    public String save(Dtoable dto, @Nullable UUID id) {
+        var saveDto = (BalanceSaveDto) dto;
         var currentBalance = id != null ? repository.get(id).orElse(null) : null;
         var currentAmount = Optional.ofNullable(currentBalance).map(Balance::getAmount).orElse(null);
         validate(saveDto, currentBalance, id);
-        var createBalance = fillValues(saveDto, multipartFiles, currentBalance);
+        var createBalance = fillValues(saveDto, saveDto.getMultipartFiles().toArray(new MultipartFile[0]), currentBalance);
         var newBalance = repository.saveAndFlush(createBalance.getBalance());
         balanceDocumentService.deleteDocuments(createBalance.getDeleteDocuments());
         balanceSourceService.save(newBalance, currentAmount);
