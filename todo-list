@@ -1,13 +1,29 @@
-1 - aprender a injectar beans nos contraints validators
+- Acrescentar mais tipos de pagamento no enum PaymentType:
+    - Cartão de crédito
+    - Cartão de débito
+    - Dinheiro
+    - O TRANSFER pode ser removido
 
-2 - Refatorar a lógica do sequence service: não precisa ter o método de update sequence, basta ter o swap sequence
+- Alterar o path do bill type para poder ser um path composto
+    - vai poder ter 1 ou várias barras / no nome
 
-3 - Implementar testes unitários
+- Refatorar a lógica dos save flows:
+    - Bill
 
-4 - Implementar testes de integração, com uma base de dados real ou em memória
+- Criar mensagens customizadas para os erros da base de dados, como constraint violation e outros.
 
-5 - Remover arquivo ou arquivos do storage se der um erro numa transação que inclui documentos multipart;
+- aprender a injectar beans nos contraints validators
+
+- Refatorar a lógica do sequence service: não precisa ter o método de update sequence, basta ter o swap sequence
+
+- Implementar testes unitários
+
+- Implementar testes de integração, com uma base de dados real ou em memória
+
+- Remover arquivo ou arquivos do storage se der um erro numa transação que inclui documentos multipart;
     OU
     Criar o documento, mas só gravar no storage no final da transação de base de dados.
 
-------------------------------------------------------------------------------------------------------------------------
+- version: Show version info - adicionar informação no comando version
+
+- configurar o workflow / pipeline de qualidade, apontando para um sonarqube instalado na minha máquina antiga

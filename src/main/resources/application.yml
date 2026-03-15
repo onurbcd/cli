@@ -1,8 +1,11 @@
 spring:
+  main:
+    banner-mode: OFF
+    web-application-type: NONE
   datasource:
-    password: secret
-    url: jdbc:postgresql://localhost:5432/eru-service-dev
+    url: jdbc:postgresql://localhost:5432/erucli
     username: admin
+    password: secret
     driver-class-name: org.postgresql.Driver
   flyway:
     locations: classpath:db/migration
@@ -12,7 +15,6 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
         generate_statistics: false
         jdbc:
           batch_size: 10
@@ -21,22 +23,13 @@ spring:
           time_zone: UTC
         order_inserts: true
         order_updates: true
-    show-sql: true
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-      resolve-lazily: true
+  shell:
+    interactive:
+      enabled: true
 
-server:
-  port: 8069
-  tomcat:
-    max-swallow-size: -1
-
-info:
-  app:
-    name: '@project.artifactId@'
-    version: '@project.version@'
+logging:
+  level:
+    root: off
 
 admin:
   crypto:
@@ -45,13 +38,5 @@ admin:
     key2: G+KaPdSgVkYp3s6v
     transformation: AES/CBC/PKCS5PADDING
   minYear: 2013
-  storagePath: /media/bruno/UUI/storage
-  web:
-    allowed-origins: http://localhost:4200
-    cross-origin-path-pattern: /**
-
-logging:
-  level:
-    org.springframework.web: DEBUG
-  pattern:
-    dateformat: yyyy-MM-dd HH:mm:ss.SSS
+  storagePath: /media/bruno-domingues/UUI/storage
+  filesPath: /home/bruno-domingues/Downloads
