@@ -14,9 +14,9 @@
     </parent>
 
     <groupId>com.onurbcd</groupId>
-    <artifactId>eruservice</artifactId>
+    <artifactId>cli</artifactId>
     <version>1.0.0</version>
-    <name>eruservice</name>
+    <name>cli</name>
     <description>CLI application for managing daily routines</description>
 
     <properties>

@@ -1,0 +1,21 @@
+package com.onurbcd.cli.mapper;
+
+import com.onurbcd.cli.dto.secret.SecretDto;
+import com.onurbcd.cli.helper.CryptoHelper;
+import com.onurbcd.cli.persistency.entity.Secret;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.function.Function;
+
+@Mapper(config = DefaultMapperConfig.class)
+public abstract class SecretToDtoMapper implements Function<Secret, SecretDto> {
+
+    @Autowired
+    protected CryptoHelper cryptoHelper;
+
+    @Override
+    @Mapping(target = "password", expression = "java(cryptoHelper.decrypt(secret.getPassword()))")
+    public abstract SecretDto apply(Secret secret);
+}
