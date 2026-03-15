@@ -6,6 +6,8 @@ import com.onurbcd.eruservice.dto.balance.BalanceDto;
 import com.onurbcd.eruservice.dto.balance.BalanceSaveDto;
 import com.onurbcd.eruservice.dto.billtype.BillTypeDto;
 import com.onurbcd.eruservice.dto.billtype.BillTypeSaveDto;
+import com.onurbcd.eruservice.dto.budget.BudgetDto;
+import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.enums.FlowType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ public final class SaveDtoFactory {
         return switch (type) {
             case BALANCE -> BalanceSaveDto.of(context, (BalanceDto) dto);
             case BILL_TYPE -> BillTypeSaveDto.of(context, (BillTypeDto) dto);
+            case BUDGET -> BudgetSaveDto.of(context, (BudgetDto) dto);
             default -> null;
         };
     }

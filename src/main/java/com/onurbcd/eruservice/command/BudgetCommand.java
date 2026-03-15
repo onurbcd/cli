@@ -1,68 +1,51 @@
 package com.onurbcd.eruservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.onurbcd.eruservice.dto.budget.BudgetDto;
 import com.onurbcd.eruservice.dto.budget.BudgetPatchDto;
-import com.onurbcd.eruservice.dto.budget.BudgetSaveDto;
 import com.onurbcd.eruservice.dto.budget.CopyBudgetDto;
 import com.onurbcd.eruservice.dto.filter.BudgetFilter;
 import com.onurbcd.eruservice.enums.Direction;
 import com.onurbcd.eruservice.enums.Error;
 import com.onurbcd.eruservice.enums.EruTable;
-import com.onurbcd.eruservice.factory.FlowFactory;
 import com.onurbcd.eruservice.helper.ShellHelper;
-import com.onurbcd.eruservice.model.BudgetSaveFlowParam;
+import com.onurbcd.eruservice.model.SaveFlowParam;
 import com.onurbcd.eruservice.service.BillTypeService;
 import com.onurbcd.eruservice.service.BudgetService;
-import com.onurbcd.eruservice.util.FlowUtil;
-import com.onurbcd.eruservice.util.ValidatorUtil;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.eruservice.util.Constant.OPERATION_CANCELLED;
+import static com.onurbcd.eruservice.util.Constant.BUDGET;
 import static com.onurbcd.eruservice.validator.Action.checkIfNotEmpty;
 
 @ShellComponent
-@ShellCommandGroup("Budget")
-@RequiredArgsConstructor
-public class BudgetCommand {
+@ShellCommandGroup(BUDGET)
+public class BudgetCommand extends BaseCommand {
 
     private final BudgetService service;
-    private final ComponentFlow.Builder flowBuilder;
-    private final ShellHelper shellHelper;
     private final BillTypeService billTypeService;
+
+    public BudgetCommand(BudgetService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
+                         BillTypeService billTypeService) {
+
+        super(service, flowBuilder, shellHelper, BUDGET, EruTable.BUDGET);
+        this.service = service;
+        this.billTypeService = billTypeService;
+    }
 
     @ShellMethod(key = "budget-save", value = "Create or update a budget.")
     public String save(
             @ShellOption(value = {"id", "-i"}, help = "The budget's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        var budgetSaveDto = runSaveFlow(id);
-
-        if (budgetSaveDto == null) {
-            return shellHelper.warning(OPERATION_CANCELLED);
-        }
-
-        String violations;
-
-        if ((violations = ValidatorUtil.validate(budgetSaveDto)) != null) {
-            return shellHelper.error(violations);
-        }
-
-        var returnId = service.save(budgetSaveDto, id);
-        return shellHelper.success("Budget with id: '%s' saved with success.".formatted(returnId));
+        return baseSave(id);
     }
 
     @ShellMethod(key = "budget-delete", value = "Delete budget by id.")
@@ -71,8 +54,7 @@ public class BudgetCommand {
             @NotNull
             UUID id
     ) {
-        service.delete(id);
-        return shellHelper.success("Budget with id: '%s' deleted with success.".formatted(id));
+        return baseDelete(id);
     }
 
     @ShellMethod(key = "budget-get", value = "Get budget by id.")
@@ -81,7 +63,7 @@ public class BudgetCommand {
             @NotNull
             UUID id
     ) throws JsonProcessingException {
-        return shellHelper.printJson(service.getById(id));
+        return baseGet(id);
     }
 
     @ShellMethod(key = "budget-get-all", value = "Get budget's list.")
@@ -118,13 +100,8 @@ public class BudgetCommand {
             @ShellOption(value = {"paid", "-e"}, help = "Filter's paid option.", defaultValue = ShellOption.NULL)
             Boolean paid
     ) {
-        return shellHelper.printTable(
-                service.getAll(
-                        PageRequest.of(pageNumber - 1, pageSize, direction, property),
-                        BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid)
-                ),
-                EruTable.BUDGET
-        );
+        var filter = BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid);
+        return baseGetAll(pageNumber, pageSize, direction, property, filter);
     }
 
     @ShellMethod(key = "budget-update", value = "Update budget's status by id.")
@@ -139,8 +116,7 @@ public class BudgetCommand {
             @ShellOption(value = {"paid", "-p"}, help = "The budget's paid status.", defaultValue = ShellOption.NULL)
             Boolean paid
     ) {
-        service.update(BudgetPatchDto.of(active, paid), id);
-        return shellHelper.success("Budget with id: '%s' updated with success.".formatted(id));
+        return baseUpdate(BudgetPatchDto.of(active, paid), id);
     }
 
     @ShellMethod(key = "budget-update-sequence", value = "Update budget's sequence by id.")
@@ -233,14 +209,10 @@ public class BudgetCommand {
         return shellHelper.success("All budgets for %d/%02d deleted.".formatted(refYear, refMonth));
     }
 
-    @Nullable
-    private BudgetSaveDto runSaveFlow(@Nullable UUID id) {
+    @Override
+    protected SaveFlowParam preSaveFlow() {
         var billTypeItems = billTypeService.getItems(null);
         checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
-        var budget = (BudgetDto) Optional.ofNullable(id).map(service::getById).orElse(null);
-        var params = BudgetSaveFlowParam.of(budget, billTypeItems);
-        var flow = FlowFactory.createBudgetSaveFlow(flowBuilder, params);
-        var result = FlowUtil.runFlowSafely(flow);
-        return result != null ? BudgetSaveDto.of(result.getContext(), budget) : null;
+        return SaveFlowParam.budget(billTypeItems);
     }
 }

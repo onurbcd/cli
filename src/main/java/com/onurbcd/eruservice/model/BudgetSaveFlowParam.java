@@ -23,7 +23,7 @@ public class BudgetSaveFlowParam implements Paramable {
     private Boolean paid;
     private List<SelectItem> billTypeItems;
 
-    public static BudgetSaveFlowParam of(@Nullable BudgetDto budgetDto, List<SelectItem> billTypeItems) {
+    public static BudgetSaveFlowParam of(@Nullable BudgetDto budgetDto, SaveFlowParam params) {
         return BudgetSaveFlowParam.builder()
                 .name(getString(budgetDto, BudgetDto::getName))
                 .refYear(getShort(budgetDto, BudgetDto::getRefYear))
@@ -31,7 +31,7 @@ public class BudgetSaveFlowParam implements Paramable {
                 .billType(getString(budgetDto, BudgetDto::getBillTypeName))
                 .amount(getBigDecimal(budgetDto, BudgetDto::getAmount))
                 .paid(getBoolean(budgetDto, BudgetDto::getPaid, Boolean.FALSE))
-                .billTypeItems(billTypeItems)
+                .billTypeItems(params.getBillTypeItems())
                 .build();
     }
 

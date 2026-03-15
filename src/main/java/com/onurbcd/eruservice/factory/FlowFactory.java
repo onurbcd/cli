@@ -85,7 +85,7 @@ public final class FlowFactory {
                 .execute();
     }
 
-    public static FlowSupplier createBudgetSaveFlow(ComponentFlow.Builder builder, BudgetSaveFlowParam params) {
+    private static FlowSupplier createBudgetSaveFlow(ComponentFlow.Builder builder, BudgetSaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .input(FlowField.REF_YEAR, params.getRefYear())
