@@ -15,6 +15,7 @@ public final class Constant {
      * COMMANDS
      */
     public static final String BALANCE = "Balance";
+    public static final String BILL_TYPE = "Bill Type";
 
     /*
      * HEADERS KEYS

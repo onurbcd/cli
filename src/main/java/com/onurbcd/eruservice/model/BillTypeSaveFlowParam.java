@@ -21,11 +21,11 @@ public class BillTypeSaveFlowParam implements Paramable {
     private List<SelectItem> categoryItems;
     private String category;
 
-    public static BillTypeSaveFlowParam of(@Nullable BillTypeDto billType, List<SelectItem> categoryItems) {
+    public static BillTypeSaveFlowParam of(@Nullable BillTypeDto billType, SaveFlowParam params) {
         return BillTypeSaveFlowParam.builder()
                 .name(getString(billType, BillTypeDto::getName))
                 .path(getString(billType, BillTypeDto::getPath))
-                .categoryItems(categoryItems)
+                .categoryItems(params.getCategoryItems())
                 .category(getNullString(billType, BillTypeDto::getCategoryName))
                 .build();
     }

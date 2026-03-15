@@ -27,7 +27,7 @@ import static com.onurbcd.eruservice.util.StringUtil.normalizeSpace;
 public class BillTypeSaveDto extends PrimeSaveDto {
 
     @NotNull(message = "Path is required")
-    @Size(min = 3, max = 250, message = "Path must be between 3 and 250 characters")
+    @Size(min = 3, max = 250, message = "Path must be between {min} and {max} characters")
     @Pattern(regexp = Constant.REGEXP_PATH, message = "Path format is invalid")
     private String path;
 

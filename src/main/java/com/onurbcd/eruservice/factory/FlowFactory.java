@@ -32,7 +32,7 @@ public final class FlowFactory {
                 .execute();
     }
 
-    public static FlowSupplier createBillTypeSaveFlow(ComponentFlow.Builder builder, BillTypeSaveFlowParam params) {
+    private static FlowSupplier createBillTypeSaveFlow(ComponentFlow.Builder builder, BillTypeSaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .input(FlowField.PATH, params.getPath())
