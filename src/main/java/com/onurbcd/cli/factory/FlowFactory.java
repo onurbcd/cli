@@ -46,7 +46,7 @@ public final class FlowFactory {
                 .execute();
     }
 
-    public static FlowSupplier createSourceSaveFlow(ComponentFlow.Builder builder, SourceSaveFlowParam params) {
+    private static FlowSupplier createSourceSaveFlow(ComponentFlow.Builder builder, SourceSaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .select(FlowField.INCOME_SOURCE_ID, params.getIncomeSourceItems(), params.getIncomeSource())

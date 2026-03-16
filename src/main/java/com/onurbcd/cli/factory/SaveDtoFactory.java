@@ -14,6 +14,8 @@ import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
 import com.onurbcd.cli.dto.incomesource.IncomeSourceSaveDto;
 import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.dto.secret.SecretSaveDto;
+import com.onurbcd.cli.dto.source.SourceDto;
+import com.onurbcd.cli.dto.source.SourceSaveDto;
 import com.onurbcd.cli.enums.FlowType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -31,7 +33,7 @@ public final class SaveDtoFactory {
             case CATEGORY -> CategorySaveDto.of(context, (CategoryDto) dto);
             case INCOME_SOURCE -> IncomeSourceSaveDto.of(context, (IncomeSourceDto) dto);
             case SECRET -> SecretSaveDto.of(context, (SecretDto) dto);
-            default -> null;
+            case SOURCE -> SourceSaveDto.of(context, (SourceDto) dto);
         };
     }
 }

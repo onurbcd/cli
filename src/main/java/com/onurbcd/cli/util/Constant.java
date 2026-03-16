@@ -21,6 +21,7 @@ public final class Constant {
     public static final String DAY = "Day";
     public static final String INCOME_SOURCE = "Income Source";
     public static final String SECRET = "Secret";
+    public static final String SOURCE = "Source";
 
     /*
      * HEADERS KEYS

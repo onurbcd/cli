@@ -27,14 +27,14 @@ public class SourceSaveFlowParam implements Paramable {
     private List<SelectItem> sourceTypeItems;
     private List<SelectItem> currencyTypeItems;
 
-    public static SourceSaveFlowParam of(@Nullable SourceDto source, List<SelectItem> incomeSourceItems) {
+    public static SourceSaveFlowParam of(@Nullable SourceDto source, SaveFlowParam params) {
         return SourceSaveFlowParam.builder()
                 .name(getString(source, SourceDto::getName))
                 .incomeSource(getString(source, SourceDto::getIncomeSourceName))
                 .sourceType(getEnum(source, SourceDto::getSourceType))
                 .currencyType(getEnum(source, SourceDto::getCurrencyType))
                 .balance(getBigDecimal(source, SourceDto::getBalance))
-                .incomeSourceItems(incomeSourceItems)
+                .incomeSourceItems(params.getIncomeSourceItems())
                 .sourceTypeItems(getItems(SourceType.values()))
                 .currencyTypeItems(getItems(CurrencyType.values()))
                 .build();
