@@ -10,6 +10,8 @@ import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.budget.BudgetSaveDto;
 import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.category.CategorySaveDto;
+import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
+import com.onurbcd.cli.dto.incomesource.IncomeSourceSaveDto;
 import com.onurbcd.cli.enums.FlowType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public final class SaveDtoFactory {
             case BILL_TYPE -> BillTypeSaveDto.of(context, (BillTypeDto) dto);
             case BUDGET -> BudgetSaveDto.of(context, (BudgetDto) dto);
             case CATEGORY -> CategorySaveDto.of(context, (CategoryDto) dto);
+            case INCOME_SOURCE -> IncomeSourceSaveDto.of(context, (IncomeSourceDto) dto);
             default -> null;
         };
     }

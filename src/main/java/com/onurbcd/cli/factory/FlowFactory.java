@@ -40,7 +40,7 @@ public final class FlowFactory {
                 .execute();
     }
 
-    public static FlowSupplier createIncomeSourceSaveFlow(ComponentFlow.Builder builder, IncomeSourceSaveFlowParam params) {
+    private static FlowSupplier createIncomeSourceSaveFlow(ComponentFlow.Builder builder, IncomeSourceSaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .execute();

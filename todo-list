@@ -31,3 +31,5 @@
 - atualizar o spring boot para a versão 4
 
 - configurar o workflow / pipeline de qualidade, apontando para um sonarqube instalado na minha máquina antiga
+
+- Adcionar um progress bar ao inicializar a aplicação
