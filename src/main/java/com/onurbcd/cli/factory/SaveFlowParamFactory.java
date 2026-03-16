@@ -6,6 +6,7 @@ import com.onurbcd.cli.dto.billtype.BillTypeDto;
 import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
+import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.model.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public final class SaveFlowParamFactory {
             case BUDGET -> BudgetSaveFlowParam.of((BudgetDto) dto, params);
             case CATEGORY -> CategorySaveFlowParam.of((CategoryDto) dto, params);
             case INCOME_SOURCE -> IncomeSourceSaveFlowParam.of((IncomeSourceDto) dto);
+            case SECRET -> SecretSaveFlowParam.of((SecretDto) dto);
             default -> throw new IllegalArgumentException("Unsupported FlowType: " + params.getType().name());
         };
     }

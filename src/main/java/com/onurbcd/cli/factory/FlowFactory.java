@@ -75,7 +75,7 @@ public final class FlowFactory {
         };
     }
 
-    public static FlowSupplier createSecretSaveFlow(ComponentFlow.Builder builder, SecretSaveFlowParam params) {
+    private static FlowSupplier createSecretSaveFlow(ComponentFlow.Builder builder, SecretSaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .input(FlowField.DESCRIPTION, params.getDescription())

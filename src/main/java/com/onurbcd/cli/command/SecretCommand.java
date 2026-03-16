@@ -2,61 +2,40 @@ package com.onurbcd.cli.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.dto.filter.SecretFilter;
-import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.dto.secret.SecretPatchDto;
-import com.onurbcd.cli.dto.secret.SecretSaveDto;
 import com.onurbcd.cli.enums.EruTable;
-import com.onurbcd.cli.factory.FlowFactory;
+import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.helper.ShellHelper;
-import com.onurbcd.cli.model.SecretSaveFlowParam;
+import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.SecretService;
-import com.onurbcd.cli.util.FlowUtil;
-import com.onurbcd.cli.util.ValidatorUtil;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.Optional;
 import java.util.UUID;
 
-import static com.onurbcd.cli.util.Constant.OPERATION_CANCELLED;
+import static com.onurbcd.cli.util.Constant.SECRET;
+import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
 @ShellComponent
-@ShellCommandGroup("Secret")
-@RequiredArgsConstructor
-public class SecretCommand {
+@ShellCommandGroup(SECRET)
+public class SecretCommand extends BaseCommand {
 
-    private final SecretService service;
-    private final ComponentFlow.Builder flowBuilder;
-    private final ShellHelper shellHelper;
+    public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
+        super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET);
+    }
 
     @ShellMethod(key = "secret-save", value = "Create or update a secret.")
     public String save(
             @ShellOption(value = {"id", "-i"}, help = "The secret's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        var secretSaveDto = runSaveFlow(id);
-
-        if (secretSaveDto == null) {
-            return shellHelper.warning(OPERATION_CANCELLED);
-        }
-
-        String violations;
-
-        if ((violations = ValidatorUtil.validate(secretSaveDto)) != null) {
-            return shellHelper.error(violations);
-        }
-
-        var returnId = service.save(secretSaveDto, id);
-        return shellHelper.success("Secret with id: '%s' saved with success.".formatted(returnId));
+        return baseSave(id);
     }
 
     @ShellMethod(key = "secret-delete", value = "Delete secret by id.")
@@ -65,8 +44,7 @@ public class SecretCommand {
             @NotNull
             UUID id
     ) {
-        service.delete(id);
-        return shellHelper.success("Secret with id: '%s' deleted with success.".formatted(id));
+        return baseDelete(id);
     }
 
     @ShellMethod(key = "secret-get", value = "Get secret by id.")
@@ -75,7 +53,7 @@ public class SecretCommand {
             @NotNull
             UUID id
     ) throws JsonProcessingException {
-        return shellHelper.printJson(service.getById(id));
+        return baseGet(id);
     }
 
     @ShellMethod(key = "secret-get-all", value = "Get secret's list.")
@@ -91,22 +69,17 @@ public class SecretCommand {
             @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "name")
-            String property,
-
             @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
             Boolean active,
 
             @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
-            String search
+            String search,
+
+            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            String... properties
     ) {
-        return shellHelper.printTable(
-                service.getAll(
-                        PageRequest.of(pageNumber - 1, pageSize, direction, property),
-                        SecretFilter.of(active, search)
-                ),
-                EruTable.SECRET
-        );
+        var filter = SecretFilter.of(active, search);
+        return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "name"));
     }
 
     @ShellMethod(key = "secret-update", value = "Update secret's status by id.")
@@ -118,16 +91,11 @@ public class SecretCommand {
             @ShellOption(value = {"active", "-a"}, help = "The secret's status.", defaultValue = "false")
             Boolean active
     ) {
-        service.update(SecretPatchDto.of(active), id);
-        return shellHelper.success("Secret with id: '%s' updated with success.".formatted(id));
+        return baseUpdate(SecretPatchDto.of(active), id);
     }
 
-    @Nullable
-    private SecretSaveDto runSaveFlow(@Nullable UUID id) {
-        var secret = (SecretDto) Optional.ofNullable(id).map(service::getById).orElse(null);
-        var params = SecretSaveFlowParam.of(secret);
-        var flow = FlowFactory.createSecretSaveFlow(flowBuilder, params);
-        var result = FlowUtil.runFlowSafely(flow);
-        return result != null ? SecretSaveDto.of(result.getContext(), secret) : null;
+    @Override
+    protected SaveFlowParam preSaveFlow(UUID id) {
+        return SaveFlowParam.noArgs(FlowType.SECRET);
     }
 }
