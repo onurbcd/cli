@@ -34,7 +34,7 @@ public abstract class BaseCommand {
     private final String name;
     private final EruTable table;
 
-    protected abstract SaveFlowParam preSaveFlow();
+    protected abstract SaveFlowParam preSaveFlow(@Nullable UUID id);
 
     protected String baseSave(@Nullable UUID id) {
         var saveDto = runSaveFlow(id);
@@ -63,10 +63,10 @@ public abstract class BaseCommand {
         return shellHelper.printJson(dto);
     }
 
-    protected String baseGetAll(Integer pageNumber, Integer pageSize, Sort.Direction direction, String property,
-                                Filterable filter) {
+    protected String baseGetAll(Filterable filter, Integer pageNumber, Integer pageSize, Sort.Direction direction,
+                                String... properties) {
 
-        var pageable = PageRequest.of(pageNumber - 1, pageSize, direction, property);
+        var pageable = PageRequest.of(pageNumber - 1, pageSize, direction, properties);
         var page = crudService.getAll(pageable, filter);
         return shellHelper.printTable(page, table);
     }
@@ -78,7 +78,7 @@ public abstract class BaseCommand {
 
     @Nullable
     private PrimeSaveDto runSaveFlow(@Nullable UUID id) {
-        var preParams = preSaveFlow();
+        var preParams = preSaveFlow(id);
         var dto = (PrimeDto) Optional.ofNullable(id).map(crudService::getById).orElse(null);
         var params = SaveFlowParamFactory.create(dto, preParams);
         var flow = FlowFactory.create(flowBuilder, params);

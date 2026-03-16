@@ -17,6 +17,7 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -26,6 +27,7 @@ import org.springframework.shell.standard.ShellOption;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BALANCE;
+import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
 @ShellComponent
 @ShellCommandGroup(BALANCE)
@@ -84,9 +86,6 @@ public class BalanceCommand extends BaseCommand {
             @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "sequence")
-            String property,
-
             @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
             Boolean active,
 
@@ -109,10 +108,13 @@ public class BalanceCommand extends BaseCommand {
             Short month,
 
             @ShellOption(value = {"day", "-g"}, help = "Filter's day.", defaultValue = ShellOption.NULL)
-            Short day
+            Short day,
+
+            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            String... properties
     ) {
         var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType).and(year, month, day);
-        return baseGetAll(pageNumber, pageSize, direction, property, filter);
+        return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
     @ShellMethod(key = "balance-update", value = "Update balance's status by id.")
@@ -188,7 +190,7 @@ public class BalanceCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow() {
+    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
         var sourceItems = sourceService.getItems(null);
         Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
         var categoryItems = categoryService.getCategoryItems(null, true);

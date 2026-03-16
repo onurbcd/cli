@@ -21,11 +21,11 @@ public class CategorySaveFlowParam implements Paramable {
     private List<SelectItem> items;
     private String parent;
 
-    public static CategorySaveFlowParam of(@Nullable CategoryDto category, List<SelectItem> items) {
+    public static CategorySaveFlowParam of(@Nullable CategoryDto category, SaveFlowParam params) {
         return CategorySaveFlowParam.builder()
                 .name(getString(category, CategoryDto::getName))
                 .description(getString(category, CategoryDto::getDescription))
-                .items(items)
+                .items(params.getCategoryItems())
                 .parent(getNullString(category, CategoryDto::getParentName))
                 .build();
     }

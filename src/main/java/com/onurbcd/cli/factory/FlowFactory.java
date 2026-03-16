@@ -24,7 +24,7 @@ public final class FlowFactory {
         };
     }
 
-    public static FlowSupplier createCategorySaveFlow(ComponentFlow.Builder builder, CategorySaveFlowParam params) {
+    private static FlowSupplier createCategorySaveFlow(ComponentFlow.Builder builder, CategorySaveFlowParam params) {
         return () -> init(builder)
                 .input(FlowField.NAME, params.getName())
                 .input(FlowField.DESCRIPTION, params.getDescription())

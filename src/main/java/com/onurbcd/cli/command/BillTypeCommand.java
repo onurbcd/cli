@@ -13,6 +13,7 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -22,6 +23,7 @@ import org.springframework.shell.standard.ShellOption;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BILL_TYPE;
+import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
 @ShellComponent
 @ShellCommandGroup(BILL_TYPE)
@@ -75,16 +77,17 @@ public class BillTypeCommand extends BaseCommand {
             @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "name")
-            String property,
-
             @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
             Boolean active,
 
             @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
-            String search
+            String search,
+
+            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            String... properties
     ) {
-        return baseGetAll(pageNumber, pageSize, direction, property, BillTypeFilter.of(active, search));
+        var filter = BillTypeFilter.of(active, search);
+        return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "name"));
     }
 
     @ShellMethod(key = "bill-type-update", value = "Update bill type's status by id.")
@@ -100,7 +103,7 @@ public class BillTypeCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow() {
+    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
         var categoryItems = categoryService.getCategoryItems(null, true);
         Action.checkIfNotEmpty(categoryItems).orElseThrow(Error.CATEGORY_REQUIRED);
         return SaveFlowParam.billType(categoryItems);

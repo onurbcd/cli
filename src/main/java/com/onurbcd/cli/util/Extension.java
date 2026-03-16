@@ -12,10 +12,6 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Extension {
 
-    public static String normalizeSpace(String in) {
-        return StringUtils.normalizeSpace(in);
-    }
-
     public static String defaultToNull(@Nullable String in) {
         return StringUtils.isBlank(in) || Objects.equals(in, ShellOption.NULL) ? null : StringUtils.normalizeSpace(in);
     }

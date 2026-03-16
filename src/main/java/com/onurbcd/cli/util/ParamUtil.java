@@ -90,4 +90,18 @@ public final class ParamUtil {
                 .map(fn)
                 .orElse(null);
     }
+
+    public static String[] getSortProps(String[] properties, String... defaultProperties) {
+        if (defaultProperties == null || defaultProperties.length == 0) {
+            throw new IllegalArgumentException("Default sort properties cannot be null or empty");
+        }
+
+        if (properties != null && properties.length > 0) {
+            return Arrays.stream(properties)
+                    .filter(p -> p != null && !p.trim().isEmpty())
+                    .toArray(String[]::new);
+        }
+
+        return defaultProperties;
+    }
 }

@@ -14,6 +14,7 @@ import com.onurbcd.cli.service.BudgetService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -23,6 +24,7 @@ import org.springframework.shell.standard.ShellOption;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BUDGET;
+import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 import static com.onurbcd.cli.validator.Action.checkIfNotEmpty;
 
 @ShellComponent
@@ -79,9 +81,6 @@ public class BudgetCommand extends BaseCommand {
             @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"property", "-p"}, help = "The page's sort property.", defaultValue = "sequence")
-            String property,
-
             @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
             Boolean active,
 
@@ -98,10 +97,13 @@ public class BudgetCommand extends BaseCommand {
             UUID billTypeId,
 
             @ShellOption(value = {"paid", "-e"}, help = "Filter's paid option.", defaultValue = ShellOption.NULL)
-            Boolean paid
+            Boolean paid,
+
+            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            String... properties
     ) {
         var filter = BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid);
-        return baseGetAll(pageNumber, pageSize, direction, property, filter);
+        return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
     @ShellMethod(key = "budget-update", value = "Update budget's status by id.")
@@ -210,7 +212,7 @@ public class BudgetCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow() {
+    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
         var billTypeItems = billTypeService.getItems(null);
         checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
         return SaveFlowParam.budget(billTypeItems);
