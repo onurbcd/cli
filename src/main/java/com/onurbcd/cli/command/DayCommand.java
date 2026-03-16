@@ -1,11 +1,11 @@
 package com.onurbcd.cli.command;
 
-import com.onurbcd.cli.enums.EruTable;
-import com.onurbcd.cli.helper.ShellHelper;
-import com.onurbcd.cli.dto.day.CreateMonthDto;
-import com.onurbcd.cli.service.DayService;
 import com.onurbcd.cli.annotation.MaxYear;
 import com.onurbcd.cli.annotation.MinYear;
+import com.onurbcd.cli.dto.day.CreateMonthDto;
+import com.onurbcd.cli.enums.EruTable;
+import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.service.DayService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +15,11 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import static com.onurbcd.cli.util.Constant.DAY;
+import static com.onurbcd.cli.util.Constant.DAY_CREATE_SUCCESS;
+
 @ShellComponent
-@ShellCommandGroup("Day")
+@ShellCommandGroup(DAY)
 @RequiredArgsConstructor
 public class DayCommand {
 
@@ -37,8 +40,9 @@ public class DayCommand {
             @Max(12)
             Short calendarMonth
     ) {
-        service.createMonth(CreateMonthDto.of(calendarYear, calendarMonth));
-        return String.format("Month %02d/%d created with success.", calendarMonth, calendarYear);
+        var createMonthDto = CreateMonthDto.of(calendarYear, calendarMonth);
+        service.createMonth(createMonthDto);
+        return shellHelper.success(DAY_CREATE_SUCCESS.formatted(calendarMonth, calendarYear));
     }
 
     @ShellMethod(key = "day-get", value = "Get list of months.")

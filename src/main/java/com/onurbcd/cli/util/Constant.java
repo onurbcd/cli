@@ -18,6 +18,7 @@ public final class Constant {
     public static final String BILL_TYPE = "Bill Type";
     public static final String BUDGET = "Budget";
     public static final String CATEGORY = "Category";
+    public static final String DAY = "Day";
 
     /*
      * HEADERS KEYS
@@ -107,6 +108,7 @@ public final class Constant {
     public static final String SAVE_SUCCESS = "%s with id %s saved with success.";
     public static final String DELETE_SUCCESS = "%s with id %s deleted with success.";
     public static final String UPDATE_SUCCESS = "%s with id %s updated with success.";
+    public static final String DAY_CREATE_SUCCESS = "Month %02d/%d created with success.";
 
     /*
      * PATHS
