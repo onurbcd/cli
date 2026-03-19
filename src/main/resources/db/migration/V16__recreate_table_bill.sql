@@ -17,7 +17,7 @@ CREATE TABLE public.bill (
     installment SMALLINT,
     bill_type_id UUID NOT NULL,
     document_type VARCHAR(7) NOT NULL,
-    payment_type VARCHAR(8),
+    payment_type VARCHAR(20),
     budget_id UUID NOT NULL,
     source_id UUID,
     reference_type VARCHAR(5) NOT NULL,

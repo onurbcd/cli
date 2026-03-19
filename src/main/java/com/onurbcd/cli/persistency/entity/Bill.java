@@ -112,7 +112,7 @@ public class Bill extends Prime {
      * É nulo porque só é preenchido quando paga a conta.
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_type", length = 8)
+    @Column(name = "payment_type", length = 20)
     private PaymentType paymentType;
 
     @NotNull

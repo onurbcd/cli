@@ -5,11 +5,11 @@
 
 set -e
 
-CONTAINER_NAME="postgres-erucli"
-NETWORK_NAME="erucli-network"
+CONTAINER_NAME="postgres-cli"
+NETWORK_NAME="cli-network"
 POSTGRES_USER="admin"
 POSTGRES_PASSWORD="secret"
-POSTGRES_DB="erucli"
+POSTGRES_DB="cli"
 POSTGRES_PORT="5432"
 POSTGRES_VERSION="17"
 
