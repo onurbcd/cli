@@ -1,5 +1,7 @@
 - Adicionar o PaymentType à entidade Balance
 
+- Remover o paymentType e source do Bill, pois eles já vão existir no Balance que está ligado ao Bill, e porque fazem mais sentido estar no Balance mesmo.
+
 - Refatorar a lógica dos save flows:
     - Bill
 

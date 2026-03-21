@@ -10,8 +10,5 @@ CREATE TABLE IF NOT EXISTS public.source (
     balance DECIMAL(19, 4) NOT NULL,
     CONSTRAINT pk_source PRIMARY KEY (id),
     CONSTRAINT uc_source_name UNIQUE (name),
-    CONSTRAINT fk_source_income_source_id FOREIGN KEY (income_source_id)
-        REFERENCES public.income_source (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    CONSTRAINT fk_source_income_source_id FOREIGN KEY (income_source_id) REFERENCES public.income_source (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );

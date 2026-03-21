@@ -1,5 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.secret
-(
+CREATE TABLE IF NOT EXISTS public.secret (
     id uuid NOT NULL,
     created_date timestamp without time zone NOT NULL,
     last_modified_date timestamp without time zone NOT NULL,
@@ -11,4 +10,4 @@ CREATE TABLE IF NOT EXISTS public.secret
     username character varying(50) NOT NULL,
     CONSTRAINT secret_pkey PRIMARY KEY (id),
     CONSTRAINT uk_secret_name UNIQUE (name)
-)
+);

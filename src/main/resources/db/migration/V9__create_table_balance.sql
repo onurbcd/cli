@@ -14,16 +14,7 @@ CREATE TABLE IF NOT EXISTS public.balance (
     balance_type VARCHAR(7) NOT NULL,
     CONSTRAINT pk_balance PRIMARY KEY (id),
     CONSTRAINT uc_balance_sequence_day_id_balance_type UNIQUE (sequence, day_id, balance_type),
-    CONSTRAINT fk_balance_category_id FOREIGN KEY (category_id)
-        REFERENCES public.category (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT fk_balance_day_id FOREIGN KEY (day_id)
-        REFERENCES public.day (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT fk_balance_source_id FOREIGN KEY (source_id)
-        REFERENCES public.source (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    CONSTRAINT fk_balance_category_id FOREIGN KEY (category_id) REFERENCES public.category (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT fk_balance_day_id FOREIGN KEY (day_id) REFERENCES public.day (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT fk_balance_source_id FOREIGN KEY (source_id) REFERENCES public.source (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
