@@ -1,7 +1,6 @@
 package com.onurbcd.cli.persistency.entity;
 
 import com.onurbcd.cli.enums.DocumentType;
-import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.util.Constant;
 import jakarta.persistence.*;
@@ -108,24 +107,10 @@ public class Bill extends Prime {
     @Column(name = "document_type", nullable = false, length = 7)
     private DocumentType documentType;
 
-    /**
-     * É nulo porque só é preenchido quando paga a conta.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_type", length = 20)
-    private PaymentType paymentType;
-
     @NotNull
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "budget_id", nullable = false, unique = true)
     private Budget budget;
-
-    /**
-     * É nulo porque só é preenchido quando paga a conta.
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "source_id")
-    private Source source;
 
     @NotNull
     @Enumerated(EnumType.STRING)

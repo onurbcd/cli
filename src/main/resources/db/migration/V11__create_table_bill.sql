@@ -15,10 +15,8 @@ CREATE TABLE IF NOT EXISTS public.bill (
     installment SMALLINT,
     bill_type_id UUID NOT NULL,
     document_type VARCHAR(7) NOT NULL,
-    payment_type VARCHAR(20),
     budget_id UUID NOT NULL,
     balance_id UUID,
-    source_id UUID,
     reference_type VARCHAR(5) NOT NULL,
     closed BOOLEAN NOT NULL,
     CONSTRAINT pk_bill PRIMARY KEY (id),
@@ -30,7 +28,6 @@ CREATE TABLE IF NOT EXISTS public.bill (
     CONSTRAINT fk_bill_document_id_2 FOREIGN KEY (receipt_id) REFERENCES public.document (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT fk_bill_day_id_4 FOREIGN KEY (reference_day_id) REFERENCES public.day (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT fk_bill_budget_id FOREIGN KEY (budget_id) REFERENCES public.budget (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT fk_bill_source_id FOREIGN KEY (source_id) REFERENCES public.source (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT fk_bill_balance_id FOREIGN KEY (balance_id) REFERENCES public.balance (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT uc_bill_budget_id UNIQUE (budget_id)
 );

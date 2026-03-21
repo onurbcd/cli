@@ -1,9 +1,8 @@
 package com.onurbcd.cli.persistency.predicate;
 
-import com.onurbcd.cli.enums.DocumentType;
-import com.onurbcd.cli.enums.PaymentType;
-import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.dto.filter.BillFilter;
+import com.onurbcd.cli.enums.DocumentType;
+import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.persistency.entity.QBill;
 import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
@@ -30,8 +29,6 @@ public class BillPredicateBuilder extends BasePredicateBuilder {
                 .paymentDateCalendarDate(filter.getPaymentDateCalendarDate())
                 .billTypeId(filter.getBillTypeId())
                 .documentType(filter.getDocumentType())
-                .paymentType(filter.getPaymentType())
-                .sourceId(filter.getSourceId())
                 .referenceType(filter.getReferenceType())
                 .closed(filter.getClosed())
                 .search(filter.getSearch())
@@ -95,22 +92,6 @@ public class BillPredicateBuilder extends BasePredicateBuilder {
     private BillPredicateBuilder documentType(@Nullable DocumentType documentType) {
         if (documentType != null) {
             builder().and(QBill.bill.documentType.eq(documentType));
-        }
-
-        return this;
-    }
-
-    private BillPredicateBuilder paymentType(@Nullable PaymentType paymentType) {
-        if (paymentType != null) {
-            builder().and(QBill.bill.paymentType.eq(paymentType));
-        }
-
-        return this;
-    }
-
-    private BillPredicateBuilder sourceId(@Nullable UUID sourceId) {
-        if (sourceId != null) {
-            builder().and(QBill.bill.source.id.eq(sourceId));
         }
 
         return this;

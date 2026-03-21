@@ -1,6 +1,5 @@
 package com.onurbcd.cli.service;
 
-import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.dto.bill.BillCloseDto;
 import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.dto.bill.BillOpenDto;
@@ -16,9 +15,9 @@ import com.onurbcd.cli.model.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Bill;
 import com.onurbcd.cli.persistency.entity.BillType;
 import com.onurbcd.cli.persistency.entity.Day;
-import com.onurbcd.cli.persistency.entity.Source;
 import com.onurbcd.cli.persistency.predicate.BillPredicateBuilder;
 import com.onurbcd.cli.persistency.repository.BillRepository;
+import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.validator.Action;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
@@ -121,8 +120,6 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         fillDay(billCloseDto.getPaymentDateCalendarDate(), bill::setPaymentDate);
         bill.setReceipt(receipt);
         bill.setObservation(billCloseDto.getObservation());
-        bill.setPaymentType(billCloseDto.getPaymentType());
-        bill.setSource(entityManager.getReference(Source.class, billCloseDto.getSourceId()));
         bill.setClosed(Boolean.TRUE);
         bill.setBalance(balance);
 

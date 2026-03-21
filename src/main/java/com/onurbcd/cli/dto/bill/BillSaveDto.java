@@ -2,7 +2,6 @@ package com.onurbcd.cli.dto.bill;
 
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.DocumentType;
-import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.util.Constant;
 import jakarta.validation.constraints.*;
@@ -50,12 +49,8 @@ public class BillSaveDto extends PrimeSaveDto {
     @NotNull
     private DocumentType documentType;
 
-    private PaymentType paymentType;
-
     @NotNull
     private UUID budgetId;
-
-    private UUID sourceId;
 
     @NotNull
     private ReferenceType referenceType;

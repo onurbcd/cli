@@ -37,22 +37,21 @@ public class BillBalanceService {
                 .code(Constant.BILL_CLOSE_CODE)
                 .description(createDescription(params))
                 .balanceType(BalanceType.OUTCOME)
+                .paymentType(params.getBillCloseDto().getPaymentType())
                 .documentsIds(null)
                 .build();
     }
 
     private String createDescription(BillBalanceParams params) {
-        return new StringBuilder()
-                .append("Pagamento efetuado por ")
-                .append(params.getBillCloseDto().getPaymentType().getCode())
-                .append(": ")
-                .append(params.getBill().getDocumentType().getCode())
-                .append(StringUtils.SPACE)
-                .append(params.getBill().getBudget().getName())
-                .append(StringUtils.SPACE)
-                .append("referente a ")
-                .append(createReference(params.getBill()))
-                .toString();
+        return "Pagamento efetuado por " +
+                params.getBillCloseDto().getPaymentType().getCode() +
+                ": " +
+                params.getBill().getDocumentType().getCode() +
+                StringUtils.SPACE +
+                params.getBill().getBudget().getName() +
+                StringUtils.SPACE +
+                "referente a " +
+                createReference(params.getBill());
     }
 
     private String createReference(Bill bill) {

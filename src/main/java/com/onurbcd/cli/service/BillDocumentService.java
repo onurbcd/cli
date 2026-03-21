@@ -60,12 +60,10 @@ public class BillDocumentService {
 
         var extension = StringUtils.getFilenameExtension(billDocParams.getMultipartFile().getOriginalFilename());
 
-        return new StringBuilder()
-                .append(referencePart)
-                .append("-")
-                .append(billDocParams.getDocumentType().getCode())
-                .append(".")
-                .append(extension != null ? extension : "pdf")
-                .toString();
+        return referencePart +
+                "-" +
+                billDocParams.getDocumentType().getCode() +
+                "." +
+                (extension != null ? extension : "pdf");
     }
 }
