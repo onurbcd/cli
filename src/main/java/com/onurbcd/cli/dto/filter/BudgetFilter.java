@@ -1,17 +1,17 @@
 package com.onurbcd.cli.dto.filter;
 
-import com.onurbcd.cli.util.Extension;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.ExtensionMethod;
 import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
+import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
+
 @SuperBuilder
 @Getter
 @Setter
-@ExtensionMethod({Extension.class})
 public class BudgetFilter extends AbstractFilterable {
 
     private Short refYear;
@@ -26,8 +26,8 @@ public class BudgetFilter extends AbstractFilterable {
                 .builder()
                 .active(active)
                 .search(search)
-                .refYear(refYear.orIfNullCurrentYear())
-                .refMonth(refMonth.orIfNullCurrentMonth())
+                .refYear(orCurrentYear(refYear))
+                .refMonth(orCurrentMonth(refMonth))
                 .billTypeId(billTypeId)
                 .paid(paid)
                 .build();

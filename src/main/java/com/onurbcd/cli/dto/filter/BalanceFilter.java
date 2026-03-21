@@ -1,19 +1,19 @@
 package com.onurbcd.cli.dto.filter;
 
 import com.onurbcd.cli.enums.BalanceType;
-import com.onurbcd.cli.util.Extension;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.ExtensionMethod;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
+
 @SuperBuilder
 @Getter
 @Setter
-@ExtensionMethod({Extension.class})
 public class BalanceFilter extends AbstractFilterable {
 
     private LocalDate dayCalendarDate;
@@ -36,8 +36,8 @@ public class BalanceFilter extends AbstractFilterable {
     }
 
     public BalanceFilter and(Short year, Short month, Short day) {
-        this.dayCalendarYear = year.orIfNullCurrentYear();
-        this.dayCalendarMonth = month.orIfNullCurrentMonth();
+        this.dayCalendarYear = orCurrentYear(year);
+        this.dayCalendarMonth = orCurrentMonth(month);
         this.dayCalendarDayInMonth = day;
         return this;
     }

@@ -49,4 +49,12 @@ public final class DateUtil {
     public static String formatDate(LocalDate date) {
         return date != null ? date.format(DateTimeFormatter.ISO_LOCAL_DATE) : null;
     }
+
+    public static Short orCurrentYear(@Nullable Short year) {
+        return year == null ? (short) LocalDate.now().getYear() : year;
+    }
+
+    public static Short orCurrentMonth(@Nullable Short month) {
+        return month == null ? (short) LocalDate.now().getMonthValue() : month;
+    }
 }

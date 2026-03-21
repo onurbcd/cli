@@ -1,25 +1,8 @@
 package com.onurbcd.cli.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.onurbcd.cli.annotation.PrimeService;
 import com.onurbcd.cli.dto.Dtoable;
-import com.onurbcd.cli.dto.budget.BudgetDto;
-import com.onurbcd.cli.dto.budget.BudgetPatchDto;
-import com.onurbcd.cli.dto.budget.BudgetSaveDto;
-import com.onurbcd.cli.dto.budget.BudgetSumDto;
-import com.onurbcd.cli.dto.budget.BudgetValuesDto;
-import com.onurbcd.cli.dto.budget.CopyBudgetDto;
-import com.onurbcd.cli.dto.budget.SumDto;
+import com.onurbcd.cli.dto.budget.*;
 import com.onurbcd.cli.dto.filter.BudgetFilter;
 import com.onurbcd.cli.dto.filter.Filterable;
 import com.onurbcd.cli.enums.Direction;
@@ -34,11 +17,23 @@ import com.onurbcd.cli.persistency.entity.Entityable;
 import com.onurbcd.cli.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.cli.persistency.repository.BudgetRepository;
 import com.onurbcd.cli.util.CollectionUtil;
-import com.onurbcd.cli.util.Extension;
 import com.onurbcd.cli.util.NumberUtil;
 import com.onurbcd.cli.validator.Action;
 import com.onurbcd.cli.validator.BudgetValidator;
 import com.querydsl.core.types.Predicate;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.SelectItem;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
 
 @Service
 public class BudgetService extends AbstractCrudService<Budget, BudgetDto, BudgetPredicateBuilder, BudgetSaveDto>
@@ -51,9 +46,9 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
     private final SourceService sourceService;
 
     public BudgetService(BudgetRepository repository, BudgetToEntityMapper toEntityMapper,
-            BudgetValidator validationService,
-            @PrimeService(Domain.BUDGET_SEQUENCE) SequenceService sequenceService,
-            SourceService sourceService) {
+                         BudgetValidator validationService,
+                         @PrimeService(Domain.BUDGET_SEQUENCE) SequenceService sequenceService,
+                         SourceService sourceService) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, BudgetPredicateBuilder.class);
         this.repository = repository;
@@ -100,7 +95,7 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
 
     public List<SelectItem> getMonthlyBudget(@Nullable Short refYear, @Nullable Short refMonth) {
         return repository
-                .getMonthlyBudget(Extension.orIfNullCurrentYear(refYear), Extension.orIfNullCurrentMonth(refMonth))
+                .getMonthlyBudget(orCurrentYear(refYear), orCurrentMonth(refMonth))
                 .stream()
                 .map(monthlyBudgetDto -> SelectItem.of(monthlyBudgetDto.compoundName(),
                         monthlyBudgetDto.id().toString()))

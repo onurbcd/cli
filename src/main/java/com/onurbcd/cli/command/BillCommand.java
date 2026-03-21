@@ -1,12 +1,5 @@
 package com.onurbcd.cli.command;
 
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
-
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.bill.BillOpenDto;
 import com.onurbcd.cli.enums.DocumentType;
@@ -15,12 +8,17 @@ import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.service.BillService;
 import com.onurbcd.cli.service.BudgetService;
+import com.onurbcd.cli.util.DateUtil;
 import com.onurbcd.cli.util.EnumUtil;
-import com.onurbcd.cli.util.Extension;
 import com.onurbcd.cli.util.FileUtil;
 import com.onurbcd.cli.validator.Action;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.ComponentFlow;
+import org.springframework.shell.standard.ShellCommandGroup;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 @ShellCommandGroup("Bill")
@@ -49,8 +47,8 @@ public class BillCommand {
     }
 
     private BillOpenDto runOpenBillFlow(@Nullable Short refYear, @Nullable Short refMonth) {
-        var year = Extension.orIfNullCurrentYear(refYear);
-        var month = Extension.orIfNullCurrentMonth(refMonth);
+        var year = DateUtil.orCurrentYear(refYear);
+        var month = DateUtil.orCurrentMonth(refMonth);
         var budgetItems = budgetService.getMonthlyBudget(year, month);
         Action.checkIfNotEmpty(budgetItems).orElseThrow(Error.BUDGET_REQUIRED, month, year);
         var documentTypeItems = EnumUtil.getCodeableItems(DocumentType.values());
