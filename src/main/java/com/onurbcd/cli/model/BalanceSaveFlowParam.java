@@ -3,6 +3,7 @@ package com.onurbcd.cli.model;
 import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.FlowType;
+import com.onurbcd.cli.enums.PaymentType;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.onurbcd.cli.util.EnumUtil.getCodeableItems;
 import static com.onurbcd.cli.util.EnumUtil.getItems;
 import static com.onurbcd.cli.util.FileUtil.getFiles;
 import static com.onurbcd.cli.util.ParamUtil.*;
@@ -27,9 +29,11 @@ public class BalanceSaveFlowParam implements Paramable {
     private String code;
     private String description;
     private String balanceType;
+    private String paymentType;
     private List<SelectItem> sourceItems;
     private List<SelectItem> categoryItems;
     private List<SelectItem> balanceTypeItems;
+    private List<SelectItem> paymentTypeItems;
     private List<SelectItem> filesNames;
     private List<SelectItem> linkedDocuments;
     private List<String> linkedDocumentsDefault;
@@ -48,6 +52,7 @@ public class BalanceSaveFlowParam implements Paramable {
                 .sourceItems(params.getSourceItems())
                 .categoryItems(params.getCategoryItems())
                 .balanceTypeItems(getItems(BalanceType.values()))
+                .paymentTypeItems(getCodeableItems(PaymentType.values()))
                 .filesNames(getFiles(params.getFilesPath()))
                 .linkedDocuments(getLinkedDocuments(balance, linkedIds))
                 .linkedDocumentsDefault(linkedIds)

@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.balance.BalancePatchDto;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
-import com.onurbcd.cli.enums.BalanceType;
-import com.onurbcd.cli.enums.Direction;
+import com.onurbcd.cli.enums.*;
 import com.onurbcd.cli.enums.Error;
-import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.BalanceService;
@@ -101,6 +99,9 @@ public class BalanceCommand extends BaseCommand {
             @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
             BalanceType balanceType,
 
+            @ShellOption(value = {"paymentType", "-t"}, help = "Filter's payemnt type.", defaultValue = ShellOption.NULL)
+            PaymentType paymentType,
+
             @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
             Short year,
 
@@ -113,7 +114,7 @@ public class BalanceCommand extends BaseCommand {
             @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
             String... properties
     ) {
-        var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType).and(year, month, day);
+        var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
@@ -174,6 +175,9 @@ public class BalanceCommand extends BaseCommand {
             @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
             BalanceType balanceType,
 
+            @ShellOption(value = {"paymentType", "-t"}, help = "Filter's payemnt type.", defaultValue = ShellOption.NULL)
+            PaymentType paymentType,
+
             @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
             Short year,
 
@@ -185,7 +189,7 @@ public class BalanceCommand extends BaseCommand {
     ) {
         return shellHelper.printTable(
                 service.getSum(
-                        BalanceFilter.of(active, search, sourceId, categoryId, balanceType).and(year, month, day)),
+                        BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day)),
                 EruTable.BALANCE_SUM);
     }
 

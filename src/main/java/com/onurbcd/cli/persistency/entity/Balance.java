@@ -1,6 +1,7 @@
 package com.onurbcd.cli.persistency.entity;
 
 import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.util.Constant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -68,6 +69,11 @@ public class Balance extends Prime implements SequenceEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "balance_type", nullable = false, length = 7)
     private BalanceType balanceType;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_type", length = 20)
+    private PaymentType paymentType;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(

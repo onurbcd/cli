@@ -2,6 +2,7 @@ package com.onurbcd.cli.dto.balance;
 
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.model.MultipartFile;
 import com.onurbcd.cli.util.Constant;
 import jakarta.validation.constraints.*;
@@ -61,6 +62,9 @@ public class BalanceSaveDto extends PrimeSaveDto {
     @NotNull(message = "Balance type is required.")
     private BalanceType balanceType;
 
+    @NotNull(message = "Payment type is required.")
+    private PaymentType paymentType;
+
     private Set<UUID> documentsIds;
     private List<MultipartFile> multipartFiles;
 
@@ -82,6 +86,7 @@ public class BalanceSaveDto extends PrimeSaveDto {
                 .code(normalizeSpace(getString(context, CODE_ID)))
                 .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
                 .balanceType(valueOf(BalanceType.class, getString(context, BALANCE_TYPE_ID)))
+                .paymentType(valueOf(PaymentType.class, getString(context, PAYMENT_TYPE_ID)))
                 .documentsIds(documentsIds)
                 .multipartFiles(filesToMultipartFiles(getStringList(context, DOCUMENTS_ID)))
                 .build();

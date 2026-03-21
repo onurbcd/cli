@@ -100,7 +100,7 @@ public enum EruTable {
     }
 
     private static LinkedHashMap<String, Object> getBalanceHeaders() {
-        var balanceHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(9);
+        var balanceHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(10);
         balanceHeaders.put(ID_KEY, ID_VALUE);
         balanceHeaders.put(SEQUENCE_KEY, SEQUENCE_VALUE);
         balanceHeaders.put(DAY_CALENDAR_DATE_KEY, DATE_VALUE);
@@ -110,6 +110,7 @@ public enum EruTable {
         balanceHeaders.put(CODE_KEY, CODE_VALUE);
         balanceHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
         balanceHeaders.put(BALANCE_TYPE_KEY, TYPE_VALUE);
+        balanceHeaders.put(PAYMENT_TYPE_KEY, PAYMENT_TYPE_VALUE);
         return balanceHeaders;
     }
 

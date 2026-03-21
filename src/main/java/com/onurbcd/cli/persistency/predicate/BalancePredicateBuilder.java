@@ -1,7 +1,8 @@
 package com.onurbcd.cli.persistency.predicate;
 
-import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
+import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.persistency.entity.QBalance;
 import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ public class BalancePredicateBuilder extends BasePredicateBuilder {
                 .sourceId(filter.getSourceId())
                 .categoryId(filter.getCategoryId())
                 .balanceType(filter.getBalanceType())
+                .paymentType(filter.getPaymentType())
                 .search(filter.getSearch())
                 .active(filter.isActive())
                 .build();
@@ -76,6 +78,14 @@ public class BalancePredicateBuilder extends BasePredicateBuilder {
     private BalancePredicateBuilder balanceType(@Nullable BalanceType balanceType) {
         if (balanceType != null) {
             builder().and(QBalance.balance.balanceType.eq(balanceType));
+        }
+
+        return this;
+    }
+
+    private BalancePredicateBuilder paymentType(@Nullable PaymentType paymentType) {
+        if (paymentType != null) {
+            builder().and(QBalance.balance.paymentType.eq(paymentType));
         }
 
         return this;

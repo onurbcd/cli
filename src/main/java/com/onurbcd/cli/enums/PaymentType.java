@@ -1,11 +1,9 @@
 package com.onurbcd.cli.enums;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter
-public enum PaymentType {
+public enum PaymentType implements Codeable {
 
     /*
      * Métodos Tradicionais
@@ -282,4 +280,9 @@ public enum PaymentType {
     BUY_NOW_PAY_LATER("Compre Agora, Pague Depois (BNPL)");
 
     private final String code;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

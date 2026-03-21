@@ -65,7 +65,8 @@ public final class FlowFactory {
                     .input(FlowField.AMOUNT, params.getAmount())
                     .input(FlowField.CODE, params.getCode())
                     .input(FlowField.DESCRIPTION, params.getDescription())
-                    .select(FlowField.BALANCE_TYPE, params.getBalanceTypeItems(), params.getBalanceType());
+                    .select(FlowField.BALANCE_TYPE, params.getBalanceTypeItems(), params.getBalanceType())
+                    .select(FlowField.PAYMENT_TYPE, params.getPaymentTypeItems(), params.getPaymentType());
 
             if (CollectionUtil.isNotEmpty(params.getLinkedDocuments())) {
                 wrapper.multiSelect(FlowField.DOCUMENTS_IDS, params.getLinkedDocuments(), params.getLinkedDocumentsDefault());

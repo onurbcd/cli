@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS public.balance (
     code VARCHAR(150) NOT NULL,
     description VARCHAR(250),
     balance_type VARCHAR(7) NOT NULL,
+    payment_type VARCHAR(20),
     CONSTRAINT pk_balance PRIMARY KEY (id),
     CONSTRAINT uc_balance_sequence_day_id_balance_type UNIQUE (sequence, day_id, balance_type),
     CONSTRAINT fk_balance_category_id FOREIGN KEY (category_id) REFERENCES public.category (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,

@@ -3,6 +3,7 @@ package com.onurbcd.cli.dto.balance;
 import com.onurbcd.cli.dto.PrimeDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.PaymentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class BalanceDto extends PrimeDto {
     private String code;
     private String description;
     private BalanceType balanceType;
+    private PaymentType paymentType;
     private Set<DocumentDto> documents;
 
     @Nullable

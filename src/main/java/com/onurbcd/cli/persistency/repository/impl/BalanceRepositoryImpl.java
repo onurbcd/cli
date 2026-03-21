@@ -56,7 +56,8 @@ public class BalanceRepositoryImpl implements CustomRepository<BalanceDto, Balan
                 QBalance.balance.amount,
                 QBalance.balance.code,
                 QBalance.balance.description,
-                QBalance.balance.balanceType
+                QBalance.balance.balanceType,
+                QBalance.balance.paymentType
         );
     }
 

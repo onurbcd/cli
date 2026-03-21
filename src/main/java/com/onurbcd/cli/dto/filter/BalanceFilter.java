@@ -1,6 +1,7 @@
 package com.onurbcd.cli.dto.filter;
 
 import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -20,11 +21,14 @@ public class BalanceFilter extends AbstractFilterable {
     private UUID sourceId;
     private UUID categoryId;
     private BalanceType balanceType;
+    private PaymentType paymentType;
     private Short dayCalendarYear;
     private Short dayCalendarMonth;
     private Short dayCalendarDayInMonth;
 
-    public static BalanceFilter of(Boolean active, String search, UUID sourceId, UUID categoryId, BalanceType balanceType) {
+    public static BalanceFilter of(Boolean active, String search, UUID sourceId, UUID categoryId,
+                                   BalanceType balanceType, PaymentType paymentType) {
+
         return BalanceFilter
                 .builder()
                 .active(active)
@@ -32,6 +36,7 @@ public class BalanceFilter extends AbstractFilterable {
                 .sourceId(sourceId)
                 .categoryId(categoryId)
                 .balanceType(balanceType)
+                .paymentType(paymentType)
                 .build();
     }
 

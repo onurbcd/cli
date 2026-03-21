@@ -62,6 +62,7 @@ public final class Constant {
     public static final String SOURCE_NAME_KEY = "sourceName";
     public static final String CODE_KEY = "code";
     public static final String BALANCE_TYPE_KEY = "balanceType";
+    public static final String PAYMENT_TYPE_KEY = "paymentType";
 
     /*
      * HEADERS VALUES
@@ -102,6 +103,7 @@ public final class Constant {
     public static final String SOURCE_VALUE = "Source";
     public static final String CATEGORY_VALUE = "Category";
     public static final String CODE_VALUE = "Code";
+    public static final String PAYMENT_TYPE_VALUE = "Payment Type";
 
     /*
      * MESSAGES
@@ -167,6 +169,7 @@ public final class Constant {
     public static final String REF_MONTH_ID = "refMonth";
     public static final String BILL_TYPE_ID_ID = "billTypeId";
     public static final String PAID_ID = "paid";
+    public static final String PAYMENT_TYPE_ID = "paymentType";
 
     /*
      * FLOW LABELS
@@ -195,4 +198,5 @@ public final class Constant {
     public static final String REF_MONTH_LABEL = "* Reference Month:";
     public static final String BILL_TYPE_ID_LABEL = "* Bill Type:";
     public static final String PAID_LABEL = "* Paid:";
+    public static final String PAYMENT_TYPE_LABEL = "* Payment Type:";
 }

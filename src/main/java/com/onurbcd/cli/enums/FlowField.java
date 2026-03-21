@@ -33,7 +33,8 @@ public enum FlowField {
     REF_YEAR(REF_YEAR_ID, REF_YEAR_LABEL),
     REF_MONTH(REF_MONTH_ID, REF_MONTH_LABEL),
     BILL_TYPE_ID(BILL_TYPE_ID_ID, BILL_TYPE_ID_LABEL),
-    PAID(PAID_ID, PAID_LABEL);
+    PAID(PAID_ID, PAID_LABEL),
+    PAYMENT_TYPE(PAYMENT_TYPE_ID, PAYMENT_TYPE_LABEL);
 
     private final String id;
     private final String name;
