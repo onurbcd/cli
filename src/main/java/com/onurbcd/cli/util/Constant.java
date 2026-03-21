@@ -138,7 +138,7 @@ public final class Constant {
      * REGEX
      */
     public static final String REGEXP_URL = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-    public static final String REGEXP_PATH = "^[a-z|A-Z|0-9|-]+$";
+    public static final String REGEXP_PATH = "^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$";
 
     /*
      * FLOW FIELDS
