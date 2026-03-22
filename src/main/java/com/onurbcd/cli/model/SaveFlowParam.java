@@ -18,6 +18,7 @@ public class SaveFlowParam {
     private String filesPath;
     private List<SelectItem> billTypeItems;
     private List<SelectItem> incomeSourceItems;
+    private List<SelectItem> budgetItems;
 
     public static SaveFlowParam noArgs(FlowType type) {
         return SaveFlowParam.builder()
@@ -59,6 +60,14 @@ public class SaveFlowParam {
         return SaveFlowParam.builder()
                 .type(FlowType.SOURCE)
                 .incomeSourceItems(incomeSourceItems)
+                .build();
+    }
+
+    public static SaveFlowParam billOpen(List<SelectItem> budgetItems, String filesPath) {
+        return SaveFlowParam.builder()
+                .type(FlowType.BILL_OPEN)
+                .budgetItems(budgetItems)
+                .filesPath(filesPath)
                 .build();
     }
 }

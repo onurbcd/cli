@@ -8,13 +8,13 @@ import com.onurbcd.cli.enums.Direction;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.BillTypeService;
 import com.onurbcd.cli.service.BudgetService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -47,7 +47,7 @@ public class BudgetCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The budget's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "budget-delete", value = "Delete budget by id.")
@@ -212,7 +212,7 @@ public class BudgetCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         var billTypeItems = billTypeService.getItems(null);
         checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
         return SaveFlowParam.budget(billTypeItems);

@@ -4,6 +4,7 @@ import com.onurbcd.cli.dto.PrimeDto;
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.balance.BalanceSaveDto;
+import com.onurbcd.cli.dto.bill.BillOpenDto;
 import com.onurbcd.cli.dto.billtype.BillTypeDto;
 import com.onurbcd.cli.dto.billtype.BillTypeSaveDto;
 import com.onurbcd.cli.dto.budget.BudgetDto;
@@ -34,6 +35,7 @@ public final class SaveDtoFactory {
             case INCOME_SOURCE -> IncomeSourceSaveDto.of(context, (IncomeSourceDto) dto);
             case SECRET -> SecretSaveDto.of(context, (SecretDto) dto);
             case SOURCE -> SourceSaveDto.of(context, (SourceDto) dto);
+            case BILL_OPEN -> BillOpenDto.of(context);
         };
     }
 }

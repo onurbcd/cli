@@ -6,6 +6,7 @@ import com.onurbcd.cli.dto.incomesource.IncomeSourcePatchDto;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.IncomeSourceService;
 import jakarta.validation.constraints.Min;
@@ -35,7 +36,7 @@ public class IncomeSourceCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The income source's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "income-source-delete", value = "Delete income source by id.")
@@ -95,7 +96,7 @@ public class IncomeSourceCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         return SaveFlowParam.noArgs(FlowType.INCOME_SOURCE);
     }
 }

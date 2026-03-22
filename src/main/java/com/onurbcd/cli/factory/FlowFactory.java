@@ -21,6 +21,7 @@ public final class FlowFactory {
             case BALANCE -> createBalanceSaveFlow(builder, (BalanceSaveFlowParam) params);
             case SECRET -> createSecretSaveFlow(builder, (SecretSaveFlowParam) params);
             case BUDGET -> createBudgetSaveFlow(builder, (BudgetSaveFlowParam) params);
+            case BILL_OPEN -> createBillOpenSaveFlow(builder, (BillOpenSaveFlowParam) params);
         };
     }
 
@@ -94,6 +95,20 @@ public final class FlowFactory {
                 .select(FlowField.BILL_TYPE_ID, params.getBillTypeItems(), params.getBillType())
                 .input(FlowField.AMOUNT, params.getAmount())
                 .confirm(FlowField.PAID, params.getPaid())
+                .execute();
+    }
+
+    private static FlowSupplier createBillOpenSaveFlow(ComponentFlow.Builder builder, BillOpenSaveFlowParam params) {
+        return () -> init(builder)
+                .input(FlowField.REFERENCE_DAY)
+                .input(FlowField.DOCUMENT_DATE)
+                .input(FlowField.DUE_DATE)
+                .input(FlowField.OBSERVATION)
+                .input(FlowField.INSTALLMENT)
+                .select(FlowField.DOCUMENT_TYPE, params.getDocumentTypeItems())
+                .select(FlowField.BUDGET, params.getBudgetItems())
+                .select(FlowField.REFERENCE_TYPE, params.getReferenceTypeItems())
+                .select(FlowField.DOCUMENT, params.getFilesNames())
                 .execute();
     }
 }

@@ -7,6 +7,7 @@ import com.onurbcd.cli.dto.filter.BalanceFilter;
 import com.onurbcd.cli.enums.*;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.BalanceService;
 import com.onurbcd.cli.service.CategoryService;
@@ -15,7 +16,6 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -51,7 +51,7 @@ public class BalanceCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The balance's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "balance-delete", value = "Delete balance by id.")
@@ -194,7 +194,7 @@ public class BalanceCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         var sourceItems = sourceService.getItems(null);
         Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
         var categoryItems = categoryService.getCategoryItems(null, true);

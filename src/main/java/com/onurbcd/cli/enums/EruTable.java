@@ -21,7 +21,8 @@ public enum EruTable {
     BUDGET(getBudgetHeaders()),
     BUDGET_SUM_MONTH(getBudgetSumMonthHeaders()),
     BALANCE(getBalanceHeaders()),
-    BALANCE_SUM(getBalanceSumHeaders());
+    BALANCE_SUM(getBalanceSumHeaders()),
+    BILL(getBillHeaders());
 
     private final LinkedHashMap<String, Object> headers;
 
@@ -119,6 +120,10 @@ public enum EruTable {
         balanceSumHeaders.put(TYPE_KEY, TYPE_VALUE);
         balanceSumHeaders.put(VALUE_KEY, VALUE_VALUE);
         return balanceSumHeaders;
+    }
+
+    private static LinkedHashMap<String, Object> getBillHeaders() {
+        return LinkedHashMap.newLinkedHashMap(0);
     }
 
     private static LinkedHashMap<String, Object> getDefaultHeaders(int numMappings) {

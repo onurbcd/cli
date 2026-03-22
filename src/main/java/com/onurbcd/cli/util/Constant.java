@@ -22,6 +22,7 @@ public final class Constant {
     public static final String INCOME_SOURCE = "Income Source";
     public static final String SECRET = "Secret";
     public static final String SOURCE = "Source";
+    public static final String BILL = "Bill";
 
     /*
      * HEADERS KEYS
@@ -170,6 +171,15 @@ public final class Constant {
     public static final String BILL_TYPE_ID_ID = "billTypeId";
     public static final String PAID_ID = "paid";
     public static final String PAYMENT_TYPE_ID = "paymentType";
+    public static final String REFERENCE_DAY_ID = "referenceDay";
+    public static final String DOCUMENT_DATE_ID = "documentDate";
+    public static final String DUE_DATE_ID = "dueDate";
+    public static final String OBSERVATION_ID = "observation";
+    public static final String INSTALLMENT_ID = "installment";
+    public static final String DOCUMENT_TYPE_ID = "documentType";
+    public static final String BUDGET_ID = "budget";
+    public static final String REFERENCE_TYPE_ID = "referenceType";
+    public static final String DOCUMENT_ID = "document";
 
     /*
      * FLOW LABELS
@@ -199,4 +209,13 @@ public final class Constant {
     public static final String BILL_TYPE_ID_LABEL = "* Bill Type:";
     public static final String PAID_LABEL = "* Paid:";
     public static final String PAYMENT_TYPE_LABEL = "* Payment Type:";
+    public static final String REFERENCE_DAY_LABEL = "* Reference Day (yyyy-MM-dd):";
+    public static final String DOCUMENT_DATE_LABEL = "Document Date (yyyy-MM-dd):";
+    public static final String DUE_DATE_LABEL = "* Due Date (yyyy-MM-dd):";
+    public static final String OBSERVATION_LABEL = "Observation:";
+    public static final String INSTALLMENT_LABEL = "Installment:";
+    public static final String DOCUMENT_TYPE_LABEL = "* Document Type";
+    public static final String BUDGET_LABEL = "* Budget:";
+    public static final String REFERENCE_TYPE_LABEL = "* Reference Type";
+    public static final String DOCUMENT_LABEL = "Document";
 }

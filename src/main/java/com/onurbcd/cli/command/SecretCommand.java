@@ -6,6 +6,7 @@ import com.onurbcd.cli.dto.secret.SecretPatchDto;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.SecretService;
 import jakarta.validation.constraints.Min;
@@ -35,7 +36,7 @@ public class SecretCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The secret's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "secret-delete", value = "Delete secret by id.")
@@ -95,7 +96,7 @@ public class SecretCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         return SaveFlowParam.noArgs(FlowType.SECRET);
     }
 }

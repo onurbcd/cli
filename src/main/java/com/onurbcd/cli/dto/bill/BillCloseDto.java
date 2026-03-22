@@ -2,6 +2,7 @@ package com.onurbcd.cli.dto.bill;
 
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.PaymentType;
+import com.onurbcd.cli.model.MultipartFile;
 import com.onurbcd.cli.util.Constant;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,4 +33,6 @@ public class BillCloseDto extends PrimeSaveDto {
 
     @NotNull
     private UUID sourceId;
+
+    private MultipartFile multipartFile;
 }

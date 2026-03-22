@@ -1,5 +1,6 @@
 package com.onurbcd.cli.service;
 
+import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.bill.BillCloseDto;
 import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.dto.bill.BillOpenDto;
@@ -11,7 +12,6 @@ import com.onurbcd.cli.enums.QueryType;
 import com.onurbcd.cli.mapper.BillOpenToEntityMapper;
 import com.onurbcd.cli.model.BillBalanceParams;
 import com.onurbcd.cli.model.BillDocParams;
-import com.onurbcd.cli.model.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Bill;
 import com.onurbcd.cli.persistency.entity.BillType;
 import com.onurbcd.cli.persistency.entity.Day;
@@ -58,8 +58,22 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         this.billBalanceService = billBalanceService;
     }
 
+    @Override
     @Transactional
-    public UUID openBill(BillOpenDto billOpenDto, MultipartFile multipartFile) {
+    public String save(Dtoable dto, UUID id) {
+        return switch (dto) {
+            case BillOpenDto billOpenDto -> openBill(billOpenDto);
+            case BillCloseDto billCloseDto -> closeBill(id, billCloseDto);
+            default -> throw new IllegalArgumentException("Unsupported DTO type: " + dto.getClass().getSimpleName());
+        };
+    }
+
+    @Override
+    protected Predicate getPredicate(Filterable filter) {
+        return BillPredicateBuilder.all((BillFilter) filter);
+    }
+
+    private String openBill(BillOpenDto billOpenDto) {
         var bill = toEntityMapper.apply(billOpenDto);
         var countByBudgetId = repository.countByBudgetId(billOpenDto.getBudgetId());
         Action.checkIf(countByBudgetId < 1).orElseThrow(Error.BILL_ALREADY_OPENED);
@@ -70,13 +84,12 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
                 .builder()
                 .path(budgetValues.path())
                 .referenceDayCalendarDate(billOpenDto.getReferenceDayCalendarDate())
-                .multipartFile(multipartFile)
+                .multipartFile(billOpenDto.getMultipartFile())
                 .documentType(billOpenDto.getDocumentType())
                 .referenceType(billOpenDto.getReferenceType())
                 .build();
 
         var billDocument = documentService.createDocument(billDocParams);
-
         bill.setName(Constant.BOGUS_NAME);
         fillDay(billOpenDto.getReferenceDayCalendarDate(), bill::setReferenceDay);
         fillDay(billOpenDto.getDocumentDateCalendarDate(), bill::setDocumentDate);
@@ -85,13 +98,11 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         bill.setBillDocument(billDocument);
         bill.setBillType(entityManager.getReference(BillType.class, budgetValues.billTypeId()));
         bill.setClosed(Boolean.FALSE);
-
         bill = repository.save(bill);
-        return bill.getId();
+        return bill.getId().toString();
     }
 
-    @Transactional
-    public void closeBill(UUID id, BillCloseDto billCloseDto, MultipartFile multipartFile) {
+    private String closeBill(UUID id, BillCloseDto billCloseDto) {
         var bill = getOrElseThrow(id);
         Action.checkIf(Boolean.FALSE.equals(bill.getClosed())).orElseThrow(Error.BILL_ALREADY_CLOSED);
         var billTypeValues = billTypeService.getValues(bill.getBillType().getId());
@@ -100,7 +111,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
                 .builder()
                 .path(billTypeValues.path())
                 .referenceDayCalendarDate(bill.getReferenceDay().getCalendarDate())
-                .multipartFile(multipartFile)
+                .multipartFile(billCloseDto.getMultipartFile())
                 .documentType(bill.getDocumentType())
                 .referenceType(bill.getReferenceType())
                 .build();
@@ -115,21 +126,15 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
                 .build();
 
         var balance = billBalanceService.saveBalance(billBalanceParams);
-
         bill.setName(Constant.BOGUS_NAME);
         fillDay(billCloseDto.getPaymentDateCalendarDate(), bill::setPaymentDate);
         bill.setReceipt(receipt);
         bill.setObservation(billCloseDto.getObservation());
         bill.setClosed(Boolean.TRUE);
         bill.setBalance(balance);
-
-        repository.save(bill);
+        bill = repository.save(bill);
         budgetService.update(BudgetPatchDto.of(Boolean.TRUE), bill.getBudget().getId());
-    }
-
-    @Override
-    protected Predicate getPredicate(Filterable filter) {
-        return BillPredicateBuilder.all((BillFilter) filter);
+        return bill.getId().toString();
     }
 
     private void fillDay(@Nullable LocalDate localDateIn, Consumer<Day> dayConsumer) {

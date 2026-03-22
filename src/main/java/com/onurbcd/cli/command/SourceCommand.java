@@ -8,6 +8,7 @@ import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.SourceType;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.IncomeSourceService;
 import com.onurbcd.cli.service.SourceService;
@@ -47,7 +48,7 @@ public class SourceCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The source's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "source-delete", value = "Delete source by id.")
@@ -138,7 +139,7 @@ public class SourceCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         var incomeSourceItems = incomeSourceService.getItems(null);
         Action.checkIfNotEmpty(incomeSourceItems).orElseThrow(Error.INCOME_SOURCE_REQUIRED);
         return SaveFlowParam.source(incomeSourceItems);

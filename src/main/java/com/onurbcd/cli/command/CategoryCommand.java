@@ -5,12 +5,12 @@ import com.onurbcd.cli.dto.category.CategoryPatchDto;
 import com.onurbcd.cli.dto.filter.CategoryFilter;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.CategoryService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -38,7 +38,7 @@ public class CategoryCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The category's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "category-delete", value = "Delete category by id.")
@@ -107,8 +107,8 @@ public class CategoryCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
-        var categoryItems = service.getCategoryItems(id, false);
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
+        var categoryItems = service.getCategoryItems(params.getId(), false);
         return SaveFlowParam.category(categoryItems);
     }
 }

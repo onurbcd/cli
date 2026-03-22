@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.component.flow.SelectItem;
+import org.springframework.shell.standard.ShellOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,10 @@ public final class FlowBuilderWrapper {
         return this;
     }
 
+    public FlowBuilderWrapper input(FlowField field) {
+        return input(field, ShellOption.NULL);
+    }
+
     public FlowBuilderWrapper select(FlowField field, List<SelectItem> items, String defaultValue) {
         builder.withSingleItemSelector(field.getId())
                 .name(field.getName())
@@ -36,6 +41,10 @@ public final class FlowBuilderWrapper {
                 .and();
 
         return this;
+    }
+
+    public FlowBuilderWrapper select(FlowField field, List<SelectItem> items) {
+        return select(field, items, ShellOption.NULL);
     }
 
     public FlowBuilderWrapper multiSelect(FlowField field, List<SelectItem> items) {

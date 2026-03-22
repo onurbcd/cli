@@ -10,6 +10,7 @@ import com.onurbcd.cli.factory.FlowFactory;
 import com.onurbcd.cli.factory.SaveDtoFactory;
 import com.onurbcd.cli.factory.SaveFlowParamFactory;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.CrudService;
 import com.onurbcd.cli.util.FlowUtil;
@@ -34,10 +35,10 @@ public abstract class BaseCommand {
     private final String name;
     private final EruTable table;
 
-    protected abstract SaveFlowParam preSaveFlow(@Nullable UUID id);
+    protected abstract SaveFlowParam preSaveFlow(CommandParam params);
 
-    protected String baseSave(@Nullable UUID id) {
-        var saveDto = runSaveFlow(id);
+    protected String baseSave(CommandParam params) {
+        var saveDto = runSaveFlow(params);
 
         if (saveDto == null) {
             return shellHelper.warning(OPERATION_CANCELLED);
@@ -49,7 +50,7 @@ public abstract class BaseCommand {
             return shellHelper.error(violations);
         }
 
-        var returnId = crudService.save(saveDto, id);
+        var returnId = crudService.save(saveDto, params.getId());
         return shellHelper.success(SAVE_SUCCESS.formatted(name, returnId));
     }
 
@@ -77,9 +78,9 @@ public abstract class BaseCommand {
     }
 
     @Nullable
-    private PrimeSaveDto runSaveFlow(@Nullable UUID id) {
-        var preParams = preSaveFlow(id);
-        var dto = (PrimeDto) Optional.ofNullable(id).map(crudService::getById).orElse(null);
+    private PrimeSaveDto runSaveFlow(CommandParam commandParam) {
+        var preParams = preSaveFlow(commandParam);
+        var dto = (PrimeDto) Optional.ofNullable(commandParam.getId()).map(crudService::getById).orElse(null);
         var params = SaveFlowParamFactory.create(dto, preParams);
         var flow = FlowFactory.create(flowBuilder, params);
         var result = FlowUtil.runFlowSafely(flow);

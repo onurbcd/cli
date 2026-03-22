@@ -25,6 +25,7 @@ public final class SaveFlowParamFactory {
             case INCOME_SOURCE -> IncomeSourceSaveFlowParam.of((IncomeSourceDto) dto);
             case SECRET -> SecretSaveFlowParam.of((SecretDto) dto);
             case SOURCE -> SourceSaveFlowParam.of((SourceDto) dto, params);
+            case BILL_OPEN -> BillOpenSaveFlowParam.of(params);
         };
     }
 }

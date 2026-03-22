@@ -6,6 +6,7 @@ import com.onurbcd.cli.dto.filter.BillTypeFilter;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
+import com.onurbcd.cli.model.CommandParam;
 import com.onurbcd.cli.model.SaveFlowParam;
 import com.onurbcd.cli.service.BillTypeService;
 import com.onurbcd.cli.service.CategoryService;
@@ -13,7 +14,6 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -43,7 +43,7 @@ public class BillTypeCommand extends BaseCommand {
             @ShellOption(value = {"id", "-i"}, help = "The bill type's id.", defaultValue = ShellOption.NULL)
             UUID id
     ) {
-        return baseSave(id);
+        return baseSave(CommandParam.of(id));
     }
 
     @ShellMethod(key = "bill-type-delete", value = "Delete bill type by id.")
@@ -103,7 +103,7 @@ public class BillTypeCommand extends BaseCommand {
     }
 
     @Override
-    protected SaveFlowParam preSaveFlow(@Nullable UUID id) {
+    protected SaveFlowParam preSaveFlow(CommandParam params) {
         var categoryItems = categoryService.getCategoryItems(null, true);
         Action.checkIfNotEmpty(categoryItems).orElseThrow(Error.CATEGORY_REQUIRED);
         return SaveFlowParam.billType(categoryItems);

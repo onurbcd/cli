@@ -45,14 +45,16 @@ public final class FileUtil {
         }
 
         return filesPaths.stream()
-                .map(filePath -> {
-                    try {
-                        return fileToMultipartFile(filePath);
-                    } catch (IOException e) {
-                        throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, e);
-                    }
-                })
+                .map(FileUtil::fileToMultipartFile)
                 .toList();
+    }
+
+    public static MultipartFile fileToMultipartFile(String filePath) {
+        try {
+            return fileToMultipart(filePath);
+        } catch (IOException e) {
+            throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, e);
+        }
     }
 
     public static String getHyperlink(DocumentDto document) {
@@ -73,7 +75,7 @@ public final class FileUtil {
         return "file://" + fileNameBuilder;
     }
 
-    private static MultipartFile fileToMultipartFile(String filePath) throws IOException {
+    private static MultipartFile fileToMultipart(String filePath) throws IOException {
         var path = Path.of(filePath);
         var fileName = path.getFileName().toString();
         var contentType = Files.probeContentType(path);
