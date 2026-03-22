@@ -1,5 +1,6 @@
 package com.onurbcd.cli.dto.balance;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.onurbcd.cli.dto.PrimeDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BalanceDto extends PrimeDto {
 
     private Short sequence;

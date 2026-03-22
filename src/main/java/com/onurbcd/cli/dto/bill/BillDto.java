@@ -1,5 +1,6 @@
 package com.onurbcd.cli.dto.bill;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.onurbcd.cli.dto.PrimeDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.DocumentType;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BillDto extends PrimeDto {
 
     private Integer referenceDayId;

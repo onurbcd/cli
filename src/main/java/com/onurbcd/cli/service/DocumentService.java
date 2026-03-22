@@ -1,7 +1,6 @@
 package com.onurbcd.cli.service;
 
 import com.onurbcd.cli.dto.document.DocumentDto;
-import com.onurbcd.cli.dto.document.FileDto;
 import com.onurbcd.cli.dto.document.MultipartFileDto;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
@@ -11,7 +10,6 @@ import com.onurbcd.cli.persistency.entity.Document;
 import com.onurbcd.cli.persistency.repository.DocumentRepository;
 import com.onurbcd.cli.validator.Action;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,10 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -58,28 +59,6 @@ public class DocumentService {
             storageService.deleteFile(document);
             repository.deleteUsingId(Objects.requireNonNull(document.getId()));
         }
-    }
-
-    public FileDto getFile(UUID id) {
-        var document = repository.findById(id).orElse(null);
-        Action.checkIfNotNull(document).orElseThrowNotFound(id);
-        Objects.requireNonNull(document);
-
-        var file = storageService.getFile(document);
-
-        /*var headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + document.getName() + "\"");
-        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
-        headers.add(HttpHeaders.PRAGMA, "no-cache");
-        headers.add(HttpHeaders.EXPIRES, "0");*/
-
-        return FileDto
-                .builder()
-                // .headers(headers)
-                .contentLength(document.getSize())
-                // .contentType(MediaType.parseMediaType(document.getMimeType()))
-                .resource(new ByteArrayResource(file))
-                .build();
     }
 
     private void validate(MultipartFile multipartFile) {

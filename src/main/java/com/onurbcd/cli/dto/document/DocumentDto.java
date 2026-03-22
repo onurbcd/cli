@@ -1,5 +1,7 @@
 package com.onurbcd.cli.dto.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.onurbcd.cli.util.FileUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DocumentDto {
 
     private UUID id;
@@ -36,5 +39,10 @@ public class DocumentDto {
 
     public String getHyperlink() {
         return FileUtil.getHyperlink(this);
+    }
+
+    @JsonIgnore
+    public boolean isNotEmpty() {
+        return id != null;
     }
 }

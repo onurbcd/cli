@@ -1,6 +1,7 @@
 package com.onurbcd.cli.persistency.repository.impl;
 
 import com.onurbcd.cli.dto.bill.BillDto;
+import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.persistency.entity.Bill;
 import com.onurbcd.cli.persistency.entity.QBill;
 import com.onurbcd.cli.persistency.predicate.BillPredicateBuilder;
@@ -38,6 +39,8 @@ public class BillRepositoryImpl implements CustomRepository<BillDto, Bill> {
                 .leftJoin(QBill.bill.documentDate)
                 .leftJoin(QBill.bill.paymentDate)
                 .leftJoin(QBill.bill.balance)
+                .leftJoin(QBill.bill.billDocument)
+                .leftJoin(QBill.bill.receipt)
                 .where(predicate);
     }
 
@@ -59,6 +62,24 @@ public class BillRepositoryImpl implements CustomRepository<BillDto, Bill> {
                 QBill.bill.value,
                 QBill.bill.paymentDate.id.as("paymentDateId"),
                 QBill.bill.paymentDate.calendarDate.as("paymentDateCalendarDate"),
+                Projections.bean(
+                        DocumentDto.class,
+                        QBill.bill.billDocument.id,
+                        QBill.bill.billDocument.name,
+                        QBill.bill.billDocument.path,
+                        QBill.bill.billDocument.mimeType,
+                        QBill.bill.billDocument.size,
+                        QBill.bill.billDocument.hash
+                ).as("billDocument"),
+                Projections.bean(
+                        DocumentDto.class,
+                        QBill.bill.receipt.id,
+                        QBill.bill.receipt.name,
+                        QBill.bill.receipt.path,
+                        QBill.bill.receipt.mimeType,
+                        QBill.bill.receipt.size,
+                        QBill.bill.receipt.hash
+                ).as("receipt"),
                 QBill.bill.observation,
                 QBill.bill.installment,
                 QBill.bill.billType.id.as("billTypeId"),

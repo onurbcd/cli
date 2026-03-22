@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.annotation.MaxYear;
 import com.onurbcd.cli.annotation.MinYear;
 import com.onurbcd.cli.config.property.AdminProperties;
@@ -14,11 +15,14 @@ import com.onurbcd.cli.util.DateUtil;
 import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+
+import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BILL;
 
@@ -52,7 +56,14 @@ public class BillCommand extends BaseCommand {
         return baseSave(CommandParam.of(year, month));
     }
 
-    // 7c0383ed-57d4-49d2-bdce-79fd5f4f10fc
+    @ShellMethod(key = "bill-get", value = "Get bill by id.")
+    public String get(
+            @ShellOption(value = {"id", "-i"}, help = "The bill's id.")
+            @NotNull
+            UUID id
+    ) throws JsonProcessingException {
+        return baseGet(id);
+    }
 
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {

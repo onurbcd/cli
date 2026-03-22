@@ -1,5 +1,6 @@
 package com.onurbcd.cli.service;
 
+import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.bill.BillCloseDto;
 import com.onurbcd.cli.dto.bill.BillDto;
@@ -41,11 +42,12 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
     private final BudgetService budgetService;
     private final BillTypeService billTypeService;
     private final BillBalanceService billBalanceService;
+    private final AdminProperties config;
 
     public BillService(BillRepository repository, BillOpenToEntityMapper toEntityMapper, DayService dayService,
                        EntityManager entityManager, BillDocumentService documentService,
                        BudgetService budgetService, BillTypeService billTypeService,
-                       BillBalanceService billBalanceService) {
+                       BillBalanceService billBalanceService, AdminProperties config) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, BillPredicateBuilder.class);
         this.repository = repository;
@@ -56,6 +58,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         this.budgetService = budgetService;
         this.billTypeService = billTypeService;
         this.billBalanceService = billBalanceService;
+        this.config = config;
     }
 
     @Override
@@ -66,6 +69,25 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
             case BillCloseDto billCloseDto -> closeBill(id, billCloseDto);
             default -> throw new IllegalArgumentException("Unsupported DTO type: " + dto.getClass().getSimpleName());
         };
+    }
+
+    @Override
+    public BillDto getById(UUID id) {
+        var billDto = (BillDto) super.getById(id);
+
+        if (billDto.getBillDocument() != null && billDto.getBillDocument().isNotEmpty()) {
+            billDto.getBillDocument().setStoragePath(config.getStoragePath());
+        } else {
+            billDto.setBillDocument(null);
+        }
+
+        if (billDto.getReceipt() != null && billDto.getReceipt().isNotEmpty()) {
+            billDto.getReceipt().setStoragePath(config.getStoragePath());
+        } else {
+            billDto.setReceipt(null);
+        }
+
+        return billDto;
     }
 
     @Override
