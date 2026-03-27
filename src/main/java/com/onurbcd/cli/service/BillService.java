@@ -8,6 +8,7 @@ import com.onurbcd.cli.dto.bill.BillOpenDto;
 import com.onurbcd.cli.dto.budget.BudgetPatchDto;
 import com.onurbcd.cli.dto.filter.BillFilter;
 import com.onurbcd.cli.dto.filter.Filterable;
+import com.onurbcd.cli.enums.DocumentType;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.enums.QueryType;
 import com.onurbcd.cli.mapper.BillOpenToEntityMapper;
@@ -23,10 +24,12 @@ import com.onurbcd.cli.validator.Action;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 import org.springframework.lang.Nullable;
+import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -66,7 +69,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
     public String save(Dtoable dto, UUID id) {
         return switch (dto) {
             case BillOpenDto billOpenDto -> openBill(billOpenDto);
-            case BillCloseDto billCloseDto -> closeBill(id, billCloseDto);
+            case BillCloseDto billCloseDto -> closeBill(billCloseDto.getBillId(), billCloseDto);
             default -> throw new IllegalArgumentException("Unsupported DTO type: " + dto.getClass().getSimpleName());
         };
     }
@@ -93,6 +96,13 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
     @Override
     protected Predicate getPredicate(Filterable filter) {
         return BillPredicateBuilder.all((BillFilter) filter);
+    }
+
+    public List<SelectItem> getOpenBills(Short year, Short month) {
+        return repository.getOpenBills(year, month)
+                .stream()
+                .map(itemDto -> SelectItem.of(itemDto.getName(), itemDto.getId().toString()))
+                .toList();
     }
 
     private String openBill(BillOpenDto billOpenDto) {
@@ -134,7 +144,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
                 .path(billTypeValues.path())
                 .referenceDayCalendarDate(bill.getReferenceDay().getCalendarDate())
                 .multipartFile(billCloseDto.getMultipartFile())
-                .documentType(bill.getDocumentType())
+                .documentType(DocumentType.VOUCHER)
                 .referenceType(bill.getReferenceType())
                 .build();
 
@@ -151,7 +161,6 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         bill.setName(Constant.BOGUS_NAME);
         fillDay(billCloseDto.getPaymentDateCalendarDate(), bill::setPaymentDate);
         bill.setReceipt(receipt);
-        bill.setObservation(billCloseDto.getObservation());
         bill.setClosed(Boolean.TRUE);
         bill.setBalance(balance);
         bill = repository.save(bill);

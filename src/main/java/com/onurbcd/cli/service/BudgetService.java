@@ -93,12 +93,10 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
                 .orElseThrow(ApiException.notFound(id));
     }
 
-    public List<SelectItem> getMonthlyBudget(@Nullable Short refYear, @Nullable Short refMonth) {
-        return repository
-                .getMonthlyBudget(orCurrentYear(refYear), orCurrentMonth(refMonth))
+    public List<SelectItem> getMonthlyBudget(Short refYear, Short refMonth) {
+        return repository.getMonthlyBudget(refYear, refMonth)
                 .stream()
-                .map(monthlyBudgetDto -> SelectItem.of(monthlyBudgetDto.compoundName(),
-                        monthlyBudgetDto.id().toString()))
+                .map(mbd -> SelectItem.of(mbd.compoundName(), mbd.id().toString()))
                 .toList();
     }
 

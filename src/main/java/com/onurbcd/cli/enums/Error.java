@@ -55,7 +55,8 @@ public enum Error {
     STORAGE_FILE_SAVE("Storage file save error: %s"),
     SWAP_SAME_POSITION("The current and target positions are the same"),
     WRONG_DIRETION_DOWN("The sequence cannot get any higher"),
-    WRONG_DIRETION_UP("The sequence cannot get any lower");
+    WRONG_DIRETION_UP("The sequence cannot get any lower"),
+    OPEN_BILLS_REQUIRED("Create an open bill for %02d/%d before proceeding"),;
 
     private final String message;
 

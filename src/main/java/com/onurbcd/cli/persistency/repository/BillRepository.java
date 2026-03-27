@@ -1,5 +1,6 @@
 package com.onurbcd.cli.persistency.repository;
 
+import com.onurbcd.cli.dto.ItemDto;
 import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.persistency.entity.Bill;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,4 +46,13 @@ public interface BillRepository extends EruRepository<Bill, BillDto> {
             " from Bill b" +
             " where b.budget.id = :budgetId")
     long countByBudgetId(@Param("budgetId") UUID budgetId);
+
+    @Query("select new com.onurbcd.cli.dto.ItemDto(b.id, bg.name)" +
+            " from Bill b" +
+            " inner join b.budget bg" +
+            " where b.closed = false" +
+            " and bg.refYear = :year" +
+            " and bg.refMonth = :month" +
+            " order by bg.name")
+    List<ItemDto> getOpenBills(@Param("year") Short year, @Param("month") Short month);
 }

@@ -180,6 +180,10 @@ public final class Constant {
     public static final String BUDGET_ID = "budget";
     public static final String REFERENCE_TYPE_ID = "referenceType";
     public static final String DOCUMENT_ID = "document";
+    public static final String PAYMENT_DATE_ID = "paymentDate";
+    public static final String SOURCE_ID_ID = "sourceId";
+    public static final String RECEIPT_ID = "receipt";
+    public static final String BILL_ID_ID = "billId";
 
     /*
      * FLOW LABELS
@@ -191,16 +195,16 @@ public final class Constant {
     public static final String CATEGORY_ID_LABEL = "* Category:";
     public static final String DOCUMENTS_LABEL = "Documents:";
     public static final String DOCUMENTS_IDS_LABEL = "Linked Documents:";
-    public static final String INCOME_SOURCE_ID_LABEL = "* Income Source";
-    public static final String SOURCE_TYPE_LABEL = "* Source Type";
-    public static final String CURRENCY_TYPE_LABEL = "* Currency Type";
-    public static final String BALANCE_LABEL = "* Balance";
+    public static final String INCOME_SOURCE_ID_LABEL = "* Income Source:";
+    public static final String SOURCE_TYPE_LABEL = "* Source Type:";
+    public static final String CURRENCY_TYPE_LABEL = "* Currency Type:";
+    public static final String BALANCE_LABEL = "* Balance:";
     public static final String DAY_LABEL = "* Day (yyyy-MM-dd):";
     public static final String SOURCE_LABEL = "* Source:";
     public static final String CATEGORY_LABEL = "* Category:";
     public static final String AMOUNT_LABEL = "* Amount:";
     public static final String CODE_LABEL = "* Code:";
-    public static final String BALANCE_TYPE_LABEL = "* Balance Type";
+    public static final String BALANCE_TYPE_LABEL = "* Balance Type:";
     public static final String LINK_LABEL = "Link:";
     public static final String USERNAME_LABEL = "* Username:";
     public static final String PASSWORD_LABEL = "* Password:";
@@ -214,8 +218,12 @@ public final class Constant {
     public static final String DUE_DATE_LABEL = "* Due Date (yyyy-MM-dd):";
     public static final String OBSERVATION_LABEL = "Observation:";
     public static final String INSTALLMENT_LABEL = "Installment:";
-    public static final String DOCUMENT_TYPE_LABEL = "* Document Type";
+    public static final String DOCUMENT_TYPE_LABEL = "* Document Type:";
     public static final String BUDGET_LABEL = "* Budget:";
-    public static final String REFERENCE_TYPE_LABEL = "* Reference Type";
-    public static final String DOCUMENT_LABEL = "Document";
+    public static final String REFERENCE_TYPE_LABEL = "* Reference Type:";
+    public static final String DOCUMENT_LABEL = "Document:";
+    public static final String PAYMENT_DATE_LABEL = "* Payment Date (yyyy-MM-dd):";
+    public static final String SOURCE_ID_LABEL = "* Source:";
+    public static final String RECEIPT_LABEL = "Receipt:";
+    public static final String BILL_ID_LABEL = "* Bill:";
 }
