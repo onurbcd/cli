@@ -1,24 +1,22 @@
 package com.onurbcd.cli.helper;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import org.springframework.data.domain.Page;
-import org.springframework.shell.table.BeanListTableModel;
-import org.springframework.shell.table.BorderStyle;
-import org.springframework.shell.table.CellMatchers;
-import org.springframework.shell.table.SimpleHorizontalAligner;
-import org.springframework.shell.table.TableBuilder;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onurbcd.cli.annotation.Helper;
 import com.onurbcd.cli.dto.Dtoable;
+import com.onurbcd.cli.enums.Codeable;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.formatter.BigDecimalFormatter;
+import com.onurbcd.cli.formatter.CodeableFormatter;
 import com.onurbcd.cli.formatter.LocalDateTimeFormatter;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.shell.table.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import static com.onurbcd.cli.util.Constant.*;
 
 @Helper
 @RequiredArgsConstructor
@@ -27,6 +25,7 @@ public class ShellHelper {
     private final ObjectMapper eruMapper;
     private final LocalDateTimeFormatter localDateTimeFormatter;
     private final BigDecimalFormatter bigDecimalFormatter;
+    private final CodeableFormatter codeableFormatter;
 
     public String printJson(Dtoable dtoable) throws JsonProcessingException {
         return eruMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dtoable);
@@ -37,10 +36,12 @@ public class ShellHelper {
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(LocalDateTime.class)).addFormatter(localDateTimeFormatter)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
-                .on(CellMatchers.ofType(Number.class)).addAligner(SimpleHorizontalAligner.right);
+                .on(CellMatchers.ofType(Number.class)).addAligner(SimpleHorizontalAligner.right)
+                .on(CellMatchers.ofType(Codeable.class)).addFormatter(codeableFormatter)
+                .on(CellMatchers.row(0)).addAligner(SimpleHorizontalAligner.center);
 
-        var pageInfo = String.format("%nNumber Of Elements: %d%nCurrent Page: %d%nTotal Elements: %d%nTotal Pages: %d",
-                page.getNumberOfElements(), page.getNumber() + 1, page.getTotalElements(), page.getTotalPages());
+        var pageInfo = PAGE_INFO.formatted(page.getNumberOfElements(), page.getNumber() + 1, page.getTotalElements(),
+                page.getTotalPages());
 
         return tableBuilder.build().render(1000) + pageInfo;
     }
@@ -50,19 +51,21 @@ public class ShellHelper {
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
                 .on(CellMatchers.ofType(Number.class)).addAligner(SimpleHorizontalAligner.right)
+                .on(CellMatchers.ofType(Codeable.class)).addFormatter(codeableFormatter)
+                .on(CellMatchers.row(0)).addAligner(SimpleHorizontalAligner.center)
                 .build()
                 .render(1000);
     }
 
     public String error(String message) {
-        return "\u001B[31m" + message + "\u001B[0m";
+        return ANSI_RED + message + ANSI_RESET;
     }
 
     public String success(String message) {
-        return "\u001B[32m" + message + "\u001B[0m";
+        return ANSI_GREEN + message + ANSI_RESET;
     }
 
     public String warning(String message) {
-        return "\u001B[33m" + message + "\u001B[0m";
+        return ANSI_YELLOW + message + ANSI_RESET;
     }
 }

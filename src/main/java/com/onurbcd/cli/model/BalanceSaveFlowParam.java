@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.onurbcd.cli.util.EnumUtil.getCodeableItems;
-import static com.onurbcd.cli.util.EnumUtil.getItems;
 import static com.onurbcd.cli.util.FileUtil.getFiles;
 import static com.onurbcd.cli.util.ParamUtil.*;
 
@@ -51,7 +50,7 @@ public class BalanceSaveFlowParam implements Paramable {
                 .balanceType(getEnum(balance, BalanceDto::getBalanceType))
                 .sourceItems(params.getSourceItems())
                 .categoryItems(params.getCategoryItems())
-                .balanceTypeItems(getItems(BalanceType.values()))
+                .balanceTypeItems(getCodeableItems(BalanceType.values()))
                 .paymentTypeItems(getCodeableItems(PaymentType.values()))
                 .filesNames(getFiles(params.getFilesPath()))
                 .linkedDocuments(getLinkedDocuments(balance, linkedIds))

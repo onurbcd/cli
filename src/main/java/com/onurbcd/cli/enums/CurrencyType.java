@@ -1,7 +1,17 @@
 package com.onurbcd.cli.enums;
 
-public enum CurrencyType {
+import lombok.RequiredArgsConstructor;
 
-    MONEY,
-    DIGITAL
+@RequiredArgsConstructor
+public enum CurrencyType implements Codeable {
+
+    MONEY("Dinheiro (espécie)"),
+    DIGITAL("Digital");
+
+    private final String code;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

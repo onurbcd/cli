@@ -11,7 +11,7 @@ import org.springframework.shell.component.flow.SelectItem;
 
 import java.util.List;
 
-import static com.onurbcd.cli.util.EnumUtil.getItems;
+import static com.onurbcd.cli.util.EnumUtil.getCodeableItems;
 import static com.onurbcd.cli.util.ParamUtil.*;
 
 @Builder
@@ -35,8 +35,8 @@ public class SourceSaveFlowParam implements Paramable {
                 .currencyType(getEnum(source, SourceDto::getCurrencyType))
                 .balance(getBigDecimal(source, SourceDto::getBalance))
                 .incomeSourceItems(params.getIncomeSourceItems())
-                .sourceTypeItems(getItems(SourceType.values()))
-                .currencyTypeItems(getItems(CurrencyType.values()))
+                .sourceTypeItems(getCodeableItems(SourceType.values()))
+                .currencyTypeItems(getCodeableItems(CurrencyType.values()))
                 .build();
     }
 

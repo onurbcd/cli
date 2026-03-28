@@ -1,7 +1,17 @@
 package com.onurbcd.cli.enums;
 
-public enum BalanceType {
+import lombok.RequiredArgsConstructor;
 
-    INCOME,
-    OUTCOME
+@RequiredArgsConstructor
+public enum BalanceType implements Codeable {
+
+    INCOME("Entrada"),
+    OUTCOME("Saída");
+
+    private final String code;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

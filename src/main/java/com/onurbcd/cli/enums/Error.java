@@ -56,7 +56,7 @@ public enum Error {
     SWAP_SAME_POSITION("The current and target positions are the same"),
     WRONG_DIRETION_DOWN("The sequence cannot get any higher"),
     WRONG_DIRETION_UP("The sequence cannot get any lower"),
-    OPEN_BILLS_REQUIRED("Create an open bill for %02d/%d before proceeding"),;
+    OPEN_BILLS_REQUIRED("Create an open bill for %02d/%d before proceeding");
 
     private final String message;
 

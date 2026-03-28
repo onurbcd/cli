@@ -1,7 +1,17 @@
 package com.onurbcd.cli.enums;
 
-public enum SourceType {
+import lombok.RequiredArgsConstructor;
 
-    USABLE,
-    UNUSABLE
+@RequiredArgsConstructor
+public enum SourceType implements Codeable {
+
+    USABLE("Disponível"),
+    UNUSABLE("Indisponível");
+
+    private final String code;
+
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

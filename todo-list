@@ -1,6 +1,3 @@
-- Refatorar a lógica dos save flows:
-    - Bill
-
 - Criar uma visualização de àrvore para as categorias
 
 - Criar mensagens customizadas para os erros da base de dados, como constraint violation e outros.

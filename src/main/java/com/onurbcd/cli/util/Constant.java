@@ -10,6 +10,12 @@ public final class Constant {
      * MISCELLANEOUS
      */
     public static final String BOGUS_NAME = "bogus";
+    public static final String PAGE_INFO = "%nNumber Of Elements: %d%nCurrent Page: %d%nTotal Elements: %d%nTotal Pages: %d";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     /*
      * COMMANDS
