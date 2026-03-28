@@ -1,4 +1,4 @@
-package com.onurbcd.cli.model;
+package com.onurbcd.cli.param;
 
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.persistency.entity.SequenceEntity;

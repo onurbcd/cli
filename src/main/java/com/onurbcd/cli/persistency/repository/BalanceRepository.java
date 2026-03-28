@@ -2,7 +2,7 @@ package com.onurbcd.cli.persistency.repository;
 
 import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
-import com.onurbcd.cli.model.SequenceParam;
+import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.entity.Balance;
 import com.onurbcd.cli.persistency.entity.Document;
 import org.springframework.data.jpa.repository.Modifying;

@@ -2,7 +2,7 @@ package com.onurbcd.cli.service;
 
 import com.onurbcd.cli.enums.BalanceOperation;
 import com.onurbcd.cli.enums.Operation;
-import com.onurbcd.cli.model.UpdateSourceBalance;
+import com.onurbcd.cli.param.UpdateSourceBalance;
 import com.onurbcd.cli.persistency.entity.Balance;
 import com.onurbcd.cli.util.NumberUtil;
 import lombok.RequiredArgsConstructor;

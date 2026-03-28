@@ -1,6 +1,6 @@
 package com.onurbcd.cli.dto.document;
 
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

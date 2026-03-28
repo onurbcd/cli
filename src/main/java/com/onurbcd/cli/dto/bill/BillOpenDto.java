@@ -3,7 +3,7 @@ package com.onurbcd.cli.dto.bill;
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.DocumentType;
 import com.onurbcd.cli.enums.ReferenceType;
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.util.Constant;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

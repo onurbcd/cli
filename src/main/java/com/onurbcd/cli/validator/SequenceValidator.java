@@ -1,7 +1,7 @@
 package com.onurbcd.cli.validator;
 
 import com.onurbcd.cli.enums.Direction;
-import com.onurbcd.cli.model.SequenceParam;
+import com.onurbcd.cli.param.SequenceParam;
 
 public interface SequenceValidator {
 

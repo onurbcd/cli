@@ -8,7 +8,7 @@ import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
 import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.dto.source.SourceDto;
-import com.onurbcd.cli.model.*;
+import com.onurbcd.cli.param.flow.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;

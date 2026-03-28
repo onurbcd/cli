@@ -8,7 +8,7 @@ import com.onurbcd.cli.dto.source.SourceSaveDto;
 import com.onurbcd.cli.enums.QueryType;
 import com.onurbcd.cli.enums.SourceType;
 import com.onurbcd.cli.mapper.SourceToEntityMapper;
-import com.onurbcd.cli.model.UpdateSourceBalance;
+import com.onurbcd.cli.param.UpdateSourceBalance;
 import com.onurbcd.cli.persistency.entity.Source;
 import com.onurbcd.cli.persistency.predicate.SourcePredicateBuilder;
 import com.onurbcd.cli.persistency.repository.SourceRepository;

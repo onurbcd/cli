@@ -3,7 +3,7 @@ package com.onurbcd.cli.service;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Document;
 import com.onurbcd.cli.validator.Action;
 import lombok.RequiredArgsConstructor;

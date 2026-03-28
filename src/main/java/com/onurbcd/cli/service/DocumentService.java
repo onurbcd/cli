@@ -5,7 +5,7 @@ import com.onurbcd.cli.dto.document.MultipartFileDto;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.mapper.DocumentToDtoMapper;
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Document;
 import com.onurbcd.cli.persistency.repository.DocumentRepository;
 import com.onurbcd.cli.validator.Action;

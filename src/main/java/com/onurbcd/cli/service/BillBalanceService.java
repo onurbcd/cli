@@ -4,7 +4,7 @@ import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.dto.balance.BalanceSaveDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.ReferenceType;
-import com.onurbcd.cli.model.BillBalanceParams;
+import com.onurbcd.cli.param.BillBalanceParams;
 import com.onurbcd.cli.persistency.entity.Balance;
 import com.onurbcd.cli.persistency.entity.Bill;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package com.onurbcd.cli.dto.balance;
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.util.Constant;
 import jakarta.validation.constraints.*;
 import lombok.Getter;

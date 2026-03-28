@@ -11,7 +11,7 @@ import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.enums.QueryType;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.mapper.BudgetToEntityMapper;
-import com.onurbcd.cli.model.SequenceParam;
+import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.entity.Budget;
 import com.onurbcd.cli.persistency.entity.Entityable;
 import com.onurbcd.cli.persistency.predicate.BudgetPredicateBuilder;
@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
-
-import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
-import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
 
 @Service
 public class BudgetService extends AbstractCrudService<Budget, BudgetDto, BudgetPredicateBuilder, BudgetSaveDto>

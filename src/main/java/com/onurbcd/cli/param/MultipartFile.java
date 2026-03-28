@@ -1,4 +1,4 @@
-package com.onurbcd.cli.model;
+package com.onurbcd.cli.param;
 
 import lombok.*;
 

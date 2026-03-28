@@ -1,4 +1,4 @@
-package com.onurbcd.cli.model;
+package com.onurbcd.cli.param.flow;
 
 import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.enums.FlowType;

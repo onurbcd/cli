@@ -15,7 +15,7 @@ import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.budget.BudgetSumDto;
 import com.onurbcd.cli.dto.budget.BudgetValuesDto;
 import com.onurbcd.cli.dto.budget.MonthlyBudgetDto;
-import com.onurbcd.cli.model.SequenceParam;
+import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.entity.Budget;
 
 @Repository

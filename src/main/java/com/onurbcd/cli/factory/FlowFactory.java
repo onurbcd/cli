@@ -1,7 +1,7 @@
 package com.onurbcd.cli.factory;
 
 import com.onurbcd.cli.enums.FlowField;
-import com.onurbcd.cli.model.*;
+import com.onurbcd.cli.param.flow.*;
 import com.onurbcd.cli.util.CollectionUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package com.onurbcd.cli.util;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
-import com.onurbcd.cli.model.MultipartFile;
+import com.onurbcd.cli.param.MultipartFile;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
