@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class StorageService {
 
     public void saveFile(Document document, MultipartFile multipartFile) {
         try (var inputStream = multipartFile.getInputStream()) {
-            var storagePath = Paths.get(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
+            var storagePath = Path.of(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
             var filePath = getFilePath(storagePath, document);
             Action.checkIf(Files.notExists(filePath)).orElseThrow(Error.FILE_ALREADY_EXISTS, filePath.toString());
             Files.createDirectories(storagePath);
@@ -47,7 +46,7 @@ public class StorageService {
     }
 
     private Path getFilePath(Document document) {
-        var storagePath = Paths.get(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
+        var storagePath = Path.of(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
         return getFilePath(storagePath, document);
     }
 
