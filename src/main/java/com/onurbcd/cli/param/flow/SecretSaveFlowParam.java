@@ -4,7 +4,7 @@ import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.enums.FlowType;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import static com.onurbcd.cli.util.ParamUtil.getString;
 

@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.annotation.MaxYear;
 import com.onurbcd.cli.annotation.MinYear;
 import com.onurbcd.cli.config.property.AdminProperties;
@@ -19,18 +18,18 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BILL;
 
-@ShellComponent
-@ShellCommandGroup(BILL)
+@Component
+@CommandGroup(name = BILL)
 public class BillCommand extends BaseCommand {
 
     private final BillService service;
@@ -48,32 +47,32 @@ public class BillCommand extends BaseCommand {
         this.config = config;
     }
 
-    @ShellMethod(key = "bill-save", value = "Update a bill.")
+    @Command(name = "bill-save", description = "Update a bill.")
     public String save(
-            @ShellOption(value = {"id", "-i"}, help = "The bill's id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "id", description = "The bill's id.", required = true)
             @NotNull
             UUID id
     ) {
         return baseSave(CommandParam.of(FlowType.BILL, id));
     }
 
-    @ShellMethod(key = "bill-get", value = "Get bill by id.")
+    @Command(name = "bill-get", description = "Get bill by id.")
     public String get(
-            @ShellOption(value = {"id", "-i"}, help = "The bill's id.")
+            @Option(shortName = 'i', longName = "id", description = "The bill's id.", required = true)
             @NotNull
             UUID id
-    ) throws JsonProcessingException {
+    ) {
         return baseGet(id);
     }
 
-    @ShellMethod(key = "bill-open", value = "Open a bill.")
+    @Command(name = "bill-open", description = "Open a bill.")
     public String openBill(
-            @ShellOption(value = {"year", "-y"}, help = "The reference year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "year", description = "The reference year.")
             @MinYear
             @MaxYear
             Short year,
 
-            @ShellOption(value = {"month", "-m"}, help = "The reference month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "month", description = "The reference month.")
             @Min(1)
             @Max(12)
             Short month
@@ -81,14 +80,14 @@ public class BillCommand extends BaseCommand {
         return baseSave(CommandParam.of(FlowType.BILL_OPEN, year, month));
     }
 
-    @ShellMethod(key = "bill-close", value = "Close a bill.")
+    @Command(name = "bill-close", description = "Close a bill.")
     public String closeBill(
-            @ShellOption(value = {"year", "-y"}, help = "The reference year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "year", description = "The reference year.")
             @MinYear
             @MaxYear
             Short year,
 
-            @ShellOption(value = {"month", "-m"}, help = "The reference month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "month", description = "The reference month.")
             @Min(1)
             @Max(12)
             Short month

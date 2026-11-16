@@ -21,8 +21,8 @@ import com.onurbcd.cli.util.NumberUtil;
 import com.onurbcd.cli.validator.Action;
 import com.onurbcd.cli.validator.BudgetValidator;
 import com.querydsl.core.types.Predicate;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.dto.filter.IncomeSourceFilter;
 import com.onurbcd.cli.dto.incomesource.IncomeSourcePatchDto;
 import com.onurbcd.cli.enums.EruTable;
@@ -12,84 +11,84 @@ import com.onurbcd.cli.service.IncomeSourceService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.INCOME_SOURCE;
 import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
-@ShellComponent
-@ShellCommandGroup(INCOME_SOURCE)
+@Component
+@CommandGroup(name = INCOME_SOURCE)
 public class IncomeSourceCommand extends BaseCommand {
 
     public IncomeSourceCommand(IncomeSourceService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
         super(service, flowBuilder, shellHelper, INCOME_SOURCE, EruTable.INCOME_SOURCE);
     }
 
-    @ShellMethod(key = "income-source-save", value = "Create or update an income source.")
+    @Command(name = "income-source-save", description = "Create or update an income source.")
     public String save(
-            @ShellOption(value = {"id", "-i"}, help = "The income source's id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "id", description = "The income source's id.")
             UUID id
     ) {
         return baseSave(CommandParam.of(id));
     }
 
-    @ShellMethod(key = "income-source-delete", value = "Delete income source by id.")
+    @Command(name = "income-source-delete", description = "Delete income source by id.")
     public String delete(
-            @ShellOption(value = {"id", "-i"}, help = "The income source's id.")
+            @Option(shortName = 'i', longName = "id", description = "The income source's id.", required = true)
             @NotNull
             UUID id
     ) {
         return baseDelete(id);
     }
 
-    @ShellMethod(key = "income-source-get", value = "Get income source by id.")
+    @Command(name = "income-source-get", description = "Get income source by id.")
     public String get(
-            @ShellOption(value = {"id", "-i"}, help = "The income source's id.")
+            @Option(shortName = 'i', longName = "id", description = "The income source's id.", required = true)
             @NotNull
             UUID id
-    ) throws JsonProcessingException {
+    ) {
         return baseGet(id);
     }
 
-    @ShellMethod(key = "income-source-get-all", value = "Get income source's list.")
+    @Command(name = "income-source-get-all", description = "Get income source's list.")
     public String getAll(
-            @ShellOption(value = {"pageNumber", "-n"}, help = "The page's number.", defaultValue = "1")
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1", required = true)
             @Min(1)
             Integer pageNumber,
 
-            @ShellOption(value = {"pageSize", "-s"}, help = "The page's size.", defaultValue = "10")
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10", required = true)
             @Min(1)
             Integer pageSize,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC", required = true)
             Sort.Direction direction,
 
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'f', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
         var filter = IncomeSourceFilter.of(active, search);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "name"));
     }
 
-    @ShellMethod(key = "income-source-update", value = "Update income-source's status by id.")
+    @Command(name = "income-source-update", description = "Update income-source's status by id.")
     public String update(
-            @ShellOption(value = {"id", "-i"}, help = "The income-source's id.")
+            @Option(shortName = 'i', longName = "id", description = "The income-source's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"active", "-a"}, help = "The income-source's status.", defaultValue = "false")
+            @Option(shortName = 'a', longName = "active", description = "The income-source's status.", defaultValue = "false", required = true)
             Boolean active
     ) {
         return baseUpdate(IncomeSourcePatchDto.of(active), id);

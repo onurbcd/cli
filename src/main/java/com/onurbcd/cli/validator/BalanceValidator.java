@@ -6,7 +6,7 @@ import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.persistency.entity.Balance;
 import com.onurbcd.cli.util.DateUtil;
 import com.onurbcd.cli.util.NumberUtil;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.UUID;

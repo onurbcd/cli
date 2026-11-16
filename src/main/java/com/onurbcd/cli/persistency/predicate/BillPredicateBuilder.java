@@ -5,7 +5,7 @@ import com.onurbcd.cli.enums.DocumentType;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.persistency.entity.QBill;
 import com.querydsl.core.types.Predicate;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.UUID;

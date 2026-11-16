@@ -5,7 +5,7 @@ import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.category.CategorySaveDto;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.util.NumberUtil;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.UUID;

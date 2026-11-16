@@ -1,7 +1,5 @@
 package com.onurbcd.cli.helper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onurbcd.cli.annotation.Helper;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.enums.Codeable;
@@ -11,7 +9,8 @@ import com.onurbcd.cli.formatter.CodeableFormatter;
 import com.onurbcd.cli.formatter.LocalDateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.shell.table.*;
+import org.springframework.shell.jline.tui.table.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public class ShellHelper {
     private final BigDecimalFormatter bigDecimalFormatter;
     private final CodeableFormatter codeableFormatter;
 
-    public String printJson(Dtoable dtoable) throws JsonProcessingException {
+    public String printJson(Dtoable dtoable) {
         return eruMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dtoable);
     }
 

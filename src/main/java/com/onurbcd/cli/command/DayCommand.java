@@ -10,31 +10,31 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.stereotype.Component;
 
 import static com.onurbcd.cli.util.Constant.DAY;
 import static com.onurbcd.cli.util.Constant.DAY_CREATE_SUCCESS;
 
-@ShellComponent
-@ShellCommandGroup(DAY)
+@Component
+@CommandGroup(name = DAY)
 @RequiredArgsConstructor
 public class DayCommand {
 
     private final DayService service;
     private final ShellHelper shellHelper;
 
-    @ShellMethod(key = "day-create", value = "Create month.")
+    @Command(name = "day-create", description = "Create month.")
     public String create(
-            @ShellOption(value = {"calendarYear", "-y"}, help = "The calendar's year.")
+            @Option(shortName = 'y', longName = "calendarYear", description = "The calendar's year.", required = true)
             @NotNull
             @MinYear
             @MaxYear
             Short calendarYear,
 
-            @ShellOption(value = {"calendarMonth", "-m"}, help = "The calendar's month.")
+            @Option(shortName = 'm', longName = "calendarMonth", description = "The calendar's month.", required = true)
             @NotNull
             @Min(1)
             @Max(12)
@@ -45,7 +45,7 @@ public class DayCommand {
         return shellHelper.success(DAY_CREATE_SUCCESS.formatted(calendarMonth, calendarYear));
     }
 
-    @ShellMethod(key = "day-get", value = "Get list of months.")
+    @Command(name = "day-get", description = "Get list of months.")
     public String get() {
         return shellHelper.printTable(service.getYearsAndMonths(), EruTable.DAY);
     }

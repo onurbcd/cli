@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.shell.component.context.ComponentContext;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;

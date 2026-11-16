@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.dto.budget.BudgetPatchDto;
 import com.onurbcd.cli.dto.budget.CopyBudgetDto;
 import com.onurbcd.cli.dto.filter.BudgetFilter;
@@ -15,11 +14,11 @@ import com.onurbcd.cli.service.BudgetService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -27,8 +26,8 @@ import static com.onurbcd.cli.util.Constant.BUDGET;
 import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 import static com.onurbcd.cli.validator.Action.checkIfNotEmpty;
 
-@ShellComponent
-@ShellCommandGroup(BUDGET)
+@Component
+@CommandGroup(name = BUDGET)
 public class BudgetCommand extends BaseCommand {
 
     private final BudgetService service;
@@ -42,92 +41,92 @@ public class BudgetCommand extends BaseCommand {
         this.billTypeService = billTypeService;
     }
 
-    @ShellMethod(key = "budget-save", value = "Create or update a budget.")
+    @Command(name = "budget-save", description = "Create or update a budget.")
     public String save(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.")
             UUID id
     ) {
         return baseSave(CommandParam.of(id));
     }
 
-    @ShellMethod(key = "budget-delete", value = "Delete budget by id.")
+    @Command(name = "budget-delete", description = "Delete budget by id.")
     public String delete(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.", required = true)
             @NotNull
             UUID id
     ) {
         return baseDelete(id);
     }
 
-    @ShellMethod(key = "budget-get", value = "Get budget by id.")
+    @Command(name = "budget-get", description = "Get budget by id.")
     public String get(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.", required = true)
             @NotNull
             UUID id
-    ) throws JsonProcessingException {
+    ) {
         return baseGet(id);
     }
 
-    @ShellMethod(key = "budget-get-all", value = "Get budget's list.")
+    @Command(name = "budget-get-all", description = "Get budget's list.")
     public String getAll(
-            @ShellOption(value = {"pageNumber", "-n"}, help = "The page's number.", defaultValue = "1")
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1", required = true)
             @Min(1)
             Integer pageNumber,
 
-            @ShellOption(value = {"pageSize", "-s"}, help = "The page's size.", defaultValue = "10")
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10", required = true)
             @Min(1)
             Integer pageSize,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC", required = true)
             Sort.Direction direction,
 
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'f', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"refYear", "-y"}, help = "Filter's reference year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "refYear", description = "Filter's reference year.")
             Short refYear,
 
-            @ShellOption(value = {"refMonth", "-m"}, help = "Filter's reference month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "refMonth", description = "Filter's reference month.")
             Short refMonth,
 
-            @ShellOption(value = {"billTypeId", "-i"}, help = "Filter's bill type id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "billTypeId", description = "Filter's bill type id.")
             UUID billTypeId,
 
-            @ShellOption(value = {"paid", "-e"}, help = "Filter's paid option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'e', longName = "paid", description = "Filter's paid option.")
             Boolean paid,
 
-            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
         var filter = BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
-    @ShellMethod(key = "budget-update", value = "Update budget's status by id.")
+    @Command(name = "budget-update", description = "Update budget's status by id.")
     public String update(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"active", "-a"}, help = "The budget's active status.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "The budget's active status.")
             Boolean active,
 
-            @ShellOption(value = {"paid", "-p"}, help = "The budget's paid status.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "paid", description = "The budget's paid status.")
             Boolean paid
     ) {
         return baseUpdate(BudgetPatchDto.of(active, paid), id);
     }
 
-    @ShellMethod(key = "budget-update-sequence", value = "Update budget's sequence by id.")
+    @Command(name = "budget-update-sequence", description = "Update budget's sequence by id.")
     public String updateSequence(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The sequence's direction.")
+            @Option(shortName = 'd', longName = "direction", description = "The sequence's direction.", required = true)
             @NotNull
             Direction direction
     ) {
@@ -135,13 +134,13 @@ public class BudgetCommand extends BaseCommand {
         return shellHelper.success("Budget with id: '%s' updated with success (sequence).".formatted(id));
     }
 
-    @ShellMethod(key = "budget-swap-position", value = "Swap budget's position by id.")
+    @Command(name = "budget-swap-position", description = "Swap budget's position by id.")
     public String swapPosition(
-            @ShellOption(value = {"id", "-i"}, help = "The budget's id.")
+            @Option(shortName = 'i', longName = "id", description = "The budget's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"targetSequence", "-t"}, help = "The target sequence.")
+            @Option(shortName = 't', longName = "targetSequence", description = "The target sequence.", required = true)
             @NotNull
             Short targetSequence
     ) {
@@ -149,24 +148,24 @@ public class BudgetCommand extends BaseCommand {
         return shellHelper.success("Budget with id: '%s' updated with success (position).".formatted(id));
     }
 
-    @ShellMethod(key = "budget-sum-month", value = "Get budget's sum by month.")
+    @Command(name = "budget-sum-month", description = "Get budget's sum by month.")
     public String getSumByMonth(
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-s"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 's', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"refYear", "-y"}, help = "Filter's reference year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "refYear", description = "Filter's reference year.")
             Short refYear,
 
-            @ShellOption(value = {"refMonth", "-m"}, help = "Filter's reference month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "refMonth", description = "Filter's reference month.")
             Short refMonth,
 
-            @ShellOption(value = {"billTypeId", "-b"}, help = "Filter's bill type id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'b', longName = "billTypeId", description = "Filter's bill type id.")
             UUID billTypeId,
 
-            @ShellOption(value = {"paid", "-p"}, help = "Filter's paid option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "paid", description = "Filter's paid option.")
             Boolean paid
     ) {
         return shellHelper.printTable(
@@ -175,21 +174,21 @@ public class BudgetCommand extends BaseCommand {
         );
     }
 
-    @ShellMethod(key = "budget-copy", value = "Copy budget.")
+    @Command(name = "budget-copy", description = "Copy budget.")
     public String copy(
-            @ShellOption(value = {"fromYear", "-y"}, help = "Copy from year.")
+            @Option(shortName = 'y', longName = "fromYear", description = "Copy from year.", required = true)
             @NotNull
             Short fromYear,
 
-            @ShellOption(value = {"fromMonth", "-m"}, help = "Copy from month.")
+            @Option(shortName = 'm', longName = "fromMonth", description = "Copy from month.", required = true)
             @NotNull
             Short fromMonth,
 
-            @ShellOption(value = {"toYear", "-a"}, help = "To year.")
+            @Option(shortName = 'a', longName = "toYear", description = "To year.", required = true)
             @NotNull
             Short toYear,
 
-            @ShellOption(value = {"toMonth", "-b"}, help = "To month.")
+            @Option(shortName = 'b', longName = "toMonth", description = "To month.", required = true)
             @NotNull
             Short toMonth
     ) {
@@ -197,13 +196,13 @@ public class BudgetCommand extends BaseCommand {
         return shellHelper.success("Budget copied from %d/%02d to %d/%02d.".formatted(fromYear, fromMonth, toYear, toMonth));
     }
 
-    @ShellMethod(key = "budget-delete-all", value = "Delete all budgets by year and month.")
+    @Command(name = "budget-delete-all", description = "Delete all budgets by year and month.")
     public String deleteAll(
-            @ShellOption(value = {"refYear", "-y"}, help = "Reference year.")
+            @Option(shortName = 'y', longName = "refYear", description = "Reference year.", required = true)
             @NotNull
             Short refYear,
 
-            @ShellOption(value = {"refMonth", "-m"}, help = "Reference month.")
+            @Option(shortName = 'm', longName = "refMonth", description = "Reference month.", required = true)
             @NotNull
             Short refMonth
     ) {

@@ -1,10 +1,10 @@
 package com.onurbcd.cli.helper;
 
 import com.onurbcd.cli.annotation.Helper;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.Nullable;
 
 @Helper
 public class ContextHelper implements ApplicationContextAware {

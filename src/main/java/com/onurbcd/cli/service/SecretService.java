@@ -15,7 +15,7 @@ import com.onurbcd.cli.persistency.predicate.SecretPredicateBuilder;
 import com.onurbcd.cli.persistency.repository.SecretRepository;
 import com.onurbcd.cli.validator.Action;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 

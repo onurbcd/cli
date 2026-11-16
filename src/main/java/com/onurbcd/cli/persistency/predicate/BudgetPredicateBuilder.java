@@ -4,7 +4,7 @@ import com.onurbcd.cli.dto.budget.RefDto;
 import com.onurbcd.cli.dto.filter.BudgetFilter;
 import com.onurbcd.cli.persistency.entity.QBudget;
 import com.querydsl.core.types.Predicate;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 

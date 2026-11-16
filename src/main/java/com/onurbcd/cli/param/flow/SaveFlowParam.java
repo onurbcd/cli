@@ -4,7 +4,7 @@ import com.onurbcd.cli.enums.FlowType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.shell.component.flow.SelectItem;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.util.List;
 

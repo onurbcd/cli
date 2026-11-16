@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.balance.BalancePatchDto;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
@@ -16,19 +15,19 @@ import com.onurbcd.cli.validator.Action;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BALANCE;
 import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
-@ShellComponent
-@ShellCommandGroup(BALANCE)
+@Component
+@CommandGroup(name = BALANCE)
 public class BalanceCommand extends BaseCommand {
 
     private final BalanceService service;
@@ -46,97 +45,97 @@ public class BalanceCommand extends BaseCommand {
         this.config = config;
     }
 
-    @ShellMethod(key = "balance-save", value = "Create or update a balance.")
+    @Command(name = "balance-save", description = "Create or update a balance.")
     public String save(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.")
             UUID id
     ) {
         return baseSave(CommandParam.of(id));
     }
 
-    @ShellMethod(key = "balance-delete", value = "Delete balance by id.")
+    @Command(name = "balance-delete", description = "Delete balance by id.")
     public String delete(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.", required = true)
             @NotNull UUID id
     ) {
         return baseDelete(id);
     }
 
-    @ShellMethod(key = "balance-get", value = "Get balance by id.")
+    @Command(name = "balance-get", description = "Get balance by id.")
     public String get(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.", required = true)
             @NotNull
             UUID id
-    ) throws JsonProcessingException {
+    ) {
         return baseGet(id);
     }
 
-    @ShellMethod(key = "balance-get-all", value = "Get balance's list.")
+    @Command(name = "balance-get-all", description = "Get balance's list.")
     public String getAll(
-            @ShellOption(value = {"pageNumber", "-n"}, help = "The page's number.", defaultValue = "1")
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1", required = true)
             @Min(1)
             Integer pageNumber,
 
-            @ShellOption(value = {"pageSize", "-s"}, help = "The page's size.", defaultValue = "10")
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10", required = true)
             @Min(1)
             Integer pageSize,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC", required = true)
             Sort.Direction direction,
 
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'f', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"sourceId", "-i"}, help = "Filter's source id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "sourceId", description = "Filter's source id.")
             UUID sourceId,
 
-            @ShellOption(value = {"categoryId", "-c"}, help = "Filter's category id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'c', longName = "categoryId", description = "Filter's category id.")
             UUID categoryId,
 
-            @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'b', longName = "balanceType", description = "Filter's balance type.")
             BalanceType balanceType,
 
-            @ShellOption(value = {"paymentType", "-t"}, help = "Filter's payemnt type.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 't', longName = "paymentType", description = "Filter's payemnt type.")
             PaymentType paymentType,
 
-            @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "year", description = "Filter's year.")
             Short year,
 
-            @ShellOption(value = {"month", "-m"}, help = "Filter's month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "month", description = "Filter's month.")
             Short month,
 
-            @ShellOption(value = {"day", "-g"}, help = "Filter's day.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'g', longName = "day", description = "Filter's day.")
             Short day,
 
-            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
         var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
-    @ShellMethod(key = "balance-update", value = "Update balance's status by id.")
+    @Command(name = "balance-update", description = "Update balance's status by id.")
     public String update(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"active", "-a"}, help = "The balance's status.", defaultValue = "false")
+            @Option(shortName = 'a', longName = "active", description = "The balance's status.", defaultValue = "false", required = true)
             Boolean active
     ) {
         return baseUpdate(BalancePatchDto.of(active), id);
     }
 
-    @ShellMethod(key = "balance-update-sequence", value = "Update balance's sequence by id.")
+    @Command(name = "balance-update-sequence", description = "Update balance's sequence by id.")
     public String updateSequence(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The sequence's direction.")
+            @Option(shortName = 'd', longName = "direction", description = "The sequence's direction.", required = true)
             @NotNull
             Direction direction
     ) {
@@ -144,13 +143,13 @@ public class BalanceCommand extends BaseCommand {
         return shellHelper.success("Balance with id: '%s' updated with success (sequence).".formatted(id));
     }
 
-    @ShellMethod(key = "balance-swap-position", value = "Swap balance's position by id.")
+    @Command(name = "balance-swap-position", description = "Swap balance's position by id.")
     public String swapPosition(
-            @ShellOption(value = {"id", "-i"}, help = "The balance's id.")
+            @Option(shortName = 'i', longName = "id", description = "The balance's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"targetSequence", "-t"}, help = "The target sequence.")
+            @Option(shortName = 't', longName = "targetSequence", description = "The target sequence.", required = true)
             @NotNull
             Short targetSequence
     ) {
@@ -158,33 +157,33 @@ public class BalanceCommand extends BaseCommand {
         return shellHelper.success("Balance with id: '%s' updated with success (position).".formatted(id));
     }
 
-    @ShellMethod(key = "balance-sum", value = "Get balance's sum.")
+    @Command(name = "balance-sum", description = "Get balance's sum.")
     public String getSum(
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'f', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"sourceId", "-i"}, help = "Filter's source id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "sourceId", description = "Filter's source id.")
             UUID sourceId,
 
-            @ShellOption(value = {"categoryId", "-c"}, help = "Filter's category id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'c', longName = "categoryId", description = "Filter's category id.")
             UUID categoryId,
 
-            @ShellOption(value = {"balanceType", "-b"}, help = "Filter's balance type.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'b', longName = "balanceType", description = "Filter's balance type.")
             BalanceType balanceType,
 
-            @ShellOption(value = {"paymentType", "-t"}, help = "Filter's payemnt type.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 't', longName = "paymentType", description = "Filter's payemnt type.")
             PaymentType paymentType,
 
-            @ShellOption(value = {"year", "-y"}, help = "Filter's year.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'y', longName = "year", description = "Filter's year.")
             Short year,
 
-            @ShellOption(value = {"month", "-m"}, help = "Filter's month.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'm', longName = "month", description = "Filter's month.")
             Short month,
 
-            @ShellOption(value = {"day", "-g"}, help = "Filter's day.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'g', longName = "day", description = "Filter's day.")
             Short day
     ) {
         return shellHelper.printTable(
