@@ -17,7 +17,7 @@ docker run -p5432:5432 --name postgres \
 $ ./mvnw --version
 
 # update to latest version
-$ ./mvnw -N wrapper:wrapper -Dmaven=3.9.11
+$ ./mvnw -N wrapper:wrapper -Dmaven=3.10.1
 
 # confirm update
 $ ./mvnw --version
