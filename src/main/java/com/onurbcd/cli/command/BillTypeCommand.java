@@ -65,15 +65,15 @@ public class BillTypeCommand extends BaseCommand {
 
     @Command(name = "bill-type-get-all", description = "Get bill type's list.")
     public String getAll(
-            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1", required = true)
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")
             @Min(1)
             Integer pageNumber,
 
-            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10", required = true)
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10")
             @Min(1)
             Integer pageSize,
 
-            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC", required = true)
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
             @Option(shortName = 'a', longName = "active", description = "Filter's active option.")

@@ -58,15 +58,15 @@ public class SecretCommand extends BaseCommand {
 
     @Command(name = "secret-get-all", description = "Get secret's list.")
     public String getAll(
-            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1", required = true)
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")
             @Min(1)
             Integer pageNumber,
 
-            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10", required = true)
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10")
             @Min(1)
             Integer pageSize,
 
-            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC", required = true)
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
             @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
@@ -88,7 +88,7 @@ public class SecretCommand extends BaseCommand {
             @NotNull
             UUID id,
 
-            @Option(shortName = 'a', longName = "active", description = "The secret's status.", defaultValue = "false", required = true)
+            @Option(shortName = 'a', longName = "active", description = "The secret's status.", defaultValue = "false")
             Boolean active
     ) {
         return baseUpdate(SecretPatchDto.of(active), id);
