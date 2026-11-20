@@ -5,20 +5,20 @@ Este arquivo é o ponto de acompanhamento das melhorias acordadas para o reposit
 ## Estado geral
 
 - Fase ativa: **1 — Atualização da plataforma e dependências**
-- Nenhuma tarefa deste plano foi implementada ainda.
+- A fase 1 está em andamento; os itens já verificados nesta migração estão marcados abaixo.
 - `todo-list` foi revisado e seus itens foram incorporados abaixo; o arquivo original foi preservado.
 
 ## Fase 1 — Atualização da plataforma e dependências
 
 Atualizar o conjunto de dependências e ferramentas antes de iniciar as demais mudanças, adotando Java 25 e Spring Boot 4. Verificar compatibilidade entre todos os componentes, plugins Maven, processadores de anotações e ferramentas de qualidade.
 
-- [ ] Migrar a compilação e execução do Java 21 para Java 25; atualizar propriedades, documentação, CI e configuração de IDE/repositório quando aplicável.
-- [ ] Atualizar todas as dependências diretas e transitivas gerenciadas, incluindo Spring Boot para a versão 4 e Spring Shell para uma versão compatível.
-- [ ] Atualizar plugins Maven, Maven Wrapper e ferramentas auxiliares (JaCoCo, Sonar, compilador e processadores de anotações) para versões compatíveis.
-- [ ] Remover versões explicitamente fixadas quando houver gerenciamento adequado pelo BOM; manter versões explícitas somente quando justificadas.
-- [ ] Resolver incompatibilidades de Jakarta, Hibernate/JPA, QueryDSL, MapStruct, Lombok, Flyway/PostgreSQL e Jackson decorrentes da atualização.
+- [x] Migrar a compilação e execução do Java 21 para Java 25; atualizar propriedades, documentação, CI e configuração de IDE/repositório quando aplicável.
+- [x] Atualizar todas as dependências diretas e transitivas gerenciadas, incluindo Spring Boot para a versão 4 e Spring Shell para uma versão compatível.
+- [x] Atualizar plugins Maven, Maven Wrapper e ferramentas auxiliares (JaCoCo, Sonar, compilador e processadores de anotações) para versões compatíveis.
+- [x] Remover versões explicitamente fixadas quando houver gerenciamento adequado pelo BOM; manter versões explícitas somente quando justificadas.
+- [x] Resolver incompatibilidades de Jakarta, Hibernate/JPA, QueryDSL, MapStruct, Lombok, Flyway/PostgreSQL e Jackson decorrentes da atualização.
 - [ ] Confirmar que build, empacotamento, migrações e inicialização CLI funcionam na plataforma atualizada.
-- [ ] Registrar no README os pré-requisitos atualizados e os comandos de desenvolvimento.
+- [x] Registrar no README os pré-requisitos atualizados e os comandos de desenvolvimento.
 
 ## Fase 2 — Testes automatizados
 
