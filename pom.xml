@@ -245,6 +245,7 @@
                             <haltOnFailure>true</haltOnFailure>
                             <includes>
                                 <include>${jacoco.check.includes}</include>
+                                <include>com/onurbcd/cli/command/BalanceCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>

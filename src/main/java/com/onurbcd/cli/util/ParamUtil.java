@@ -105,9 +105,13 @@ public final class ParamUtil {
         }
 
         if (properties != null && properties.length > 0) {
-            return Arrays.stream(properties)
+            var filtered = Arrays.stream(properties)
                     .filter(p -> p != null && !p.trim().isEmpty())
                     .toArray(String[]::new);
+
+            if (filtered.length > 0) {
+                return filtered;
+            }
         }
 
         return defaultProperties;

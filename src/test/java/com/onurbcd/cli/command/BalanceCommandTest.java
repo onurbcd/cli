@@ -2,8 +2,8 @@ package com.onurbcd.cli.command;
 
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.Dtoable;
-import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.balance.BalancePatchDto;
+import com.onurbcd.cli.dto.balance.BalanceSaveDto;
 import com.onurbcd.cli.dto.balance.BalanceSumDto;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
 import com.onurbcd.cli.enums.*;
@@ -15,36 +15,48 @@ import com.onurbcd.cli.service.BalanceService;
 import com.onurbcd.cli.service.CategoryService;
 import com.onurbcd.cli.service.SourceService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 import org.springframework.shell.jline.tui.component.flow.SelectItem;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.InterruptedIOException;
+import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static com.onurbcd.cli.util.Constant.BALANCE;
+import static com.onurbcd.cli.TestConstants.*;
+import static com.onurbcd.cli.TestFactory.createBalanceDto;
 import static com.onurbcd.cli.util.Constant.OPERATION_CANCELLED;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BalanceCommandTest {
 
-    private BalanceCommand balanceCommand;
+    private static final UUID RETURNED_ID = UUID.fromString("55555555-5555-5555-5555-555555555555");
+    private static final List<SelectItem> SOURCES = List.of(SelectItem.of("source", SOURCE_ID.toString()));
+    private static final List<SelectItem> CATEGORIES = List.of(SelectItem.of("category", CATEGORY_ID.toString()));
 
     @Mock
     private BalanceService balanceService;
@@ -54,215 +66,444 @@ class BalanceCommandTest {
     private CategoryService categoryService;
     @Mock
     private AdminProperties adminProperties;
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private ComponentFlow.Builder flowBuilder;
     @Mock
     private ShellHelper shellHelper;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private ComponentFlow.Builder flowBuilder;
+    @Captor
+    private ArgumentCaptor<BalanceSaveDto> saveDtoCaptor;
+    @Captor
+    private ArgumentCaptor<String> messageCaptor;
+
+    private BalanceCommand command;
 
     @BeforeEach
     void setUp() {
-        balanceCommand = new BalanceCommand(balanceService, sourceService, categoryService, flowBuilder, shellHelper,
+        command = new BalanceCommand(balanceService, sourceService, categoryService, flowBuilder, shellHelper,
                 adminProperties);
     }
 
-    // constructor
-
-    @Test
-    void constructor_createsInstance() {
-        assertNotNull(balanceCommand);
-        assertInstanceOf(BaseCommand.class, balanceCommand);
-    }
-
-    @Test
-    void constructor_assignsOwnDependencies() {
-        assertSame(balanceService, ReflectionTestUtils.getField(balanceCommand, "service"));
-        assertSame(sourceService, ReflectionTestUtils.getField(balanceCommand, "sourceService"));
-        assertSame(categoryService, ReflectionTestUtils.getField(balanceCommand, "categoryService"));
-        assertSame(adminProperties, ReflectionTestUtils.getField(balanceCommand, "config"));
-    }
-
-    @Test
-    void constructor_passesArgumentsToSuperclass() {
-        assertSame(balanceService, ReflectionTestUtils.getField(balanceCommand, BaseCommand.class, "crudService"));
-        assertSame(flowBuilder, ReflectionTestUtils.getField(balanceCommand, BaseCommand.class, "flowBuilder"));
-        assertSame(shellHelper, ReflectionTestUtils.getField(balanceCommand, BaseCommand.class, "shellHelper"));
-        assertEquals(BALANCE, ReflectionTestUtils.getField(balanceCommand, BaseCommand.class, "name"));
-        assertEquals(EruTable.BALANCE, ReflectionTestUtils.getField(balanceCommand, BaseCommand.class, "table"));
-    }
-
-    // save
-
-    @Test
-    void save_whenNoSourceExists_throwsSourceRequired() {
-        when(sourceService.getItems(null)).thenReturn(List.of());
-
-        var ex = assertThrows(ApiException.class, () -> balanceCommand.save(null));
-
-        assertEquals(Error.SOURCE_REQUIRED, ex.getError());
-        verifyNoInteractions(categoryService);
-    }
-
-    @Test
-    void save_whenNoCategoryExists_throwsCategoryRequired() {
-        when(sourceService.getItems(null)).thenReturn(List.of(SelectItem.of("source", "1")));
-        when(categoryService.getCategoryItems(null, true)).thenReturn(List.of());
-
-        var ex = assertThrows(ApiException.class, () -> balanceCommand.save(null));
-
-        assertEquals(Error.CATEGORY_REQUIRED, ex.getError());
-    }
-
-    @Test
-    void save_whenFlowIsInterrupted_returnsCancelledWarning(@TempDir Path filesPath) {
-        when(sourceService.getItems(null)).thenReturn(List.of(SelectItem.of("source", "1")));
-        when(categoryService.getCategoryItems(null, true)).thenReturn(List.of(SelectItem.of("category", "2")));
+    private void stubPreSaveFlow(Path filesPath) {
+        when(sourceService.getItems(null)).thenReturn(SOURCES);
+        when(categoryService.getCategoryItems(null, true)).thenReturn(CATEGORIES);
         when(adminProperties.getFilesPath()).thenReturn(filesPath.toString());
+    }
+
+    private void stubFlowResult(ComponentContext<?> context) {
+        var result = mock(ComponentFlow.ComponentFlowResult.class);
+        doReturn(context).when(result).getContext();
         when(flowBuilder.clone()).thenReturn(flowBuilder);
         when(flowBuilder.reset()).thenReturn(flowBuilder);
-        when(flowBuilder.build().run())
-                .thenThrow(new RuntimeException(new InterruptedIOException()));
-        when(shellHelper.warning(OPERATION_CANCELLED)).thenReturn("cancelled");
-
-        assertEquals("cancelled", balanceCommand.save(null));
+        when(flowBuilder.build().run()).thenReturn(result);
     }
 
-    @Test
-    void preSaveFlow_whenSourcesAndCategoriesExist_returnsBalanceFlowParam() {
-        var sources = List.of(SelectItem.of("source", "1"));
-        var categories = List.of(SelectItem.of("category", "2"));
-        when(sourceService.getItems(null)).thenReturn(sources);
-        when(categoryService.getCategoryItems(null, true)).thenReturn(categories);
-        when(adminProperties.getFilesPath()).thenReturn("/files");
-
-        var result = balanceCommand.preSaveFlow(CommandParam.of(null));
-
-        assertEquals(FlowType.BALANCE, result.getType());
-        assertSame(sources, result.getSourceItems());
-        assertSame(categories, result.getCategoryItems());
-        assertEquals("/files", result.getFilesPath());
+    private static ComponentContext<?> completeContext() {
+        var context = ComponentContext.empty();
+        context.put("day", "2024-03-15");
+        context.put("source", SOURCE_ID.toString());
+        context.put("category", CATEGORY_ID.toString());
+        context.put("amount", "12.50");
+        context.put("code", "  CODE   X ");
+        context.put("description", "description");
+        context.put("balanceType", "INCOME");
+        context.put("paymentType", "CASH");
+        return context;
     }
 
-    @Test
-    void delete_delegatesToServiceAndReturnsSuccessMessage() {
-        var id = UUID.randomUUID();
-        when(shellHelper.success(any())).thenReturn("ok");
-
-        assertEquals("ok", balanceCommand.delete(id));
-
-        verify(balanceService).delete(id);
+    private static BalanceFilter.BalanceFilterBuilder<?, ?> filterBuilder() {
+        return BalanceFilter.builder()
+                .active(true)
+                .search("abc")
+                .sourceId(SOURCE_ID)
+                .categoryId(CATEGORY_ID)
+                .balanceType(BalanceType.INCOME)
+                .paymentType(PaymentType.PIX)
+                .dayCalendarYear((short) 2024)
+                .dayCalendarMonth((short) 3)
+                .dayCalendarDayInMonth((short) 15);
     }
 
-    @Test
-    void get_returnsPrintedJson() {
-        var id = UUID.randomUUID();
-        var dto = mock(BalanceDto.class);
-        when(balanceService.getById(id)).thenReturn(dto);
-        when(shellHelper.printJson(dto)).thenReturn("json");
+    @Nested
+    @DisplayName("save")
+    class Save {
 
-        assertEquals("json", balanceCommand.get(id));
+        @Test
+        @DisplayName("when there is no source, should throw SOURCE_REQUIRED before looking for categories")
+        void givenNoSource_whenSave_shouldThrowSourceRequired() {
+            when(sourceService.getItems(null)).thenReturn(List.of());
+
+            assertThatThrownBy(() -> command.save(null))
+                    .isInstanceOfSatisfying(ApiException.class,
+                            e -> assertThat(e.getError()).isEqualTo(Error.SOURCE_REQUIRED));
+
+            verify(sourceService).getItems(null);
+            verifyNoMoreInteractions(sourceService, balanceService, shellHelper);
+            verifyNoInteractions(categoryService);
+        }
+
+        @Test
+        @DisplayName("when there is no category, should throw CATEGORY_REQUIRED")
+        void givenNoCategory_whenSave_shouldThrowCategoryRequired() {
+            when(sourceService.getItems(null)).thenReturn(SOURCES);
+            when(categoryService.getCategoryItems(null, true)).thenReturn(List.of());
+
+            assertThatThrownBy(() -> command.save(null))
+                    .isInstanceOfSatisfying(ApiException.class,
+                            e -> assertThat(e.getError()).isEqualTo(Error.CATEGORY_REQUIRED));
+
+            verify(sourceService).getItems(null);
+            verify(categoryService).getCategoryItems(null, true);
+            verifyNoMoreInteractions(sourceService, categoryService, balanceService, shellHelper);
+        }
+
+        @Test
+        @DisplayName("when the flow is interrupted, should return the cancelled warning and not save")
+        void givenInterruptedFlow_whenSave_shouldReturnCancelledWarning(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
+            when(flowBuilder.clone()).thenReturn(flowBuilder);
+            when(flowBuilder.reset()).thenReturn(flowBuilder);
+            when(flowBuilder.build().run()).thenThrow(new RuntimeException(new InterruptedIOException()));
+            when(shellHelper.warning(OPERATION_CANCELLED)).thenReturn("cancelled");
+
+            var result = command.save(null);
+
+            assertThat(result).isEqualTo("cancelled");
+            verify(shellHelper).warning(OPERATION_CANCELLED);
+            verifyNoMoreInteractions(sourceService, categoryService, adminProperties, balanceService, shellHelper);
+        }
+
+        @Test
+        @DisplayName("when the flow fails for another reason, should propagate the exception")
+        void givenUnexpectedFlowFailure_whenSave_shouldPropagate(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
+            var failure = new IllegalStateException("boom");
+            when(flowBuilder.clone()).thenReturn(flowBuilder);
+            when(flowBuilder.reset()).thenReturn(flowBuilder);
+            when(flowBuilder.build().run()).thenThrow(failure);
+
+            assertThatThrownBy(() -> command.save(null)).isSameAs(failure);
+
+            verifyNoInteractions(balanceService, shellHelper);
+        }
+
+        @Test
+        @DisplayName("when the flow result is invalid, should return the validation errors and not save")
+        void givenInvalidFlowResult_whenSave_shouldReturnValidationErrors(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
+            stubFlowResult(ComponentContext.empty());
+            when(shellHelper.error(anyString())).thenReturn("invalid");
+
+            var result = command.save(null);
+
+            assertThat(result).isEqualTo("invalid");
+            verify(shellHelper).error(messageCaptor.capture());
+            assertThat(messageCaptor.getValue().split("\n")).containsExactlyInAnyOrder(
+                    "Day calendar date is required.",
+                    "Source is required.",
+                    "Category is required.",
+                    "Amount is required.",
+                    "Balance type is required.",
+                    "Payment type is required.");
+            verifyNoInteractions(balanceService);
+            verifyNoMoreInteractions(shellHelper);
+        }
+
+        @Test
+        @DisplayName("when no id is given, should save the flow result as a new balance")
+        void givenNoId_whenSave_shouldSaveNewBalance(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
+            var context = completeContext();
+            context.put("documentsIds", List.of(DOCUMENT_ID.toString()));
+            stubFlowResult(context);
+            when(balanceService.save(any(), isNull()))
+                    .thenReturn(RETURNED_ID.toString());
+            when(shellHelper.success("Balance with id %s saved with success.".formatted(RETURNED_ID)))
+                    .thenReturn("saved");
+
+            var result = command.save(null);
+
+            assertThat(result).isEqualTo("saved");
+            verify(balanceService).save(saveDtoCaptor.capture(), isNull());
+            assertThat(saveDtoCaptor.getValue()).usingRecursiveComparison().isEqualTo(
+                    BalanceSaveDto.builder()
+                            .name("bogus")
+                            .active(true)
+                            .dayCalendarDate(LocalDate.of(2024, 3, 15))
+                            .sourceId(SOURCE_ID)
+                            .categoryId(CATEGORY_ID)
+                            .amount(new BigDecimal("12.50"))
+                            .code("CODE X")
+                            .description("description")
+                            .balanceType(BalanceType.INCOME)
+                            .paymentType(PaymentType.CASH)
+                            .documentsIds(Set.of(DOCUMENT_ID))
+                            .multipartFiles(List.of())
+                            .build());
+            verify(shellHelper).success("Balance with id %s saved with success.".formatted(RETURNED_ID));
+            verify(sourceService).getItems(null);
+            verify(categoryService).getCategoryItems(null, true);
+            verify(adminProperties).getFilesPath();
+            verifyNoMoreInteractions(balanceService, sourceService, categoryService, adminProperties, shellHelper);
+        }
+
+        @Test
+        @DisplayName("when an id is given, should load the balance, rerun the flow and update it")
+        void givenId_whenSave_shouldUpdateExistingBalance(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
+            var existing = createBalanceDto();
+            when(balanceService.getById(ID)).thenReturn(existing);
+            stubFlowResult(completeContext());
+            when(balanceService.save(any(), eq(ID)))
+                    .thenReturn(ID.toString());
+            when(shellHelper.success("Balance with id %s saved with success.".formatted(ID))).thenReturn("saved");
+
+            var result = command.save(ID);
+
+            assertThat(result).isEqualTo("saved");
+            verify(balanceService).getById(ID);
+            verify(balanceService).save(saveDtoCaptor.capture(), eq(ID));
+            assertThat(saveDtoCaptor.getValue()).usingRecursiveComparison().isEqualTo(
+                    BalanceSaveDto.builder()
+                            .name("bogus")
+                            .active(false)
+                            .sequence((short) 3)
+                            .dayCalendarDate(LocalDate.of(2024, 3, 15))
+                            .sourceId(SOURCE_ID)
+                            .categoryId(CATEGORY_ID)
+                            .amount(new BigDecimal("12.50"))
+                            .code("CODE X")
+                            .description("description")
+                            .balanceType(BalanceType.INCOME)
+                            .paymentType(PaymentType.CASH)
+                            .documentsIds(Set.of(DOCUMENT_ID))
+                            .multipartFiles(List.of())
+                            .build());
+            verify(shellHelper).success("Balance with id %s saved with success.".formatted(ID));
+            verify(sourceService).getItems(null);
+            verify(categoryService).getCategoryItems(null, true);
+            verify(adminProperties).getFilesPath();
+            verifyNoMoreInteractions(balanceService, sourceService, categoryService, adminProperties, shellHelper);
+        }
     }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    void getAll_withDefaultProperties_usesSequenceSortAndBuildsFilter() {
-        var sourceId = UUID.randomUUID();
-        var categoryId = UUID.randomUUID();
-        Page<Dtoable> page = mock(Page.class);
-        when(balanceService.getAll(any(Pageable.class), any())).thenReturn(page);
-        when(shellHelper.printTable(page, EruTable.BALANCE)).thenReturn("table");
+    @Nested
+    @DisplayName("preSaveFlow")
+    class PreSaveFlow {
 
-        var result = balanceCommand.getAll(2, 5, Sort.Direction.DESC, true, "abc", sourceId, categoryId,
-                BalanceType.INCOME, PaymentType.CASH, (short) 2024, (short) 3, (short) 15, (String[]) null);
+        @Test
+        @DisplayName("when sources and categories exist, should build the balance flow params")
+        void givenSourcesAndCategories_whenPreSaveFlow_shouldReturnBalanceParams(@TempDir Path filesPath) {
+            stubPreSaveFlow(filesPath);
 
-        assertEquals("table", result);
+            var result = command.preSaveFlow(CommandParam.of(null));
 
-        var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
-        var filterCaptor = ArgumentCaptor.forClass(BalanceFilter.class);
-        verify(balanceService).getAll(pageableCaptor.capture(), filterCaptor.capture());
-
-        var pageable = pageableCaptor.getValue();
-        assertEquals(1, pageable.getPageNumber());
-        assertEquals(5, pageable.getPageSize());
-        assertEquals(Sort.by(Sort.Direction.DESC, "sequence"), pageable.getSort());
-
-        var filter = filterCaptor.getValue();
-        assertEquals(sourceId, filter.getSourceId());
-        assertEquals(categoryId, filter.getCategoryId());
-        assertEquals(BalanceType.INCOME, filter.getBalanceType());
-        assertEquals(PaymentType.CASH, filter.getPaymentType());
-        assertEquals((short) 2024, filter.getDayCalendarYear());
-        assertEquals((short) 3, filter.getDayCalendarMonth());
-        assertEquals((short) 15, filter.getDayCalendarDayInMonth());
+            assertThat(result.getType()).isEqualTo(FlowType.BALANCE);
+            assertThat(result.getSourceItems()).isSameAs(SOURCES);
+            assertThat(result.getCategoryItems()).isSameAs(CATEGORIES);
+            assertThat(result.getFilesPath()).isEqualTo(filesPath.toString());
+            verify(sourceService).getItems(null);
+            verify(categoryService).getCategoryItems(null, true);
+            verify(adminProperties).getFilesPath();
+            verifyNoMoreInteractions(sourceService, categoryService, adminProperties);
+        }
     }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    void getAll_withCustomProperties_usesGivenSortProperties() {
-        Page<Dtoable> page = mock(Page.class);
-        when(balanceService.getAll(any(Pageable.class), any())).thenReturn(page);
-        when(shellHelper.printTable(page, EruTable.BALANCE)).thenReturn("table");
+    @Nested
+    @DisplayName("delete")
+    class Delete {
 
-        balanceCommand.getAll(1, 10, Sort.Direction.ASC, null, null, null, null, null, null, null, null, null,
-                "name", "value");
+        @Test
+        @DisplayName("should delete through the service and return the success message")
+        void givenId_whenDelete_shouldDeleteAndReturnMessage() {
+            when(shellHelper.success("Balance with id %s deleted with success.".formatted(ID))).thenReturn("deleted");
 
-        var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
-        verify(balanceService).getAll(pageableCaptor.capture(), any());
-        assertEquals(Sort.by(Sort.Direction.ASC, "name", "value"), pageableCaptor.getValue().getSort());
+            var result = command.delete(ID);
+
+            assertThat(result).isEqualTo("deleted");
+            verify(balanceService).delete(ID);
+            verify(shellHelper).success("Balance with id %s deleted with success.".formatted(ID));
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
     }
 
-    @Test
-    void update_delegatesToServiceAndReturnsSuccessMessage() {
-        var id = UUID.randomUUID();
-        when(shellHelper.success(any())).thenReturn("ok");
+    @Nested
+    @DisplayName("get")
+    class Get {
 
-        assertEquals("ok", balanceCommand.update(id, true));
+        @Test
+        @DisplayName("should print the balance found by id as JSON")
+        void givenId_whenGet_shouldPrintJson() {
+            var dto = createBalanceDto();
+            when(balanceService.getById(ID)).thenReturn(dto);
+            when(shellHelper.printJson(dto)).thenReturn("json");
 
-        verify(balanceService).update(any(BalancePatchDto.class), eq(id));
+            var result = command.get(ID);
+
+            assertThat(result).isEqualTo("json");
+            verify(balanceService).getById(ID);
+            verify(shellHelper).printJson(dto);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
     }
 
-    @Test
-    void updateSequence_delegatesToServiceAndReturnsSuccessMessage() {
-        var id = UUID.randomUUID();
-        when(shellHelper.success(any())).thenReturn("ok");
+    @Nested
+    @DisplayName("getAll")
+    class GetAll {
 
-        assertEquals("ok", balanceCommand.updateSequence(id, Direction.UP));
+        static Stream<Arguments> sortProperties() {
+            return Stream.of(
+                    Arguments.of("null properties use the default", null, new String[]{"sequence"}),
+                    Arguments.of("empty properties use the default", new String[0], new String[]{"sequence"}),
+                    Arguments.of("given properties replace the default", new String[]{"name", "amount"},
+                            new String[]{"name", "amount"}));
+        }
 
-        verify(balanceService).updateSequence(id, Direction.UP);
-        verify(shellHelper).success("Balance with id: '%s' updated with success (sequence).".formatted(id));
+        @ParameterizedTest(name = "[{index}] {0}")
+        @MethodSource("sortProperties")
+        @DisplayName("should page, sort and filter through the service")
+        void givenArguments_whenGetAll_shouldQueryServiceAndPrintTable(String label, String[] properties,
+                                                                       String[] expectedProperties) {
+            Page<Dtoable> page = new PageImpl<>(List.of());
+            when(balanceService.getAll(any(Pageable.class),
+                    any(BalanceFilter.class))).thenReturn(page);
+            when(shellHelper.printTable(page, EruTable.BALANCE)).thenReturn("table");
+
+            var result = command.getAll(2, 5, Sort.Direction.DESC, true, " abc ", SOURCE_ID, CATEGORY_ID,
+                    BalanceType.INCOME, PaymentType.PIX, (short) 2024, (short) 3, (short) 15, properties);
+
+            assertThat(result).isEqualTo("table");
+            var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+            var filterCaptor = ArgumentCaptor.forClass(BalanceFilter.class);
+            verify(balanceService).getAll(pageableCaptor.capture(), filterCaptor.capture());
+            assertThat(pageableCaptor.getValue())
+                    .isEqualTo(PageRequest.of(1, 5, Sort.Direction.DESC, expectedProperties));
+            assertThat(filterCaptor.getValue()).usingRecursiveComparison()
+                    .isEqualTo(filterBuilder().search(" abc ").build());
+            verify(shellHelper).printTable(page, EruTable.BALANCE);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
+
+        @Test
+        @DisplayName("when properties are only blank, should fall back to the default sort property")
+        void givenBlankProperties_whenGetAll_shouldUseDefaultSort() {
+            Page<Dtoable> page = new PageImpl<>(List.of());
+            when(balanceService.getAll(any(Pageable.class), any(BalanceFilter.class))).thenReturn(page);
+            when(shellHelper.printTable(page, EruTable.BALANCE)).thenReturn("table");
+
+            var result = command.getAll(1, 10, Sort.Direction.ASC, null, null, null, null, null, null,
+                    (short) 2024, (short) 3, null, " ", "");
+
+            assertThat(result).isEqualTo("table");
+            var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+            verify(balanceService).getAll(pageableCaptor.capture(), any(BalanceFilter.class));
+            assertThat(pageableCaptor.getValue())
+                    .isEqualTo(PageRequest.of(0, 10, Sort.Direction.ASC, "sequence"));
+        }
+
+        @Test
+        @DisplayName("when optional filters are absent, should keep them null and use the first page")
+        void givenNoOptionalFilters_whenGetAll_shouldPassNulls() {
+            Page<Dtoable> page = new PageImpl<>(List.of());
+            when(balanceService.getAll(any(Pageable.class),
+                    any(BalanceFilter.class))).thenReturn(page);
+            when(shellHelper.printTable(page, EruTable.BALANCE)).thenReturn("table");
+
+            var result = command.getAll(1, 10, Sort.Direction.ASC, null, null, null, null, null, null,
+                    (short) 2024, (short) 3, null);
+
+            assertThat(result).isEqualTo("table");
+            var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+            var filterCaptor = ArgumentCaptor.forClass(BalanceFilter.class);
+            verify(balanceService).getAll(pageableCaptor.capture(), filterCaptor.capture());
+            assertThat(pageableCaptor.getValue())
+                    .isEqualTo(PageRequest.of(0, 10, Sort.Direction.ASC, "sequence"));
+            assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(
+                    BalanceFilter.builder().dayCalendarYear((short) 2024).dayCalendarMonth((short) 3).build());
+            verify(shellHelper).printTable(page, EruTable.BALANCE);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
     }
 
-    @Test
-    void swapPosition_delegatesToServiceAndReturnsSuccessMessage() {
-        var id = UUID.randomUUID();
-        when(shellHelper.success(any())).thenReturn("ok");
+    @Nested
+    @DisplayName("update")
+    class Update {
 
-        assertEquals("ok", balanceCommand.swapPosition(id, (short) 4));
+        @Test
+        @DisplayName("should patch the status through the service and return the success message")
+        void givenIdAndStatus_whenUpdate_shouldPatchAndReturnMessage() {
+            when(shellHelper.success("Balance with id %s updated with success.".formatted(ID))).thenReturn("updated");
 
-        verify(balanceService).swapPosition(id, (short) 4);
-        verify(shellHelper).success("Balance with id: '%s' updated with success (position).".formatted(id));
+            var result = command.update(ID, true);
+
+            assertThat(result).isEqualTo("updated");
+            var dtoCaptor = ArgumentCaptor.forClass(Dtoable.class);
+            verify(balanceService).update(dtoCaptor.capture(), eq(ID));
+            assertThat(dtoCaptor.getValue()).isInstanceOf(BalancePatchDto.class);
+            assertThat(dtoCaptor.getValue().isActive()).isTrue();
+            verify(shellHelper).success("Balance with id %s updated with success.".formatted(ID));
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
     }
 
-    @Test
-    void getSum_buildsFilterAndReturnsPrintedTable() {
-        var sourceId = UUID.randomUUID();
-        var categoryId = UUID.randomUUID();
-        List<BalanceSumDto> sums = List.of();
-        when(balanceService.getSum(any(BalanceFilter.class))).thenReturn(sums);
-        when(shellHelper.printTable(sums, EruTable.BALANCE_SUM)).thenReturn("sum");
+    @Nested
+    @DisplayName("updateSequence")
+    class UpdateSequence {
 
-        var result = balanceCommand.getSum(true, "abc", sourceId, categoryId, BalanceType.OUTCOME, PaymentType.CASH,
-                (short) 2023, (short) 12, (short) 1);
+        @ParameterizedTest(name = "[{index}] {0}")
+        @EnumSource(Direction.class)
+        @DisplayName("should move the balance in the given direction and return the success message")
+        void givenDirection_whenUpdateSequence_shouldDelegateAndReturnMessage(Direction direction) {
+            var message = "Balance with id: '%s' updated with success (sequence).".formatted(ID);
+            when(shellHelper.success(message)).thenReturn("moved");
 
-        assertEquals("sum", result);
+            var result = command.updateSequence(ID, direction);
 
-        var filterCaptor = ArgumentCaptor.forClass(BalanceFilter.class);
-        verify(balanceService).getSum(filterCaptor.capture());
-        var filter = filterCaptor.getValue();
-        assertEquals(sourceId, filter.getSourceId());
-        assertEquals(categoryId, filter.getCategoryId());
-        assertEquals(BalanceType.OUTCOME, filter.getBalanceType());
-        assertEquals((short) 2023, filter.getDayCalendarYear());
-        assertEquals((short) 12, filter.getDayCalendarMonth());
-        assertEquals((short) 1, filter.getDayCalendarDayInMonth());
+            assertThat(result).isEqualTo("moved");
+            verify(balanceService).updateSequence(ID, direction);
+            verify(shellHelper).success(message);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
+    }
+
+    @Nested
+    @DisplayName("swapPosition")
+    class SwapPosition {
+
+        @Test
+        @DisplayName("should swap with the target sequence and return the success message")
+        void givenTargetSequence_whenSwapPosition_shouldDelegateAndReturnMessage() {
+            var message = "Balance with id: '%s' updated with success (position).".formatted(ID);
+            when(shellHelper.success(message)).thenReturn("swapped");
+
+            var result = command.swapPosition(ID, (short) 4);
+
+            assertThat(result).isEqualTo("swapped");
+            verify(balanceService).swapPosition(ID, (short) 4);
+            verify(shellHelper).success(message);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
+    }
+
+    @Nested
+    @DisplayName("getSum")
+    class GetSum {
+
+        @Test
+        @DisplayName("should sum with the built filter and print the sum table")
+        void givenFilters_whenGetSum_shouldQueryServiceAndPrintTable() {
+            List<BalanceSumDto> sums = List.of();
+            when(balanceService.getSum(any(BalanceFilter.class))).thenReturn(sums);
+            when(shellHelper.printTable(sums, EruTable.BALANCE_SUM)).thenReturn("sum");
+
+            var result = command.getSum(true, "abc", SOURCE_ID, CATEGORY_ID, BalanceType.INCOME, PaymentType.PIX,
+                    (short) 2024, (short) 3, (short) 15);
+
+            assertThat(result).isEqualTo("sum");
+            var filterCaptor = ArgumentCaptor.forClass(BalanceFilter.class);
+            verify(balanceService).getSum(filterCaptor.capture());
+            assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(filterBuilder().build());
+            verify(shellHelper).printTable(sums, EruTable.BALANCE_SUM);
+            verifyNoMoreInteractions(balanceService, shellHelper);
+        }
     }
 }
