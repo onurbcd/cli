@@ -3,6 +3,7 @@ package com.onurbcd.cli;
 import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.dto.billtype.BillTypeDto;
+import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
@@ -70,5 +71,23 @@ public final class TestFactory {
         billType.setCategoryId(CATEGORY_ID);
         billType.setCategoryName("category");
         return billType;
+    }
+
+    /**
+     * Inactive, unpaid budget of 100.50 for 2024-03 at sequence 4, linked to the default bill type.
+     */
+    public static BudgetDto createBudgetDto() {
+        var budget = new BudgetDto();
+        budget.setId(ID);
+        budget.setName("bogus");
+        budget.setActive(false);
+        budget.setSequence((short) 4);
+        budget.setRefYear((short) 2024);
+        budget.setRefMonth((short) 3);
+        budget.setBillTypeId(BILL_TYPE_ID);
+        budget.setBillTypeName("bill type");
+        budget.setAmount(new BigDecimal("100.50"));
+        budget.setPaid(false);
+        return budget;
     }
 }

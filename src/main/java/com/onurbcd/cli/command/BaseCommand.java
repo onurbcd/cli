@@ -14,6 +14,7 @@ import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.CrudService;
 import com.onurbcd.cli.util.FlowUtil;
 import com.onurbcd.cli.util.ValidatorUtil;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,7 @@ public abstract class BaseCommand {
     protected final ShellHelper shellHelper;
     private final String name;
     private final EruTable table;
+    private final Validator validator;
 
     protected abstract SaveFlowParam preSaveFlow(CommandParam params);
 
@@ -45,7 +47,7 @@ public abstract class BaseCommand {
 
         String violations;
 
-        if ((violations = ValidatorUtil.validate(saveDto)) != null) {
+        if ((violations = ValidatorUtil.validate(validator, saveDto)) != null) {
             return shellHelper.error(violations);
         }
 

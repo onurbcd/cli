@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.balance.BalancePatchDto;
@@ -80,7 +81,7 @@ class BalanceCommandTest {
     @BeforeEach
     void setUp() {
         command = new BalanceCommand(balanceService, sourceService, categoryService, flowBuilder, shellHelper,
-                adminProperties);
+                adminProperties, TestValidator.create());
     }
 
     private void stubPreSaveFlow(Path filesPath) {

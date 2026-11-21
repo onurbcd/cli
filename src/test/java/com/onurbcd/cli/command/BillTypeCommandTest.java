@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.billtype.BillTypePatchDto;
 import com.onurbcd.cli.dto.billtype.BillTypeSaveDto;
@@ -67,7 +68,8 @@ class BillTypeCommandTest {
 
     @BeforeEach
     void setUp() {
-        command = new BillTypeCommand(billTypeService, flowBuilder, shellHelper, categoryService);
+        command = new BillTypeCommand(billTypeService, flowBuilder, shellHelper, categoryService,
+                TestValidator.create());
     }
 
     private void stubFlowResult(ComponentContext<?> context) {

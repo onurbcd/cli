@@ -12,6 +12,7 @@ import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.IncomeSourceService;
 import com.onurbcd.cli.service.SourceService;
 import com.onurbcd.cli.validator.Action;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -35,9 +36,9 @@ public class SourceCommand extends BaseCommand {
     private final IncomeSourceService incomeSourceService;
 
     public SourceCommand(SourceService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                         IncomeSourceService incomeSourceService) {
+                         IncomeSourceService incomeSourceService, Validator validator) {
 
-        super(service, flowBuilder, shellHelper, SOURCE, EruTable.SOURCE);
+        super(service, flowBuilder, shellHelper, SOURCE, EruTable.SOURCE, validator);
         this.service = service;
         this.incomeSourceService = incomeSourceService;
     }

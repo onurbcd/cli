@@ -10,6 +10,7 @@ import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.BillTypeService;
 import com.onurbcd.cli.service.CategoryService;
 import com.onurbcd.cli.validator.Action;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -31,9 +32,9 @@ public class BillTypeCommand extends BaseCommand {
     private final CategoryService categoryService;
 
     public BillTypeCommand(BillTypeService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                           CategoryService categoryService) {
+                           CategoryService categoryService, Validator validator) {
 
-        super(service, flowBuilder, shellHelper, BILL_TYPE, EruTable.BILL_TYPE);
+        super(service, flowBuilder, shellHelper, BILL_TYPE, EruTable.BILL_TYPE, validator);
         this.categoryService = categoryService;
     }
 

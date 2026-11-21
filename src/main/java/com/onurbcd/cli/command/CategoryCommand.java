@@ -7,6 +7,7 @@ import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.CategoryService;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -27,8 +28,9 @@ public class CategoryCommand extends BaseCommand {
 
     private final CategoryService service;
 
-    public CategoryCommand(CategoryService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
-        super(service, flowBuilder, shellHelper, CATEGORY, EruTable.CATEGORY);
+    public CategoryCommand(CategoryService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
+                           Validator validator) {
+        super(service, flowBuilder, shellHelper, CATEGORY, EruTable.CATEGORY, validator);
         this.service = service;
     }
 

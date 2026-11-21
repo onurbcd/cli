@@ -11,6 +11,7 @@ import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.BillTypeService;
 import com.onurbcd.cli.service.BudgetService;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -34,9 +35,9 @@ public class BudgetCommand extends BaseCommand {
     private final BillTypeService billTypeService;
 
     public BudgetCommand(BudgetService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                         BillTypeService billTypeService) {
+                         BillTypeService billTypeService, Validator validator) {
 
-        super(service, flowBuilder, shellHelper, BUDGET, EruTable.BUDGET);
+        super(service, flowBuilder, shellHelper, BUDGET, EruTable.BUDGET, validator);
         this.service = service;
         this.billTypeService = billTypeService;
     }

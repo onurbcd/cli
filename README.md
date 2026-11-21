@@ -23,6 +23,19 @@ java -version
 ./mvnw spring-boot:run     # start the CLI (requires PostgreSQL)
 ```
 
+### Import hygiene (Spotless)
+
+The build checks the imports of every Java file under `src` with the Spotless Maven plugin: no unused imports, and a fixed order (all other imports, then `javax`, then `java`, then `static`, each group separated by a blank line; this is IntelliJ's default order). Only imports are checked; code formatting is not.
+
+`./mvnw verify` runs `spotless:check` and fails the build when a file does not follow the rule. To check or fix on demand:
+
+```bash
+./mvnw spotless:check      # report files that violate the rule, without changing them
+./mvnw spotless:apply      # fix imports in place
+```
+
+If you use IntelliJ, enabling "Reformat code" and "Optimize imports" under Settings > Tools > Actions on Save keeps files compliant, as long as the IDE's import order is the default one (Settings > Editor > Code Style > Java > Imports).
+
 ## Automated Tests
 
 Automated tests check that the application's rules and integrations behave as expected. Unit tests exercise a class or small unit in isolation, making failures easier to locate and keeping feedback fast. Integration tests check boundaries such as persistence, database queries, and Flyway migrations against PostgreSQL.

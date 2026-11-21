@@ -1,10 +1,10 @@
 package com.onurbcd.cli.validator;
 
 import com.onurbcd.cli.annotation.MaxYear;
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+
 import java.time.LocalDateTime;
 
 public class MaxYearValidator implements ConstraintValidator<MaxYear, Short> {

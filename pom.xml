@@ -30,6 +30,7 @@
         <lombok.version>1.18.48</lombok.version>
         <jacoco.maven.plugin.version>0.8.16</jacoco.maven.plugin.version>
         <sonar.jacoco.plugin.version>1.5.1.5340</sonar.jacoco.plugin.version>
+        <spotless.maven.version>3.12.0</spotless.maven.version>
         <pitest.maven.version>1.30.2</pitest.maven.version>
         <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
 
@@ -248,6 +249,7 @@
                                 <include>com/onurbcd/cli/command/BalanceCommand.class</include>
                                 <include>com/onurbcd/cli/command/BillCommand.class</include>
                                 <include>com/onurbcd/cli/command/BillTypeCommand.class</include>
+                                <include>com/onurbcd/cli/command/BudgetCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>
@@ -306,6 +308,33 @@
                     <mutationThreshold>${pit.mutation.threshold}</mutationThreshold>
                     <timestampedReports>false</timestampedReports>
                 </configuration>
+            </plugin>
+            <!-- Import hygiene (same order as IntelliJ's default: others, javax, java, static; no unused imports).
+                 ./mvnw spotless:apply fixes, ./mvnw spotless:check only reports. -->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.maven.version}</version>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/**/*.java</include>
+                        </includes>
+                        <importOrder>
+                            <order>,javax,java,\#</order>
+                        </importOrder>
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotless-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.sonarsource.jacoco/sonar-jacoco-plugin -->
             <plugin>

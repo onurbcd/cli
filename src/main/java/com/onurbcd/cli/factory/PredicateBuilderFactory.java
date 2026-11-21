@@ -1,8 +1,8 @@
 package com.onurbcd.cli.factory;
 
-import com.onurbcd.cli.persistency.predicate.BasePredicateBuilder;
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
+import com.onurbcd.cli.persistency.predicate.BasePredicateBuilder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

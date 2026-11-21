@@ -1,16 +1,15 @@
 package com.onurbcd.cli.persistency.repository;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.onurbcd.cli.dto.ItemDto;
+import com.onurbcd.cli.dto.category.CategoryDto;
+import com.onurbcd.cli.persistency.entity.Category;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.onurbcd.cli.dto.ItemDto;
-import com.onurbcd.cli.dto.category.CategoryDto;
-import com.onurbcd.cli.persistency.entity.Category;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends EruRepository<Category, CategoryDto> {

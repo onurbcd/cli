@@ -15,6 +15,7 @@ import com.onurbcd.cli.service.BudgetService;
 import com.onurbcd.cli.service.SourceService;
 import com.onurbcd.cli.util.DateUtil;
 import com.onurbcd.cli.validator.Action;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -38,9 +39,10 @@ public class BillCommand extends BaseCommand {
     private final AdminProperties config;
 
     public BillCommand(BillService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                       BudgetService budgetService, SourceService sourceService, AdminProperties config) {
+                       BudgetService budgetService, SourceService sourceService, AdminProperties config,
+                       Validator validator) {
 
-        super(service, flowBuilder, shellHelper, BILL, EruTable.BILL);
+        super(service, flowBuilder, shellHelper, BILL, EruTable.BILL, validator);
         this.service = service;
         this.budgetService = budgetService;
         this.sourceService = sourceService;

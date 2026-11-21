@@ -1,11 +1,10 @@
 package com.onurbcd.cli.exception;
 
+import com.onurbcd.cli.enums.Error;
+import lombok.Getter;
+
 import java.io.Serial;
 import java.util.function.Supplier;
-
-import com.onurbcd.cli.enums.Error;
-
-import lombok.Getter;
 
 @Getter
 public class ApiException extends RuntimeException implements Supplier<ApiException> {

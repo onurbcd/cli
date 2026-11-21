@@ -12,6 +12,7 @@ import com.onurbcd.cli.service.BalanceService;
 import com.onurbcd.cli.service.CategoryService;
 import com.onurbcd.cli.service.SourceService;
 import com.onurbcd.cli.validator.Action;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -36,9 +37,10 @@ public class BalanceCommand extends BaseCommand {
     private final AdminProperties config;
 
     public BalanceCommand(BalanceService service, SourceService sourceService, CategoryService categoryService,
-                          ComponentFlow.Builder flowBuilder, ShellHelper shellHelper, AdminProperties config) {
+                          ComponentFlow.Builder flowBuilder, ShellHelper shellHelper, AdminProperties config,
+                          Validator validator) {
 
-        super(service, flowBuilder, shellHelper, BALANCE, EruTable.BALANCE);
+        super(service, flowBuilder, shellHelper, BALANCE, EruTable.BALANCE, validator);
         this.service = service;
         this.sourceService = sourceService;
         this.categoryService = categoryService;

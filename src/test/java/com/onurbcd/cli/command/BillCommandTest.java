@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.bill.BillCloseDto;
 import com.onurbcd.cli.dto.bill.BillOpenDto;
@@ -75,7 +76,7 @@ class BillCommandTest {
     @BeforeEach
     void setUp() {
         command = new BillCommand(billService, flowBuilder, shellHelper, budgetService, sourceService,
-                adminProperties);
+                adminProperties, TestValidator.create());
     }
 
     private void stubFlowBuilder() {

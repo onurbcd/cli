@@ -8,6 +8,7 @@ import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.SecretService;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -26,8 +27,9 @@ import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 @CommandGroup(name = SECRET)
 public class SecretCommand extends BaseCommand {
 
-    public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
-        super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET);
+    public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
+                         Validator validator) {
+        super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET, validator);
     }
 
     @Command(name = "secret-save", description = "Create or update a secret.")

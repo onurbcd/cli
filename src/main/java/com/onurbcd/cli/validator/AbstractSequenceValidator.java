@@ -1,9 +1,9 @@
 package com.onurbcd.cli.validator;
 
 import com.onurbcd.cli.enums.Direction;
+import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.repository.SequenceRepository;
-import com.onurbcd.cli.enums.Error;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 

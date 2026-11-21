@@ -8,6 +8,7 @@ import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.IncomeSourceService;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
@@ -26,8 +27,9 @@ import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 @CommandGroup(name = INCOME_SOURCE)
 public class IncomeSourceCommand extends BaseCommand {
 
-    public IncomeSourceCommand(IncomeSourceService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
-        super(service, flowBuilder, shellHelper, INCOME_SOURCE, EruTable.INCOME_SOURCE);
+    public IncomeSourceCommand(IncomeSourceService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
+                               Validator validator) {
+        super(service, flowBuilder, shellHelper, INCOME_SOURCE, EruTable.INCOME_SOURCE, validator);
     }
 
     @Command(name = "income-source-save", description = "Create or update an income source.")
