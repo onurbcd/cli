@@ -6,6 +6,7 @@ import com.onurbcd.cli.dto.billtype.BillTypeDto;
 import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
+import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
 import lombok.AccessLevel;
@@ -104,5 +105,16 @@ public final class TestFactory {
         category.setParentName("parent");
         category.setDescription("description");
         return category;
+    }
+
+    /**
+     * Inactive income source named "bogus".
+     */
+    public static IncomeSourceDto createIncomeSourceDto() {
+        var incomeSource = new IncomeSourceDto();
+        incomeSource.setId(ID);
+        incomeSource.setName("bogus");
+        incomeSource.setActive(false);
+        return incomeSource;
     }
 }

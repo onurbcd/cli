@@ -275,6 +275,7 @@
                                 <include>com/onurbcd/cli/command/BudgetCommand.class</include>
                                 <include>com/onurbcd/cli/command/CategoryCommand.class</include>
                                 <include>com/onurbcd/cli/command/DayCommand.class</include>
+                                <include>com/onurbcd/cli/command/IncomeSourceCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>
