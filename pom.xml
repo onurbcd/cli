@@ -277,6 +277,7 @@
                                 <include>com/onurbcd/cli/command/DayCommand.class</include>
                                 <include>com/onurbcd/cli/command/IncomeSourceCommand.class</include>
                                 <include>com/onurbcd/cli/command/SecretCommand.class</include>
+                                <include>com/onurbcd/cli/command/SourceCommand.class</include>
                                 <include>com/onurbcd/cli/dto/secret/SecretSaveDto.class</include>
                             </includes>
                             <rules>

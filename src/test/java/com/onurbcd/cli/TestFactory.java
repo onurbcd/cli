@@ -8,8 +8,11 @@ import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
 import com.onurbcd.cli.dto.secret.SecretDto;
+import com.onurbcd.cli.dto.source.SourceDto;
 import com.onurbcd.cli.enums.BalanceType;
+import com.onurbcd.cli.enums.CurrencyType;
 import com.onurbcd.cli.enums.PaymentType;
+import com.onurbcd.cli.enums.SourceType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -132,5 +135,21 @@ public final class TestFactory {
         secret.setUsername("user");
         secret.setPassword("password");
         return secret;
+    }
+
+    /**
+     * Inactive usable digital source named "bogus", linked to income source {@code PARENT_ID}, balance 100.50.
+     */
+    public static SourceDto createSourceDto() {
+        var source = new SourceDto();
+        source.setId(ID);
+        source.setName("bogus");
+        source.setActive(false);
+        source.setIncomeSourceId(PARENT_ID);
+        source.setIncomeSourceName("income");
+        source.setSourceType(SourceType.USABLE);
+        source.setCurrencyType(CurrencyType.DIGITAL);
+        source.setBalance(new BigDecimal("100.50"));
+        return source;
     }
 }
