@@ -53,11 +53,15 @@
         <sonar.coverage.exclusions>
             **/CliApp.java
         </sonar.coverage.exclusions>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.language>java</sonar.language>
+        <!-- sent explicitly so the analysis always carries a version; bump the pom version on release,
+             Sonar's "previous version" new-code period depends on it changing -->
+        <sonar.projectVersion>${project.version}</sonar.projectVersion>
+        <!-- produced by the jacoco-site execution (verify phase), so it must exist before the sonar goal runs -->
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <!-- reports produced by ./mvnw verify -Plint, imported so Sonar shows the same findings -->
+        <sonar.java.checkstyle.reportPaths>${project.basedir}/target/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
+        <sonar.java.pmd.reportPaths>${project.basedir}/target/pmd.xml</sonar.java.pmd.reportPaths>
+        <sonar.java.spotbugs.reportPaths>${project.basedir}/target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
     </properties>
 
     <dependencyManagement>
