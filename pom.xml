@@ -274,6 +274,7 @@
                                 <include>com/onurbcd/cli/command/BillTypeCommand.class</include>
                                 <include>com/onurbcd/cli/command/BudgetCommand.class</include>
                                 <include>com/onurbcd/cli/command/CategoryCommand.class</include>
+                                <include>com/onurbcd/cli/command/DayCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>
