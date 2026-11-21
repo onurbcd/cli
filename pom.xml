@@ -30,6 +30,11 @@
         <lombok.version>1.18.48</lombok.version>
         <jacoco.maven.plugin.version>0.8.16</jacoco.maven.plugin.version>
         <sonar.jacoco.plugin.version>1.5.1.5340</sonar.jacoco.plugin.version>
+        <error-prone.version>2.53.0</error-prone.version>
+        <checkstyle.maven.version>3.6.0</checkstyle.maven.version>
+        <checkstyle.version>14.4.0</checkstyle.version>
+        <pmd.maven.version>3.28.0</pmd.maven.version>
+        <spotbugs.maven.version>4.10.5.0</spotbugs.maven.version>
         <spotless.maven.version>3.12.0</spotless.maven.version>
         <pitest.maven.version>1.30.2</pitest.maven.version>
         <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
@@ -40,6 +45,8 @@
         <jacoco.check.includes>com/onurbcd/cli/__none__.class</jacoco.check.includes>
         <!-- PIT target, passed on the command line: -Dpit.target.classes=... -Dpit.target.tests=... -->
         <pit.mutation.threshold>90</pit.mutation.threshold>
+        <!-- Lint profile (./mvnw verify -Plint): report only by default. Use -Dlint.fail=true to fail the build on findings. -->
+        <lint.fail>false</lint.fail>
 
         <sonar.organization>onurbcd</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -173,7 +180,21 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <release>${java.version}</release>
+                    <compilerArgs>
+                        <!-- Error Prone (needs the add-exports flags in .mvn/jvm.config on JDK 17 and later).
+                             Generated code (Lombok, MapStruct, QueryDSL) is not reported.
+                             ReturnValueIgnored is only a warning: it is a false positive for Mockito's
+                             mockStatic(...).when(LocalDate::now). -->
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <arg>--should-stop=ifError=FLOW</arg>
+                        <arg>-Xplugin:ErrorProne -XepDisableWarningsInGeneratedCode -XepExcludedPaths:.*/target/generated-(test-)?sources/.* -Xep:ReturnValueIgnored:WARN</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${error-prone.version}</version>
+                        </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -344,4 +365,90 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <!-- Static analysis, opt-in because it slows `verify` down: ./mvnw verify -Plint
+             Reports: target/checkstyle-result.xml, target/pmd.xml, target/spotbugsXml.xml -->
+        <profile>
+            <id>lint</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>${checkstyle.maven.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+                            <!-- hand-written code only: skip generated sources (QueryDSL, MapStruct) -->
+                            <sourceDirectories>
+                                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                            </sourceDirectories>
+                            <consoleOutput>true</consoleOutput>
+                            <violationSeverity>warning</violationSeverity>
+                            <failOnViolation>${lint.fail}</failOnViolation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>checkstyle-check</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <version>${pmd.maven.version}</version>
+                        <configuration>
+                            <rulesets>
+                                <ruleset>config/pmd/ruleset.xml</ruleset>
+                            </rulesets>
+                            <excludeRoots>
+                                <excludeRoot>target/generated-sources/annotations</excludeRoot>
+                            </excludeRoots>
+                            <printFailingErrors>true</printFailingErrors>
+                            <failOnViolation>${lint.fail}</failOnViolation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>pmd-check</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${spotbugs.maven.version}</version>
+                        <configuration>
+                            <effort>Max</effort>
+                            <threshold>Medium</threshold>
+                            <excludeFilterFile>config/spotbugs/exclude.xml</excludeFilterFile>
+                            <failOnError>${lint.fail}</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>spotbugs-check</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

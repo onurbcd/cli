@@ -36,6 +36,33 @@ The build checks the imports of every Java file under `src` with the Spotless Ma
 
 If you use IntelliJ, enabling "Reformat code" and "Optimize imports" under Settings > Tools > Actions on Save keeps files compliant, as long as the IDE's import order is the default one (Settings > Editor > Code Style > Java > Imports).
 
+### Static analysis
+
+Two layers, with different costs:
+
+**Error Prone (always on).** It runs inside `javac`, so every `compile`, `test` and `verify` reports likely bugs as compiler warnings (`[WARNING] ... [EqualsGetClass] ...`). Generated code (Lombok, MapStruct, QueryDSL) is not reported. Findings are warnings; only Error Prone's error-level checks fail the compilation. `ReturnValueIgnored` is downgraded to a warning because it is a false positive for Mockito's `mockStatic(...).when(LocalDate::now)`.
+
+Error Prone needs the `--add-exports`/`--add-opens` flags for `jdk.compiler` on JDK 17 and later. They live in `.mvn/jvm.config`, which `./mvnw` and IntelliJ's Maven import read automatically. If you run a plain `mvn` from another place, make sure that file is honored, or the compilation fails with `IllegalAccessError`.
+
+**Checkstyle, PMD and SpotBugs (opt-in `lint` profile).** They slow `verify` down, so they only run when asked:
+
+```bash
+./mvnw verify -Plint                   # report only: prints findings, never fails the build
+./mvnw verify -Plint -Dlint.fail=true  # fail the build on any finding
+```
+
+| Tool | Looks for | Configuration | Report |
+|---|---|---|---|
+| Checkstyle | Naming and convention slips (inner assignments, missing braces, long methods). Layout and imports are not checked. | `config/checkstyle/checkstyle.xml` | `target/checkstyle-result.xml` |
+| PMD | Bug-prone code and best-practice violations (unused parameters, default charset, overridable calls in constructors). | `config/pmd/ruleset.xml` | `target/pmd.xml` |
+| SpotBugs | Probable bugs in the bytecode (null dereferences, unnecessary boxing). Threshold: medium. | `config/spotbugs/exclude.xml` | `target/spotbugsXml.xml` |
+
+Checkstyle and PMD analyze only hand-written code under `src/main/java`; tests and generated sources (QueryDSL `Q*`, MapStruct implementations) are skipped. SpotBugs works on the compiled classes and excludes the generated ones through its filter file.
+
+Each configuration file lists what was excluded and why (for example `EI_EXPOSE_REP` in SpotBugs, caused by Lombok getters and Spring constructor injection). To silence a rule, change it in the file above with a comment explaining the reason; avoid `@SuppressWarnings` on individual classes. The profile is report-only by default so it can be adopted gradually: fix the findings, then enable `-Dlint.fail=true` (or set `lint.fail` to `true` in `pom.xml`) so new findings break the build.
+
+The GitHub Actions workflow runs a plain `./mvnw verify`, so it includes Error Prone and the Spotless check but not the `lint` profile.
+
 ## Automated Tests
 
 Automated tests check that the application's rules and integrations behave as expected. Unit tests exercise a class or small unit in isolation, making failures easier to locate and keeping feedback fast. Integration tests check boundaries such as persistence, database queries, and Flyway migrations against PostgreSQL.
