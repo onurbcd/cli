@@ -6,8 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
-import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
-import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYearAndMonth;
 
 @SuperBuilder
 @Getter
@@ -22,12 +21,14 @@ public class BudgetFilter extends AbstractFilterable {
     public static BudgetFilter of(Boolean active, String search, Short refYear, Short refMonth, UUID billTypeId,
                                   Boolean paid) {
 
+        var reference = orCurrentYearAndMonth(refYear, refMonth);
+
         return BudgetFilter
                 .builder()
                 .active(active)
                 .search(search)
-                .refYear(orCurrentYear(refYear))
-                .refMonth(orCurrentMonth(refMonth))
+                .refYear(reference.year())
+                .refMonth(reference.month())
                 .billTypeId(billTypeId)
                 .paid(paid)
                 .build();

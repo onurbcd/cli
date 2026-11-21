@@ -109,15 +109,17 @@ public class BillCommand extends BaseCommand {
                 return SaveFlowParam.bill(budgetItems, sourceItems, config.getFilesPath());
             }
             case BILL_OPEN -> {
-                var year = DateUtil.orCurrentYear(params.getYear());
-                var month = DateUtil.orCurrentMonth(params.getMonth());
+                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth());
+                var year = reference.year();
+                var month = reference.month();
                 var budgetItems = budgetService.getMonthlyBudget(year, month);
                 Action.checkIfNotEmpty(budgetItems).orElseThrow(Error.BUDGET_REQUIRED, month, year);
                 return SaveFlowParam.billOpen(budgetItems, config.getFilesPath());
             }
             case BILL_CLOSE -> {
-                var year = DateUtil.orCurrentYear(params.getYear());
-                var month = DateUtil.orCurrentMonth(params.getMonth());
+                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth());
+                var year = reference.year();
+                var month = reference.month();
                 var billItems = service.getOpenBills(year, month);
                 Action.checkIfNotEmpty(billItems).orElseThrow(Error.OPEN_BILLS_REQUIRED, month, year);
                 var sourceItems = sourceService.getItems(null);

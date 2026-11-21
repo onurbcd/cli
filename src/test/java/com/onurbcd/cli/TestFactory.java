@@ -1,6 +1,7 @@
 package com.onurbcd.cli;
 
 import com.onurbcd.cli.dto.balance.BalanceDto;
+import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
@@ -41,5 +42,18 @@ public final class TestFactory {
 
     public static DocumentDto createDocumentDto() {
         return new DocumentDto(DOCUMENT_ID, "doc.pdf", "balance/doc.pdf", "application/pdf", 10L, "hash");
+    }
+
+    /**
+     * Valid bill referencing 2024-03-15, inactive and not closed, with no linked documents.
+     */
+    public static BillDto createBillDto() {
+        var bill = new BillDto();
+        bill.setId(ID);
+        bill.setName("bogus");
+        bill.setActive(false);
+        bill.setClosed(false);
+        bill.setReferenceDayCalendarDate(LocalDate.of(2024, 3, 15));
+        return bill;
     }
 }

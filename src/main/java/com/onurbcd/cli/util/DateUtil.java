@@ -2,6 +2,7 @@ package com.onurbcd.cli.util;
 
 import com.onurbcd.cli.enums.Error;
 import com.onurbcd.cli.exception.ApiException;
+import com.onurbcd.cli.param.YearAndMonth;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -50,11 +51,15 @@ public final class DateUtil {
         return date != null ? date.format(DateTimeFormatter.ISO_LOCAL_DATE) : null;
     }
 
-    public static Short orCurrentYear(@Nullable Short year) {
-        return year == null ? (short) LocalDate.now().getYear() : year;
-    }
+    /**
+     * Fills in the missing year and/or month with the current ones, reading the clock only once so both values
+     * always come from the same instant (e.g. never year 2024 with month 1 across New Year).
+     */
+    public static YearAndMonth orCurrentYearAndMonth(@Nullable Short year, @Nullable Short month) {
+        var today = LocalDate.now();
 
-    public static Short orCurrentMonth(@Nullable Short month) {
-        return month == null ? (short) LocalDate.now().getMonthValue() : month;
+        return new YearAndMonth(
+                year == null ? (short) today.getYear() : year,
+                month == null ? (short) today.getMonthValue() : month);
     }
 }
