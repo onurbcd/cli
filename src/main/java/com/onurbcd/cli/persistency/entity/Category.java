@@ -44,7 +44,7 @@ public class Category extends Prime {
     private String description;
 
     public Category(UUID id) {
-        setId(id);
+        super(id);
     }
 
     @Override

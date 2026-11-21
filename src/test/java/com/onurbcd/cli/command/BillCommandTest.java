@@ -313,7 +313,7 @@ class BillCommandTest {
         void givenNoYearAndMonth_whenOpenBill_shouldUseCurrentMonth() {
             when(budgetService.getMonthlyBudget((short) 2025, (short) 7)).thenReturn(List.of());
 
-            try (var ignored = clockAt(TODAY)) {
+            try (var _ = clockAt(TODAY)) {
                 assertThatThrownBy(() -> command.openBill(null, null))
                         .isInstanceOfSatisfying(ApiException.class,
                                 e -> assertThat(e.getError()).isEqualTo(Error.BUDGET_REQUIRED));
@@ -328,7 +328,7 @@ class BillCommandTest {
         void givenClockCrossingNewYear_whenOpenBill_shouldUseConsistentYearAndMonth() {
             when(budgetService.getMonthlyBudget(any(), any())).thenReturn(List.of());
 
-            try (var ignored = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
+            try (var _ = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
                 assertThatThrownBy(() -> command.openBill(null, null)).isInstanceOf(ApiException.class);
             }
 
@@ -439,7 +439,7 @@ class BillCommandTest {
         void givenNoYearAndMonth_whenCloseBill_shouldUseCurrentMonth() {
             when(billService.getOpenBills((short) 2025, (short) 7)).thenReturn(List.of());
 
-            try (var ignored = clockAt(TODAY)) {
+            try (var _ = clockAt(TODAY)) {
                 assertThatThrownBy(() -> command.closeBill(null, null))
                         .isInstanceOfSatisfying(ApiException.class,
                                 e -> assertThat(e.getError()).isEqualTo(Error.OPEN_BILLS_REQUIRED));
@@ -454,7 +454,7 @@ class BillCommandTest {
         void givenClockCrossingNewYear_whenCloseBill_shouldUseConsistentYearAndMonth() {
             when(billService.getOpenBills(any(), any())).thenReturn(List.of());
 
-            try (var ignored = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
+            try (var _ = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
                 assertThatThrownBy(() -> command.closeBill(null, null)).isInstanceOf(ApiException.class);
             }
 

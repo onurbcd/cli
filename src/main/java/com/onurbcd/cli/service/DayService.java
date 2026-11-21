@@ -66,13 +66,13 @@ public class DayService {
         day.setCalendarYear((short) calendarDate.getYear());
         day.setCalendarQuarter((short) calendarDate.get(IsoFields.QUARTER_OF_YEAR));
         day.setCalendarMonth((short) calendarDate.getMonthValue());
-        day.setCalendarMonthName(calendarDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase());
+        day.setCalendarMonthName(calendarDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase(Locale.ROOT));
         day.setCalendarWeekInYear((short) calendarDate.get(WeekFields.ISO.weekOfYear()));
         day.setCalendarWeekInMonth((short) calendarDate.get(WeekFields.ISO.weekOfMonth()));
         day.setCalendarDayInYear((short) calendarDate.getDayOfYear());
         day.setCalendarDayInWeek((short) calendarDate.get(WeekFields.ISO.dayOfWeek()));
         day.setCalendarDayInMonth((short) calendarDate.getDayOfMonth());
-        day.setCalendarWeekdayName(calendarDate.getDayOfWeek().name().toLowerCase());
+        day.setCalendarWeekdayName(calendarDate.getDayOfWeek().name().toLowerCase(Locale.ROOT));
         return day;
     }
 }

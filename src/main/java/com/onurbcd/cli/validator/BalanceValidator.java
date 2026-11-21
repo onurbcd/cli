@@ -35,12 +35,8 @@ public class BalanceValidator {
     }
 
     private boolean equalDay(BalanceSaveDto dto, @Nullable Balance balance) {
-        if (balance == null) {
-            return false;
-        }
-
-        return DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(), balance.getSequenceYear(),
-                balance.getSequenceMonth(), balance.getDayInMonth());
+        return balance != null && DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(),
+                balance.getSequenceYear(), balance.getSequenceMonth(), balance.getDayInMonth());
     }
 
     private boolean dayNotFuture(LocalDate dayCalendarDate) {

@@ -20,6 +20,8 @@
         <exclude name="GuardLogStatement"/>
         <exclude name="LooseCoupling"/>
         <exclude name="UseVarargs"/>
+        <!-- abstract base classes that only share state (Audit, BasePredicateBuilder) are not meant to be instantiated -->
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
         <!-- MapStruct mappers and marker interfaces are not meant to be lambdas -->
         <exclude name="ImplicitFunctionalInterface"/>
         <!-- MapStruct and marker interfaces are not meant to be lambdas -->

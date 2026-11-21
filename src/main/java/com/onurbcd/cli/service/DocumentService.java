@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -87,7 +86,7 @@ public class DocumentService {
     private String generateHash(Document document) {
         try {
             var transformedName = document.getName() + document.getPath() + document.getMimeType() +
-                    document.getSize() + new Date().getTime();
+                    document.getSize() + System.currentTimeMillis();
 
             var messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(transformedName.getBytes(StandardCharsets.UTF_8));

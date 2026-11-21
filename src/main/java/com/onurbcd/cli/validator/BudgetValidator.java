@@ -39,12 +39,8 @@ public class BudgetValidator {
     }
 
     private boolean equalRef(BudgetSaveDto budgetSaveDto, @Nullable Budget budget) {
-        if (budget == null) {
-            return false;
-        }
-
-        return DateUtil.equalMonth(budgetSaveDto.getRefYear(), budgetSaveDto.getRefMonth(), budget.getRefYear(),
-                budget.getRefMonth());
+        return budget != null && DateUtil.equalMonth(budgetSaveDto.getRefYear(), budgetSaveDto.getRefMonth(),
+                budget.getRefYear(), budget.getRefMonth());
     }
 
     private void validateCopyBudget(CopyBudgetDto copyBudgetDto) {

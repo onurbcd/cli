@@ -45,9 +45,9 @@ public abstract class BaseCommand {
             return shellHelper.warning(OPERATION_CANCELLED);
         }
 
-        String violations;
+        var violations = ValidatorUtil.validate(validator, saveDto);
 
-        if ((violations = ValidatorUtil.validate(validator, saveDto)) != null) {
+        if (violations != null) {
             return shellHelper.error(violations);
         }
 

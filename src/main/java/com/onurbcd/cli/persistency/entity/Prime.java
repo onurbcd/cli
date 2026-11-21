@@ -37,6 +37,10 @@ public class Prime extends Audit implements Entityable {
     @Getter
     private Boolean active;
 
+    protected Prime(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public void setActive(Boolean active) {
         this.active = active;
@@ -54,9 +58,13 @@ public class Prime extends Audit implements Entityable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
 
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Prime prime = (Prime) o;
 

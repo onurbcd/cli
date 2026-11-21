@@ -18,7 +18,7 @@ public final class Converter {
 
         try {
             return UUID.fromString(value);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException _) {
             return null;
         }
     }

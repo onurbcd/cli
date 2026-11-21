@@ -67,7 +67,7 @@ public final class NumberUtil {
 
         try {
             return Short.parseShort(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException _) {
             return null;
         }
     }
@@ -80,7 +80,7 @@ public final class NumberUtil {
 
         try {
             return new BigDecimal(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException _) {
             return null;
         }
     }

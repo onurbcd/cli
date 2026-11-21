@@ -52,10 +52,13 @@ public interface CustomRepository<D extends Dtoable, E extends Entityable> {
 
     BigDecimal getSum(Predicate predicate);
 
-    private Long countTotalRows(List<D> dtos, Pageable pageable, Predicate predicate) {
-        return dtos.size() < pageable.getPageSize()
-                ? dtos.size()
-                : mainQuery(predicate).select(Projections.appending(entityPathBase().count())).fetchFirst();
+    private long countTotalRows(List<D> dtos, Pageable pageable, Predicate predicate) {
+        if (dtos.size() < pageable.getPageSize()) {
+            return dtos.size();
+        }
+
+        Long total = mainQuery(predicate).select(Projections.appending(entityPathBase().count())).fetchFirst();
+        return total == null ? 0L : total;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

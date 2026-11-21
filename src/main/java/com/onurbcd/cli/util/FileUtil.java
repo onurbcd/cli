@@ -83,7 +83,13 @@ public final class FileUtil {
 
     private static MultipartFile fileToMultipart(String filePath) throws IOException {
         var path = Path.of(filePath);
-        var fileName = path.getFileName().toString();
+        var fileNamePath = path.getFileName();
+
+        if (fileNamePath == null) {
+            throw new IOException("The path has no file name: " + filePath);
+        }
+
+        var fileName = fileNamePath.toString();
         var contentType = Files.probeContentType(path);
 
         if (contentType == null) {

@@ -59,7 +59,7 @@ public final class DateUtil {
         var today = LocalDate.now();
 
         return new YearAndMonth(
-                year == null ? (short) today.getYear() : year,
-                month == null ? (short) today.getMonthValue() : month);
+                year == null ? Short.valueOf((short) today.getYear()) : year,
+                month == null ? Short.valueOf((short) today.getMonthValue()) : month);
     }
 }

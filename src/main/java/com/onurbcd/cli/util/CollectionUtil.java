@@ -37,7 +37,7 @@ public final class CollectionUtil {
                         return false;
                     }
                 }
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException _) {
                 return true;
             }
 
