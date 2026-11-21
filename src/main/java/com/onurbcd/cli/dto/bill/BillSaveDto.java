@@ -5,14 +5,15 @@ import com.onurbcd.cli.enums.DocumentType;
 import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.param.MultipartFile;
+import com.onurbcd.cli.util.EnumUtil;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
@@ -22,7 +23,6 @@ import java.util.function.Function;
 import static com.onurbcd.cli.util.Constant.*;
 import static com.onurbcd.cli.util.Converter.toUUID;
 import static com.onurbcd.cli.util.DateUtil.parseLocalDate;
-import static com.onurbcd.cli.util.EnumUtil.valueOf;
 import static com.onurbcd.cli.util.FileUtil.fileToMultipartFile;
 import static com.onurbcd.cli.util.FlowUtil.getString;
 import static com.onurbcd.cli.util.NumberUtil.parseShort;
@@ -92,11 +92,11 @@ public class BillSaveDto extends PrimeSaveDto {
                 .receiptFile(fileToMultipartFile(getString(context, RECEIPT_ID)))
                 .observation(normalizeSpace(getString(context, OBSERVATION_ID)))
                 .installment(parseShort(getString(context, INSTALLMENT_ID)))
-                .documentType(valueOf(DocumentType.class, getString(context, DOCUMENT_TYPE_ID)))
+                .documentType(EnumUtil.valueOf(DocumentType.class, getString(context, DOCUMENT_TYPE_ID)))
                 .budgetId(toUUID(getString(context, BUDGET_ID)))
-                .referenceType(valueOf(ReferenceType.class, getString(context, REFERENCE_TYPE_ID)))
+                .referenceType(EnumUtil.valueOf(ReferenceType.class, getString(context, REFERENCE_TYPE_ID)))
                 .closed(getBoolean(billDto, BillDto::getClosed))
-                .paymentType(valueOf(PaymentType.class, getString(context, PAYMENT_TYPE_ID)))
+                .paymentType(EnumUtil.valueOf(PaymentType.class, getString(context, PAYMENT_TYPE_ID)))
                 .sourceId(toUUID(getString(context, SOURCE_ID_ID)))
                 .build();
     }

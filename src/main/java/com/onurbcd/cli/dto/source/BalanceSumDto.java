@@ -3,7 +3,7 @@ package com.onurbcd.cli.dto.source;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 

@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @SuperBuilder
-@AttributeOverride(name = "name", column = @Column())
+@AttributeOverride(name = "name", column = @Column)
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "name", "refYear", "refMonth"

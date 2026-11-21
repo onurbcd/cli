@@ -3,7 +3,6 @@ package com.onurbcd.cli.dto.document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.onurbcd.cli.util.FileUtil;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,10 +22,6 @@ public class DocumentDto {
     private Long size;
     private String hash;
     private String storagePath;
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private String hyperlink;
 
     public DocumentDto(UUID id, String name, String path, String mimeType, Long size, String hash) {
         this.id = id;

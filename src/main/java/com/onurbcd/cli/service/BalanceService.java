@@ -27,7 +27,7 @@ import com.onurbcd.cli.util.NumberUtil;
 import com.onurbcd.cli.validator.BalanceValidator;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -159,7 +159,7 @@ public class BalanceService extends AbstractCrudService<Balance, BalanceDto, Bal
         sequenceService.swapPosition(sequenceParam);
     }
 
-    private CreateBalance fillValues(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles,
+    private CreateBalance fillValues(BalanceSaveDto saveDto, MultipartFile @Nullable[] multipartFiles,
                                      @Nullable Balance currentBalance) {
 
         var balance = (Balance) super.fillValues(saveDto, currentBalance);

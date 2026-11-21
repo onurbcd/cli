@@ -6,7 +6,7 @@ import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.persistency.entity.QBalance;
 import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.UUID;

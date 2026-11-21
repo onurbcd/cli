@@ -1,6 +1,5 @@
 package com.onurbcd.cli.service;
 
-import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.dto.balance.BalanceSaveDto;
 import com.onurbcd.cli.dto.document.MultipartFileDto;
 import com.onurbcd.cli.param.CreateDocument;
@@ -8,8 +7,9 @@ import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Document;
 import com.onurbcd.cli.persistency.repository.BalanceRepository;
 import com.onurbcd.cli.util.CollectionUtil;
+import com.onurbcd.cli.util.Constant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class BalanceDocumentService {
     private final DocumentService documentService;
     private final BalanceRepository balanceRepository;
 
-    public CreateDocument createDocuments(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles, @Nullable UUID id) {
+    public CreateDocument createDocuments(BalanceSaveDto saveDto, MultipartFile @Nullable[] multipartFiles, @Nullable UUID id) {
         var currentDocuments = getCurrentDocuments(id);
         var newDocuments = saveDocuments(saveDto, multipartFiles);
         var updateDocuments = getDocumentsToUpdate(currentDocuments, saveDto);
@@ -46,7 +46,7 @@ public class BalanceDocumentService {
         documentService.delete(documents);
     }
 
-    private Set<Document> saveDocuments(BalanceSaveDto saveDto, @Nullable MultipartFile[] multipartFiles) {
+    private Set<Document> saveDocuments(BalanceSaveDto saveDto, MultipartFile @Nullable[] multipartFiles) {
         if (multipartFiles == null || multipartFiles.length < 1) {
             return Collections.emptySet();
         }

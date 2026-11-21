@@ -1,7 +1,7 @@
 package com.onurbcd.cli.service;
 
 import com.onurbcd.cli.config.property.AdminProperties;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Document;
@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +24,14 @@ public class StorageService {
 
     public void saveFile(Document document, MultipartFile multipartFile) {
         try (var inputStream = multipartFile.getInputStream()) {
-            var storagePath = Paths.get(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
+            var storagePath = Path.of(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
             var filePath = getFilePath(storagePath, document);
-            Action.checkIf(Files.notExists(filePath)).orElseThrow(Error.FILE_ALREADY_EXISTS, filePath.toString());
+            Action.checkIf(Files.notExists(filePath)).orElseThrow(ErrorCode.FILE_ALREADY_EXISTS, filePath.toString());
             Files.createDirectories(storagePath);
             Files.copy(inputStream, filePath);
         } catch (IOException e) {
             log.error("Storage File Save", e);
-            throw new ApiException(Error.STORAGE_FILE_SAVE, e);
+            throw new ApiException(ErrorCode.STORAGE_FILE_SAVE, e);
         }
     }
 
@@ -42,12 +41,12 @@ public class StorageService {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             log.error("Storage File Delete", e);
-            throw new ApiException(Error.STORAGE_FILE_DELETE, e);
+            throw new ApiException(ErrorCode.STORAGE_FILE_DELETE, e);
         }
     }
 
     private Path getFilePath(Document document) {
-        var storagePath = Paths.get(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
+        var storagePath = Path.of(config.getStoragePath(), document.getPath()).toAbsolutePath().normalize();
         return getFilePath(storagePath, document);
     }
 

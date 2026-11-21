@@ -1,13 +1,13 @@
 package com.onurbcd.cli.util;
 
 import com.onurbcd.cli.enums.Codeable;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -41,7 +41,7 @@ public final class EnumUtil {
         try {
             return Enum.valueOf(enumClass, name);
         } catch (IllegalArgumentException e) {
-            throw new ApiException(Error.INVALID_ENUM_VALUE, e);
+            throw new ApiException(ErrorCode.INVALID_ENUM_VALUE, e);
         }
     }
 }

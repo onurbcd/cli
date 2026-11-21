@@ -3,9 +3,8 @@ package com.onurbcd.cli.util;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.shell.standard.ShellOption;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,17 +15,19 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ParamUtil {
 
+    @Nullable
     public static <T> String getLocalDate(@Nullable T input, Function<T, LocalDate> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
                 .map(DateUtil::formatDate)
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
+    @Nullable
     public static <T> String getString(@Nullable T input, Function<T, String> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
     @Nullable
@@ -36,18 +37,20 @@ public final class ParamUtil {
                 .orElse(null);
     }
 
+    @Nullable
     public static <T> String getBigDecimal(@Nullable T input, Function<T, BigDecimal> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
                 .map(BigDecimal::toString)
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
+    @Nullable
     public static <T> String getEnum(@Nullable T input, Function<T, ? extends Enum<?>> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
                 .map(Enum::name)
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
     public static <T> List<String> getUUIDCollection(@Nullable T input, Function<T, Collection<UUID>> fn) {
@@ -67,11 +70,12 @@ public final class ParamUtil {
                 .orElse(orElse);
     }
 
+    @Nullable
     public static <T> String getShort(@Nullable T input, Function<T, Short> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
                 .map(s -> Short.toString(s))
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
     @Nullable
@@ -101,19 +105,24 @@ public final class ParamUtil {
         }
 
         if (properties != null && properties.length > 0) {
-            return Arrays.stream(properties)
+            var filtered = Arrays.stream(properties)
                     .filter(p -> p != null && !p.trim().isEmpty())
                     .toArray(String[]::new);
+
+            if (filtered.length > 0) {
+                return filtered;
+            }
         }
 
         return defaultProperties;
     }
 
+    @Nullable
     public static <T> String getUUID(@Nullable T input, Function<T, UUID> fn) {
         return Optional.ofNullable(input)
                 .map(fn)
                 .map(UUID::toString)
-                .orElse(ShellOption.NULL);
+                .orElse(null);
     }
 
     public static <T> UUID getNullUUID(@Nullable T input, Function<T, UUID> fn) {

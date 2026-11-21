@@ -1,6 +1,6 @@
 package com.onurbcd.cli.validator;
 
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +15,7 @@ public class Action {
         this.checkConditionNotTrue = checkConditionNotTrue;
     }
 
-    public void orElseThrow(Error error, Object... args) {
+    public void orElseThrow(ErrorCode error, Object... args) {
         if (checkConditionNotTrue) {
             throw new ApiException(error, args);
         }

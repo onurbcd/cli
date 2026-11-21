@@ -3,9 +3,9 @@ package com.onurbcd.cli.util;
 import com.onurbcd.cli.enums.FlowField;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.shell.standard.ShellOption;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,32 +19,46 @@ public final class FlowBuilderWrapper {
         return new FlowBuilderWrapper(builder.clone().reset());
     }
 
-    public FlowBuilderWrapper input(FlowField field, String defaultValue) {
-        builder.withStringInput(field.getId())
-                .name(field.getName())
-                .defaultValue(defaultValue)
-                .and();
+    public FlowBuilderWrapper input(FlowField field, @Nullable String defaultValue) {
+        if (defaultValue == null) {
+            builder.withStringInput(field.getId())
+                    .name(field.getName())
+                    .and();
+        } else {
+            builder.withStringInput(field.getId())
+                    .name(field.getName())
+                    .defaultValue(defaultValue)
+                    .and();
+        }
 
         return this;
     }
 
     public FlowBuilderWrapper input(FlowField field) {
-        return input(field, ShellOption.NULL);
+        return input(field, null);
     }
 
-    public FlowBuilderWrapper select(FlowField field, List<SelectItem> items, String defaultValue) {
-        builder.withSingleItemSelector(field.getId())
-                .name(field.getName())
-                .selectItems(items)
-                .defaultSelect(defaultValue)
-                .max(items.size())
-                .and();
+    public FlowBuilderWrapper select(FlowField field, List<SelectItem> items, @Nullable String defaultValue) {
+        if (defaultValue == null) {
+            builder.withSingleItemSelector(field.getId())
+                    .name(field.getName())
+                    .selectItems(items)
+                    .max(items.size())
+                    .and();
+        } else {
+            builder.withSingleItemSelector(field.getId())
+                    .name(field.getName())
+                    .selectItems(items)
+                    .defaultSelect(defaultValue)
+                    .max(items.size())
+                    .and();
+        }
 
         return this;
     }
 
     public FlowBuilderWrapper select(FlowField field, List<SelectItem> items) {
-        return select(field, items, ShellOption.NULL);
+        return select(field, items, null);
     }
 
     public FlowBuilderWrapper multiSelect(FlowField field, List<SelectItem> items) {

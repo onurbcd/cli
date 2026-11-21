@@ -3,7 +3,7 @@ package com.onurbcd.cli.enums;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum Error {
+public enum ErrorCode {
 
     BALANCE_OPERATION_MISSING("There is no balance operation with operation %s and balance type %s"),
     BILL_ALREADY_CLOSED("Bill is already closed"),

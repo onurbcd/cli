@@ -4,14 +4,15 @@ import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.enums.CurrencyType;
 import com.onurbcd.cli.enums.SourceType;
 import com.onurbcd.cli.util.Constant;
+import com.onurbcd.cli.util.EnumUtil;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
@@ -19,7 +20,6 @@ import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.*;
 import static com.onurbcd.cli.util.Converter.toUUID;
-import static com.onurbcd.cli.util.EnumUtil.valueOf;
 import static com.onurbcd.cli.util.FlowUtil.getString;
 import static com.onurbcd.cli.util.NumberUtil.toBigDecimal;
 import static com.onurbcd.cli.util.ParamUtil.getBoolean;
@@ -50,8 +50,8 @@ public class SourceSaveDto extends PrimeSaveDto {
                 .name(normalizeSpace(getString(context, NAME_ID)))
                 .active(getBoolean(source, SourceDto::isActive))
                 .incomeSourceId(toUUID(getString(context, INCOME_SOURCE_ID_ID)))
-                .sourceType(valueOf(SourceType.class, getString(context, SOURCE_TYPE_ID)))
-                .currencyType(valueOf(CurrencyType.class, getString(context, CURRENCY_TYPE_ID)))
+                .sourceType(EnumUtil.valueOf(SourceType.class, getString(context, SOURCE_TYPE_ID)))
+                .currencyType(EnumUtil.valueOf(CurrencyType.class, getString(context, CURRENCY_TYPE_ID)))
                 .balance(toBigDecimal(getString(context, BALANCE_ID)))
                 .build();
     }

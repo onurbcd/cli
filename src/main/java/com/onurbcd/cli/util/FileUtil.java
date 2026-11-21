@@ -1,14 +1,14 @@
 package com.onurbcd.cli.util;
 
 import com.onurbcd.cli.dto.document.DocumentDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.param.MultipartFile;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public final class FileUtil {
         var path = Path.of(pathName);
 
         checkIf(Files.exists(path) && Files.isDirectory(path))
-                .orElseThrow(Error.FOLDER_DOES_NOT_EXIST, pathName);
+                .orElseThrow(ErrorCode.FOLDER_DOES_NOT_EXIST, pathName);
 
         var files = new File(pathName)
                 .listFiles(File::isFile);
@@ -59,7 +59,7 @@ public final class FileUtil {
         try {
             return fileToMultipart(filePath);
         } catch (IOException e) {
-            throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, e);
+            throw new ApiException(ErrorCode.CONVERTING_TO_MULTIPART_FILE, e);
         }
     }
 
@@ -83,7 +83,13 @@ public final class FileUtil {
 
     private static MultipartFile fileToMultipart(String filePath) throws IOException {
         var path = Path.of(filePath);
-        var fileName = path.getFileName().toString();
+        var fileNamePath = path.getFileName();
+
+        if (fileNamePath == null) {
+            throw new IOException("The path has no file name: " + filePath);
+        }
+
+        var fileName = fileNamePath.toString();
         var contentType = Files.probeContentType(path);
 
         if (contentType == null) {

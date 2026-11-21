@@ -23,8 +23,8 @@ import com.onurbcd.cli.dto.source.SourceSaveDto;
 import com.onurbcd.cli.enums.FlowType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SaveDtoFactory {

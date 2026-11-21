@@ -7,8 +7,8 @@ import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.enums.ReferenceType;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.util.List;
 

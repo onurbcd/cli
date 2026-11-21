@@ -24,20 +24,10 @@ public class CreateMonthDto {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        var that = (CreateMonthDto) o;
-
-        return new EqualsBuilder()
+        return this == o || (o instanceof CreateMonthDto that && new EqualsBuilder()
                 .append(calendarYear, that.calendarYear)
                 .append(calendarMonth, that.calendarMonth)
-                .isEquals();
+                .isEquals());
     }
 
     @Override

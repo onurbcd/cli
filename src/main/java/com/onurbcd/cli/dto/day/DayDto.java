@@ -19,20 +19,10 @@ public class DayDto {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        DayDto dayDto = (DayDto) o;
-
-        return new EqualsBuilder()
+        return this == o || (o instanceof DayDto dayDto && new EqualsBuilder()
                 .append(calendarYear, dayDto.calendarYear)
                 .append(calendarMonth, dayDto.calendarMonth)
-                .isEquals();
+                .isEquals());
     }
 
     @Override

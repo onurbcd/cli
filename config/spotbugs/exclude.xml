@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Lombok-generated getters/setters and Spring constructor injection store and expose references by design. -->
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+    <!-- The factories pick the DTO type from an enum (FlowType) and cast accordingly, by design. -->
+    <Match>
+        <Class name="~com\.onurbcd\.cli\.factory\.(SaveDtoFactory|SaveFlowParamFactory)"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST"/>
+    </Match>
+    <!-- Generated code: QueryDSL Q* classes and MapStruct implementations. -->
+    <Match>
+        <Class name="~.*\.Q[A-Z][A-Za-z]*"/>
+    </Match>
+    <Match>
+        <Class name="~.*MapperImpl"/>
+    </Match>
+</FindBugsFilter>

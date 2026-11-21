@@ -79,7 +79,8 @@ public abstract class AbstractSequenceService implements SequenceService {
     private void swapMiddlePositionsUp(SequenceParam param) {
         var sequence = (short) (param.getSequence() - 1);
 
-        for (short i = sequence, j = param.getSequence(); i >= param.getTargetSequence(); i--, j--) {
+        for (short i = sequence; i >= param.getTargetSequence(); i--) {
+            var j = (short) (i + 1);
             var paramSwap = SequenceParam.of(param.getYear(), param.getMonth(), i, j, param.getBalanceType());
             repository.updateSequence(paramSwap);
         }
@@ -88,7 +89,8 @@ public abstract class AbstractSequenceService implements SequenceService {
     private void swapMiddlePositionsDown(SequenceParam param) {
         var sequence = (short) (param.getSequence() + 1);
 
-        for (short i = sequence, j = param.getSequence(); i <= param.getTargetSequence(); i++, j++) {
+        for (short i = sequence; i <= param.getTargetSequence(); i++) {
+            var j = (short) (i - 1);
             var paramSwap = SequenceParam.of(param.getYear(), param.getMonth(), i, j, param.getBalanceType());
             repository.updateSequence(paramSwap);
         }

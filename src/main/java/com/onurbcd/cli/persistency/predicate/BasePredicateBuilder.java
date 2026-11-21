@@ -5,28 +5,28 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.core.types.dsl.StringPath;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public abstract class BasePredicateBuilder {
 
-    private final BooleanBuilder builder;
+    private final BooleanBuilder booleanBuilder;
 
     private final StringPath namePath;
 
     private final BooleanPath activePath;
 
     protected BasePredicateBuilder(StringPath namePath, BooleanPath activePath) {
-        this.builder = new BooleanBuilder();
+        this.booleanBuilder = new BooleanBuilder();
         this.namePath = namePath;
         this.activePath = activePath;
     }
 
     protected BooleanBuilder builder() {
-        return builder;
+        return booleanBuilder;
     }
 
     public Predicate build() {
-        return builder;
+        return booleanBuilder;
     }
 
     public BasePredicateBuilder search(@Nullable String search) {

@@ -1,17 +1,16 @@
 package com.onurbcd.cli.service;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.filter.Filterable;
 import com.onurbcd.cli.persistency.entity.Entityable;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 public interface CrudService {
 

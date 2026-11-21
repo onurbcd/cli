@@ -1,15 +1,18 @@
 package com.onurbcd.cli.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.onurbcd.cli.formatter.BigDecimalFormatter;
 import com.onurbcd.cli.formatter.LocalDateTimeFormatter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ext.javatime.ser.LocalDateSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -20,10 +23,14 @@ public class EruConfig {
 
     @Bean
     public ObjectMapper eruMapper() {
-        return new ObjectMapper()
-                .registerModule(new JavaTimeModule()
-                        .addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_PATTERN)))
-                        .addSerializer(new LocalDateSerializer(DateTimeFormatter.ISO_LOCAL_DATE)));
+        var javaTimeModule = new SimpleModule()
+                .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(
+                        DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_PATTERN)))
+                .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ISO_LOCAL_DATE));
+
+        return JsonMapper.builder()
+                .addModule(javaTimeModule)
+                .build();
     }
 
     @Bean

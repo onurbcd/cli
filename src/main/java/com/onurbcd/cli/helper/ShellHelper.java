@@ -1,7 +1,5 @@
 package com.onurbcd.cli.helper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onurbcd.cli.annotation.Helper;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.enums.Codeable;
@@ -11,10 +9,12 @@ import com.onurbcd.cli.formatter.CodeableFormatter;
 import com.onurbcd.cli.formatter.LocalDateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.shell.table.*;
+import org.springframework.shell.jline.tui.table.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 
 import static com.onurbcd.cli.util.Constant.*;
 
@@ -27,12 +27,13 @@ public class ShellHelper {
     private final BigDecimalFormatter bigDecimalFormatter;
     private final CodeableFormatter codeableFormatter;
 
-    public String printJson(Dtoable dtoable) throws JsonProcessingException {
+    public String printJson(Dtoable dtoable) {
         return eruMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dtoable);
     }
 
     public String printTable(Page<Dtoable> page, EruTable table) {
-        var tableBuilder = new TableBuilder(new BeanListTableModel<>(page.getContent(), table.getHeaders()))
+        var tableBuilder = new TableBuilder(new BeanListTableModel<>(
+                page.getContent(), new LinkedHashMap<>(table.getHeaders())))
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(LocalDateTime.class)).addFormatter(localDateTimeFormatter)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
@@ -47,7 +48,7 @@ public class ShellHelper {
     }
 
     public <T> String printTable(Iterable<T> iterable, EruTable table) {
-        return new TableBuilder(new BeanListTableModel<>(iterable, table.getHeaders()))
+        return new TableBuilder(new BeanListTableModel<>(iterable, new LinkedHashMap<>(table.getHeaders())))
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
                 .on(CellMatchers.ofType(Number.class)).addAligner(SimpleHorizontalAligner.right)

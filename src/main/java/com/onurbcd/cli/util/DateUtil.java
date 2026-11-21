@@ -1,12 +1,14 @@
 package com.onurbcd.cli.util;
 
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
+import com.onurbcd.cli.param.YearAndMonth;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -42,7 +44,7 @@ public final class DateUtil {
         try {
             return LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException e) {
-            throw new ApiException(Error.PARSE_LOCAL_DATE, e);
+            throw new ApiException(ErrorCode.PARSE_LOCAL_DATE, e);
         }
     }
 
@@ -50,11 +52,19 @@ public final class DateUtil {
         return date != null ? date.format(DateTimeFormatter.ISO_LOCAL_DATE) : null;
     }
 
-    public static Short orCurrentYear(@Nullable Short year) {
-        return year == null ? (short) LocalDate.now().getYear() : year;
-    }
+    /**
+     * Fills in the missing year and/or month with the current ones, reading the clock only once so both values
+     * always come from the same instant (e.g. never year 2024 with month 1 across New Year).
+     */
+    public static YearAndMonth orCurrentYearAndMonth(@Nullable Short year, @Nullable Short month, Clock clock) {
+        if (year != null && month != null) {
+            return new YearAndMonth(year, month);
+        }
 
-    public static Short orCurrentMonth(@Nullable Short month) {
-        return month == null ? (short) LocalDate.now().getMonthValue() : month;
+        var today = LocalDate.now(clock);
+
+        return new YearAndMonth(
+                year == null ? Short.valueOf((short) today.getYear()) : year,
+                month == null ? Short.valueOf((short) today.getMonthValue()) : month);
     }
 }
