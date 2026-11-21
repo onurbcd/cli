@@ -3,7 +3,7 @@ package com.onurbcd.cli.command;
 import com.onurbcd.cli.dto.filter.SourceFilter;
 import com.onurbcd.cli.dto.source.SourcePatchDto;
 import com.onurbcd.cli.enums.CurrencyType;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.SourceType;
 import com.onurbcd.cli.helper.ShellHelper;
@@ -141,7 +141,7 @@ public class SourceCommand extends BaseCommand {
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {
         var incomeSourceItems = incomeSourceService.getItems(null);
-        Action.checkIfNotEmpty(incomeSourceItems).orElseThrow(Error.INCOME_SOURCE_REQUIRED);
+        Action.checkIfNotEmpty(incomeSourceItems).orElseThrow(ErrorCode.INCOME_SOURCE_REQUIRED);
         return SaveFlowParam.source(incomeSourceItems);
     }
 }

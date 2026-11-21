@@ -1,7 +1,7 @@
 package com.onurbcd.cli.util;
 
 import com.onurbcd.cli.dto.document.DocumentDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.param.MultipartFile;
 import lombok.AccessLevel;
@@ -28,7 +28,7 @@ public final class FileUtil {
         var path = Path.of(pathName);
 
         checkIf(Files.exists(path) && Files.isDirectory(path))
-                .orElseThrow(Error.FOLDER_DOES_NOT_EXIST, pathName);
+                .orElseThrow(ErrorCode.FOLDER_DOES_NOT_EXIST, pathName);
 
         var files = new File(pathName)
                 .listFiles(File::isFile);
@@ -59,7 +59,7 @@ public final class FileUtil {
         try {
             return fileToMultipart(filePath);
         } catch (IOException e) {
-            throw new ApiException(Error.CONVERTING_TO_MULTIPART_FILE, e);
+            throw new ApiException(ErrorCode.CONVERTING_TO_MULTIPART_FILE, e);
         }
     }
 

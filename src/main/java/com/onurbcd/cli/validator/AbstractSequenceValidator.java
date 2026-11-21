@@ -1,7 +1,7 @@
 package com.onurbcd.cli.validator;
 
 import com.onurbcd.cli.enums.Direction;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.repository.SequenceRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,21 +15,21 @@ public abstract class AbstractSequenceValidator implements SequenceValidator {
     @Override
     public void validate(SequenceParam currentParam, SequenceParam targetParam, Direction direction) {
         Action.checkIfNot(Direction.UP.equals(direction) && currentParam.getSequence().equals((short) 1))
-                .orElseThrow(Error.WRONG_DIRETION_UP);
+                .orElseThrow(ErrorCode.WRONG_DIRETION_UP);
 
         var existsTargetSequence = BooleanUtils.isTrue(repository.existsSequence(targetParam));
 
         Action.checkIfNot(Direction.DOWN.equals(direction) && !existsTargetSequence)
-                .orElseThrow(Error.WRONG_DIRETION_DOWN);
+                .orElseThrow(ErrorCode.WRONG_DIRETION_DOWN);
 
         Action.checkIf(existsTargetSequence).orElseThrowNotFound("swap sequence target");
     }
 
     @Override
     public void validateSwapPosition(SequenceParam param) {
-        Action.checkIfNot(param.getSequence().equals(param.getTargetSequence())).orElseThrow(Error.SWAP_SAME_POSITION);
-        Action.checkIfNot(param.getTargetSequence().compareTo((short) 1) < 0).orElseThrow(Error.WRONG_DIRETION_DOWN);
+        Action.checkIfNot(param.getSequence().equals(param.getTargetSequence())).orElseThrow(ErrorCode.SWAP_SAME_POSITION);
+        Action.checkIfNot(param.getTargetSequence().compareTo((short) 1) < 0).orElseThrow(ErrorCode.WRONG_DIRETION_DOWN);
         var maxSequence = repository.getMaxSequence(param);
-        Action.checkIfNot(param.getTargetSequence().compareTo(maxSequence) > 0).orElseThrow(Error.WRONG_DIRETION_UP);
+        Action.checkIfNot(param.getTargetSequence().compareTo(maxSequence) > 0).orElseThrow(ErrorCode.WRONG_DIRETION_UP);
     }
 }

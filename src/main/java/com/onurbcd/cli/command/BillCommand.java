@@ -4,7 +4,7 @@ import com.onurbcd.cli.annotation.MaxYear;
 import com.onurbcd.cli.annotation.MinYear;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.bill.BillDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.helper.ShellHelper;
@@ -25,6 +25,7 @@ import org.springframework.shell.core.command.annotation.Option;
 import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BILL;
@@ -37,16 +38,18 @@ public class BillCommand extends BaseCommand {
     private final BudgetService budgetService;
     private final SourceService sourceService;
     private final AdminProperties config;
+    private final Clock clock;
 
     public BillCommand(BillService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
                        BudgetService budgetService, SourceService sourceService, AdminProperties config,
-                       Validator validator) {
+                       Validator validator, Clock clock) {
 
         super(service, flowBuilder, shellHelper, BILL, EruTable.BILL, validator);
         this.service = service;
         this.budgetService = budgetService;
         this.sourceService = sourceService;
         this.config = config;
+        this.clock = clock;
     }
 
     @Command(name = "bill-save", description = "Update a bill.")
@@ -99,36 +102,36 @@ public class BillCommand extends BaseCommand {
 
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {
-        switch (params.getFlowType()) {
+        return switch (params.getFlowType()) {
             case BILL -> {
                 var dto = (BillDto) params.getDto();
                 Short year = (short) dto.getReferenceDayCalendarDate().getYear();
                 Short month = (short) dto.getReferenceDayCalendarDate().getMonthValue();
                 var budgetItems = budgetService.getMonthlyBudget(year, month);
-                Action.checkIfNotEmpty(budgetItems).orElseThrow(Error.BUDGET_REQUIRED, month, year);
+                Action.checkIfNotEmpty(budgetItems).orElseThrow(ErrorCode.BUDGET_REQUIRED, month, year);
                 var sourceItems = sourceService.getItems(null);
-                Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
-                return SaveFlowParam.bill(budgetItems, sourceItems, config.getFilesPath());
+                Action.checkIfNotEmpty(sourceItems).orElseThrow(ErrorCode.SOURCE_REQUIRED);
+                yield SaveFlowParam.bill(budgetItems, sourceItems, config.getFilesPath());
             }
             case BILL_OPEN -> {
-                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth());
+                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth(), clock);
                 var year = reference.year();
                 var month = reference.month();
                 var budgetItems = budgetService.getMonthlyBudget(year, month);
-                Action.checkIfNotEmpty(budgetItems).orElseThrow(Error.BUDGET_REQUIRED, month, year);
-                return SaveFlowParam.billOpen(budgetItems, config.getFilesPath());
+                Action.checkIfNotEmpty(budgetItems).orElseThrow(ErrorCode.BUDGET_REQUIRED, month, year);
+                yield SaveFlowParam.billOpen(budgetItems, config.getFilesPath());
             }
             case BILL_CLOSE -> {
-                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth());
+                var reference = DateUtil.orCurrentYearAndMonth(params.getYear(), params.getMonth(), clock);
                 var year = reference.year();
                 var month = reference.month();
                 var billItems = service.getOpenBills(year, month);
-                Action.checkIfNotEmpty(billItems).orElseThrow(Error.OPEN_BILLS_REQUIRED, month, year);
+                Action.checkIfNotEmpty(billItems).orElseThrow(ErrorCode.OPEN_BILLS_REQUIRED, month, year);
                 var sourceItems = sourceService.getItems(null);
-                Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
-                return SaveFlowParam.billClose(billItems, sourceItems, config.getFilesPath());
+                Action.checkIfNotEmpty(sourceItems).orElseThrow(ErrorCode.SOURCE_REQUIRED);
+                yield SaveFlowParam.billClose(billItems, sourceItems, config.getFilesPath());
             }
             default -> throw new IllegalStateException("Unexpected value: " + params.getFlowType());
-        }
+        };
     }
 }

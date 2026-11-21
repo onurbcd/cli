@@ -5,6 +5,7 @@ import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
 import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.util.Constant;
+import com.onurbcd.cli.util.EnumUtil;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,6 @@ import java.util.UUID;
 import static com.onurbcd.cli.util.Constant.*;
 import static com.onurbcd.cli.util.Converter.toUUID;
 import static com.onurbcd.cli.util.DateUtil.parseLocalDate;
-import static com.onurbcd.cli.util.EnumUtil.valueOf;
 import static com.onurbcd.cli.util.FileUtil.filesToMultipartFiles;
 import static com.onurbcd.cli.util.FlowUtil.getString;
 import static com.onurbcd.cli.util.FlowUtil.getStringList;
@@ -85,8 +85,8 @@ public class BalanceSaveDto extends PrimeSaveDto {
                 .amount(toBigDecimal(getString(context, AMOUNT_ID)))
                 .code(normalizeSpace(getString(context, CODE_ID)))
                 .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
-                .balanceType(valueOf(BalanceType.class, getString(context, BALANCE_TYPE_ID)))
-                .paymentType(valueOf(PaymentType.class, getString(context, PAYMENT_TYPE_ID)))
+                .balanceType(EnumUtil.valueOf(BalanceType.class, getString(context, BALANCE_TYPE_ID)))
+                .paymentType(EnumUtil.valueOf(PaymentType.class, getString(context, PAYMENT_TYPE_ID)))
                 .documentsIds(documentsIds)
                 .multipartFiles(filesToMultipartFiles(getStringList(context, DOCUMENTS_ID)))
                 .build();

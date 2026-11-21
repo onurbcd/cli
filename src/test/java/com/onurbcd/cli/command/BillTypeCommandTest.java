@@ -5,7 +5,7 @@ import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.billtype.BillTypePatchDto;
 import com.onurbcd.cli.dto.billtype.BillTypeSaveDto;
 import com.onurbcd.cli.dto.filter.BillTypeFilter;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.exception.ApiException;
@@ -99,7 +99,7 @@ class BillTypeCommandTest {
 
             assertThatThrownBy(() -> command.save(null))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.CATEGORY_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.CATEGORY_REQUIRED));
 
             verify(categoryService).getCategoryItems(null, true);
             verifyNoMoreInteractions(categoryService);

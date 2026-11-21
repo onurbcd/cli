@@ -1,7 +1,7 @@
 package com.onurbcd.cli.util;
 
 import com.onurbcd.cli.enums.Codeable;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -41,7 +41,7 @@ public final class EnumUtil {
         try {
             return Enum.valueOf(enumClass, name);
         } catch (IllegalArgumentException e) {
-            throw new ApiException(Error.INVALID_ENUM_VALUE, e);
+            throw new ApiException(ErrorCode.INVALID_ENUM_VALUE, e);
         }
     }
 }

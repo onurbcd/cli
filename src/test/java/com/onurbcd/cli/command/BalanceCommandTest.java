@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestClock;
 import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.Dtoable;
@@ -8,7 +9,7 @@ import com.onurbcd.cli.dto.balance.BalanceSaveDto;
 import com.onurbcd.cli.dto.balance.BalanceSumDto;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
 import com.onurbcd.cli.enums.*;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
@@ -81,7 +82,7 @@ class BalanceCommandTest {
     @BeforeEach
     void setUp() {
         command = new BalanceCommand(balanceService, sourceService, categoryService, flowBuilder, shellHelper,
-                adminProperties, TestValidator.create());
+                adminProperties, TestValidator.create(), TestClock.DEFAULT);
     }
 
     private void stubPreSaveFlow(Path filesPath) {
@@ -135,7 +136,7 @@ class BalanceCommandTest {
 
             assertThatThrownBy(() -> command.save(null))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.SOURCE_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.SOURCE_REQUIRED));
 
             verify(sourceService).getItems(null);
             verifyNoMoreInteractions(sourceService, balanceService, shellHelper);
@@ -150,7 +151,7 @@ class BalanceCommandTest {
 
             assertThatThrownBy(() -> command.save(null))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.CATEGORY_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.CATEGORY_REQUIRED));
 
             verify(sourceService).getItems(null);
             verify(categoryService).getCategoryItems(null, true);

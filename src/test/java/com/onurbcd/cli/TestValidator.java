@@ -12,13 +12,14 @@ public final class TestValidator {
 
     /**
      * Real validator wired like production: constraint validators are created by Spring, so they receive
-     * {@link AdminProperties} (minimum year 2000) by constructor injection.
+     * {@link AdminProperties} (minimum year 2000) and the {@link TestClock#DEFAULT} clock by constructor injection.
      */
     public static Validator create() {
         var properties = new AdminProperties();
         properties.setMinYear((short) 2000);
         var context = new StaticApplicationContext();
         context.getBeanFactory().registerSingleton("adminProperties", properties);
+        context.getBeanFactory().registerSingleton("clock", TestClock.DEFAULT);
         context.refresh();
         var factory = new LocalValidatorFactoryBean();
         factory.setApplicationContext(context);

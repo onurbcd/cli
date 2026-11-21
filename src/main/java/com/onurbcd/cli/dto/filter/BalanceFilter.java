@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -39,8 +40,8 @@ public class BalanceFilter extends AbstractFilterable {
                 .build();
     }
 
-    public BalanceFilter and(Short year, Short month, Short day) {
-        var reference = orCurrentYearAndMonth(year, month);
+    public BalanceFilter and(Short year, Short month, Short day, Clock clock) {
+        var reference = orCurrentYearAndMonth(year, month, clock);
         this.dayCalendarYear = reference.year();
         this.dayCalendarMonth = reference.month();
         this.dayCalendarDayInMonth = day;

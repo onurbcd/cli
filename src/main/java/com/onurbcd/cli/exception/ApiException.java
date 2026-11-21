@@ -1,6 +1,6 @@
 package com.onurbcd.cli.exception;
 
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -12,20 +12,20 @@ public class ApiException extends RuntimeException implements Supplier<ApiExcept
     @Serial
     private static final long serialVersionUID = -4588973589702747798L;
 
-    private final Error error;
+    private final ErrorCode error;
 
-    public ApiException(Error error, Object... args) {
+    public ApiException(ErrorCode error, Object... args) {
         super(error.format(args));
         this.error = error;
     }
 
-    public ApiException(Error error, Throwable cause) {
+    public ApiException(ErrorCode error, Throwable cause) {
         super(error.format(cause.getMessage()), cause);
         this.error = error;
     }
 
     public static ApiException notFound(Object... args) {
-        return new ApiException(Error.ENTITY_DOES_NOT_EXIST, args);
+        return new ApiException(ErrorCode.ENTITY_DOES_NOT_EXIST, args);
     }
 
     @Override

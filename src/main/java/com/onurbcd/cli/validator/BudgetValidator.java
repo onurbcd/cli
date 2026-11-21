@@ -4,7 +4,7 @@ import com.onurbcd.cli.annotation.Validator;
 import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.budget.BudgetSaveDto;
 import com.onurbcd.cli.dto.budget.CopyBudgetDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.persistency.entity.Budget;
 import com.onurbcd.cli.persistency.predicate.BudgetPredicateBuilder;
 import com.onurbcd.cli.persistency.repository.BudgetRepository;
@@ -27,9 +27,9 @@ public class BudgetValidator {
         var sequence = budget != null ? budget.getSequence() : null;
 
         Action.checkIf(id == null || NumberUtil.equals(budgetSaveDto.getSequence(), sequence))
-                .orElseThrow(Error.SEQUENCE_CHANGED, sequence, budgetSaveDto.getSequence());
+                .orElseThrow(ErrorCode.SEQUENCE_CHANGED, sequence, budgetSaveDto.getSequence());
 
-        Action.checkIf(id == null || equalRef(budgetSaveDto, budget)).orElseThrow(Error.REFERENCE_CHANGED);
+        Action.checkIf(id == null || equalRef(budgetSaveDto, budget)).orElseThrow(ErrorCode.REFERENCE_CHANGED);
     }
 
     public List<BudgetDto> validateCopy(CopyBudgetDto copyBudgetDto) {
@@ -44,30 +44,30 @@ public class BudgetValidator {
     }
 
     private void validateCopyBudget(CopyBudgetDto copyBudgetDto) {
-        Action.checkIfNotNull(copyBudgetDto.getFrom()).orElseThrow(Error.COPY_BUDGET_FROM_IS_NULL);
-        Action.checkIfNotNull(copyBudgetDto.getTo()).orElseThrow(Error.COPY_BUDGET_TO_IS_NULL);
-        Action.checkIfNotNull(copyBudgetDto.getFrom().getYear()).orElseThrow(Error.COPY_BUDGET_FROM_YEAR_IS_NULL);
-        Action.checkIfNotNull(copyBudgetDto.getFrom().getMonth()).orElseThrow(Error.COPY_BUDGET_FROM_MONTH_IS_NULL);
-        Action.checkIfNotNull(copyBudgetDto.getTo().getYear()).orElseThrow(Error.COPY_BUDGET_TO_YEAR_IS_NULL);
-        Action.checkIfNotNull(copyBudgetDto.getTo().getMonth()).orElseThrow(Error.COPY_BUDGET_TO_MONTH_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getFrom()).orElseThrow(ErrorCode.COPY_BUDGET_FROM_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getTo()).orElseThrow(ErrorCode.COPY_BUDGET_TO_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getFrom().getYear()).orElseThrow(ErrorCode.COPY_BUDGET_FROM_YEAR_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getFrom().getMonth()).orElseThrow(ErrorCode.COPY_BUDGET_FROM_MONTH_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getTo().getYear()).orElseThrow(ErrorCode.COPY_BUDGET_TO_YEAR_IS_NULL);
+        Action.checkIfNotNull(copyBudgetDto.getTo().getMonth()).orElseThrow(ErrorCode.COPY_BUDGET_TO_MONTH_IS_NULL);
     }
 
     private void validateMonth(CopyBudgetDto copyBudgetDto) {
         var equalMonth = DateUtil.equalMonth(copyBudgetDto.getFrom().getYear(), copyBudgetDto.getFrom().getMonth(),
                 copyBudgetDto.getTo().getYear(), copyBudgetDto.getTo().getMonth());
 
-        Action.checkIfNot(equalMonth).orElseThrow(Error.COPY_BUDGET_EQUAL_MONTH);
+        Action.checkIfNot(equalMonth).orElseThrow(ErrorCode.COPY_BUDGET_EQUAL_MONTH);
     }
 
     private List<BudgetDto> getFromBudget(CopyBudgetDto copyBudgetDto) {
         var fromBudget = repository.getAll(BudgetPredicateBuilder.ref(copyBudgetDto.getFrom()));
 
-        Action.checkIfNotEmpty(fromBudget).orElseThrow(Error.COPY_BUDGET_FROM_IS_EMPTY,
+        Action.checkIfNotEmpty(fromBudget).orElseThrow(ErrorCode.COPY_BUDGET_FROM_IS_EMPTY,
                 copyBudgetDto.getFrom().getMonth(), copyBudgetDto.getFrom().getYear());
 
         var toBudgetExists = repository.exists(BudgetPredicateBuilder.ref(copyBudgetDto.getTo()));
 
-        Action.checkIfNot(toBudgetExists).orElseThrow(Error.COPY_BUDGET_TO_ALREADY_EXISTS,
+        Action.checkIfNot(toBudgetExists).orElseThrow(ErrorCode.COPY_BUDGET_TO_ALREADY_EXISTS,
                 copyBudgetDto.getTo().getMonth(), copyBudgetDto.getTo().getYear());
 
         return fromBudget;

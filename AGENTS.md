@@ -10,6 +10,7 @@ This is a Java CLI built with Spring Shell and Maven. The target Java version an
 - `./mvnw test` runs the test suite (Spring Boot Test/JUnit dependencies are configured).
 - `./mvnw spring-boot:run` starts the CLI in the current environment.
 - `./mvnw verify` runs Maven verification, the Spotless import check and generates the JaCoCo report under `target/site/jacoco`.
+- `./validate.sh` runs everything the GitHub Actions workflow runs except Sonar (use `--quick` for a faster single pass). Run it before handing work back.
 - `./mvnw verify -Plint` also runs Checkstyle, PMD and SpotBugs in report-only mode (add `-Dlint.fail=true` to fail on findings). Error Prone always runs as part of compilation. See "Static analysis" in `README.md`.
 
 The application uses PostgreSQL. For a local database, follow the Docker example in `README.md`; configure credentials and connection settings through the application configuration before running database-backed flows. Use `./mvnw` so builds use the checked-in Maven wrapper.

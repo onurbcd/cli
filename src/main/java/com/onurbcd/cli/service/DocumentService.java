@@ -2,7 +2,7 @@ package com.onurbcd.cli.service;
 
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.dto.document.MultipartFileDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.mapper.DocumentToDtoMapper;
 import com.onurbcd.cli.param.MultipartFile;
@@ -61,10 +61,10 @@ public class DocumentService {
     }
 
     private void validate(MultipartFile multipartFile) {
-        Action.checkIfNot(multipartFile.isEmpty()).orElseThrow(Error.DOCUMENT_IS_EMPTY);
-        Action.checkIfNotBlank(multipartFile.getOriginalFilename()).orElseThrow(Error.DOCUMENT_NAME_IS_BLANK);
-        Action.checkIfNotBlank(multipartFile.getContentType()).orElseThrow(Error.DOCUMENT_MIME_TYPE_IS_BLANK);
-        Action.checkIfNot(multipartFile.getSize() == 0).orElseThrow(Error.DOCUMENT_SIZE_IS_ZERO);
+        Action.checkIfNot(multipartFile.isEmpty()).orElseThrow(ErrorCode.DOCUMENT_IS_EMPTY);
+        Action.checkIfNotBlank(multipartFile.getOriginalFilename()).orElseThrow(ErrorCode.DOCUMENT_NAME_IS_BLANK);
+        Action.checkIfNotBlank(multipartFile.getContentType()).orElseThrow(ErrorCode.DOCUMENT_MIME_TYPE_IS_BLANK);
+        Action.checkIfNot(multipartFile.getSize() == 0).orElseThrow(ErrorCode.DOCUMENT_SIZE_IS_ZERO);
     }
 
     private Document create(MultipartFile multipartFile, String path) {
@@ -92,7 +92,7 @@ public class DocumentService {
             messageDigest.update(transformedName.getBytes(StandardCharsets.UTF_8));
             return new BigInteger(1, messageDigest.digest()).toString(RADIX);
         } catch (NoSuchAlgorithmException e) {
-            throw new ApiException(Error.DOCUMENT_GENERATE_HASH, e);
+            throw new ApiException(ErrorCode.DOCUMENT_GENERATE_HASH, e);
         }
     }
 }

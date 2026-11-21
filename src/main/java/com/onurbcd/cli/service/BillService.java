@@ -10,7 +10,7 @@ import com.onurbcd.cli.dto.budget.BudgetPatchDto;
 import com.onurbcd.cli.dto.filter.BillFilter;
 import com.onurbcd.cli.dto.filter.Filterable;
 import com.onurbcd.cli.enums.DocumentType;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.QueryType;
 import com.onurbcd.cli.mapper.BillOpenToEntityMapper;
 import com.onurbcd.cli.param.BillBalanceParams;
@@ -24,7 +24,6 @@ import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.validator.Action;
 import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
-import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.shell.jline.tui.component.flow.SelectItem;
 import org.springframework.stereotype.Service;
@@ -72,7 +71,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         return switch (dto) {
             case BillOpenDto billOpenDto -> openBill(billOpenDto);
             case BillCloseDto billCloseDto -> closeBill(billCloseDto.getBillId(), billCloseDto);
-            case BillSaveDto billSaveDto -> saveBill(id, billSaveDto);
+            case BillSaveDto _ -> throw new UnsupportedOperationException("Saving a bill is not implemented yet");
             default -> throw new IllegalArgumentException("Unsupported DTO type: " + dto.getClass().getSimpleName());
         };
     }
@@ -111,9 +110,9 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
     private String openBill(BillOpenDto billOpenDto) {
         var bill = toEntityMapper.apply(billOpenDto);
         var countByBudgetId = repository.countByBudgetId(billOpenDto.getBudgetId());
-        Action.checkIf(countByBudgetId < 1).orElseThrow(Error.BILL_ALREADY_OPENED);
+        Action.checkIf(countByBudgetId < 1).orElseThrow(ErrorCode.BILL_ALREADY_OPENED);
         var budgetValues = budgetService.getBudgetValues(billOpenDto.getBudgetId());
-        Action.checkIf(Boolean.FALSE.equals(budgetValues.paid())).orElseThrow(Error.BILL_ALREADY_PAID);
+        Action.checkIf(Boolean.FALSE.equals(budgetValues.paid())).orElseThrow(ErrorCode.BILL_ALREADY_PAID);
 
         var billDocParams = BillDocParams
                 .builder()
@@ -139,7 +138,7 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
 
     private String closeBill(UUID id, BillCloseDto billCloseDto) {
         var bill = getOrElseThrow(id);
-        Action.checkIf(Boolean.FALSE.equals(bill.getClosed())).orElseThrow(Error.BILL_ALREADY_CLOSED);
+        Action.checkIf(Boolean.FALSE.equals(bill.getClosed())).orElseThrow(ErrorCode.BILL_ALREADY_CLOSED);
         var billTypeValues = billTypeService.getValues(bill.getBillType().getId());
 
         var billDocParams = BillDocParams
@@ -169,10 +168,6 @@ public class BillService extends AbstractCrudService<Bill, BillDto, BillPredicat
         bill = repository.save(bill);
         budgetService.update(BudgetPatchDto.of(Boolean.TRUE), bill.getBudget().getId());
         return bill.getId().toString();
-    }
-
-    private String saveBill(UUID id, BillSaveDto billSaveDto) {
-        return StringUtils.EMPTY;
     }
 
     private void fillDay(@Nullable LocalDate localDateIn, Consumer<Day> dayConsumer) {

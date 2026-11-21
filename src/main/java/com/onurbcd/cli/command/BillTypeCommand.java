@@ -2,7 +2,7 @@ package com.onurbcd.cli.command;
 
 import com.onurbcd.cli.dto.billtype.BillTypePatchDto;
 import com.onurbcd.cli.dto.filter.BillTypeFilter;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
@@ -105,7 +105,7 @@ public class BillTypeCommand extends BaseCommand {
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {
         var categoryItems = categoryService.getCategoryItems(null, true);
-        Action.checkIfNotEmpty(categoryItems).orElseThrow(Error.CATEGORY_REQUIRED);
+        Action.checkIfNotEmpty(categoryItems).orElseThrow(ErrorCode.CATEGORY_REQUIRED);
         return SaveFlowParam.billType(categoryItems);
     }
 }

@@ -2,7 +2,7 @@ package com.onurbcd.cli.helper;
 
 import com.onurbcd.cli.annotation.Helper;
 import com.onurbcd.cli.config.property.AdminProperties;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class CryptoHelper {
                  NoSuchPaddingException e) {
 
             log.error("crypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 
@@ -58,7 +58,7 @@ public class CryptoHelper {
             return Base64.getEncoder().encodeToString(cipherText);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("encrypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class CryptoHelper {
             return new String(plainText, StandardCharsets.UTF_8);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("decrypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 }

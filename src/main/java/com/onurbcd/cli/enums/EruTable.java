@@ -1,14 +1,13 @@
 package com.onurbcd.cli.enums;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.onurbcd.cli.util.Constant.*;
 
 @RequiredArgsConstructor
-@Getter
 public enum EruTable {
 
     SECRET(getSecretHeaders()),
@@ -24,9 +23,20 @@ public enum EruTable {
     BALANCE_SUM(getBalanceSumHeaders()),
     BILL(getBillHeaders());
 
-    private final LinkedHashMap<String, Object> headers;
+    // never modified after construction; getHeaders() hands out a copy
+    @SuppressWarnings("ImmutableEnumChecker")
+    private final Map<String, Object> headers;
 
-    private static LinkedHashMap<String, Object> getSecretHeaders() {
+    /**
+     * Spring Shell's {@code BeanListTableModel} only accepts a {@link LinkedHashMap}, so each caller gets its own copy
+     * (in the same order) and can never change the table definition.
+     */
+    @SuppressWarnings("NonApiType")
+    public LinkedHashMap<String, Object> getHeaders() {
+        return new LinkedHashMap<>(headers);
+    }
+
+    private static Map<String, Object> getSecretHeaders() {
         var secretHeaders = getDefaultHeaders(7);
         secretHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
         secretHeaders.put(LINK_KEY, LINK_VALUE);
@@ -35,18 +45,18 @@ public enum EruTable {
         return secretHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getDayHeaders() {
+    private static Map<String, Object> getDayHeaders() {
         var dayHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
         dayHeaders.put(CALENDAR_YEAR_KEY, CALENDAR_YEAR_VALUE);
         dayHeaders.put(CALENDAR_MONTH_KEY, CALENDAR_MONTH_VALUE);
         return dayHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getIncomeSourceHeaders() {
+    private static Map<String, Object> getIncomeSourceHeaders() {
         return getDefaultHeaders(3);
     }
 
-    private static LinkedHashMap<String, Object> getCategoryHeaders() {
+    private static Map<String, Object> getCategoryHeaders() {
         var categoryHeaders = getDefaultHeaders(8);
         categoryHeaders.put(PARENT_ID_KEY, PARENT_ID_VALUE);
         categoryHeaders.put(PARENT_NAME_KEY, PARENT_NAME_VALUE);
@@ -56,7 +66,7 @@ public enum EruTable {
         return categoryHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBillTypeHeaders() {
+    private static Map<String, Object> getBillTypeHeaders() {
         var categoryHeaders = getDefaultHeaders(6);
         categoryHeaders.put(PATH_KEY, PATH_VALUE);
         categoryHeaders.put(CATEGORY_ID_KEY, CATEGORY_ID_VALUE);
@@ -64,7 +74,7 @@ public enum EruTable {
         return categoryHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getSourceHeaders() {
+    private static Map<String, Object> getSourceHeaders() {
         var sourceHeaders = getDefaultHeaders(8);
         sourceHeaders.put(INCOME_SOURCE_ID_KEY, INCOME_SOURCE_ID_VALUE);
         sourceHeaders.put(INCOME_SOURCE_NAME_KEY, INCOME_SOURCE_NAME_VALUE);
@@ -74,14 +84,14 @@ public enum EruTable {
         return sourceHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getSourceBalanceSumHeaders() {
+    private static Map<String, Object> getSourceBalanceSumHeaders() {
         var sourceBalanceSumHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
         sourceBalanceSumHeaders.put(PARTIAL_KEY, PARTIAL_VALUE);
         sourceBalanceSumHeaders.put(TOTAL_KEY, TOTAL_VALUE);
         return sourceBalanceSumHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBudgetHeaders() {
+    private static Map<String, Object> getBudgetHeaders() {
         var budgetHeaders = getDefaultHeaders(10);
         budgetHeaders.put(SEQUENCE_KEY, SEQUENCE_VALUE);
         budgetHeaders.put(REF_YEAR_KEY, REF_YEAR_VALUE);
@@ -93,14 +103,14 @@ public enum EruTable {
         return budgetHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBudgetSumMonthHeaders() {
+    private static Map<String, Object> getBudgetSumMonthHeaders() {
         var budgetSumMonthHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
         budgetSumMonthHeaders.put(TYPE_KEY, TYPE_VALUE);
         budgetSumMonthHeaders.put(VALUE_KEY, VALUE_VALUE);
         return budgetSumMonthHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBalanceHeaders() {
+    private static Map<String, Object> getBalanceHeaders() {
         var balanceHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(10);
         balanceHeaders.put(ID_KEY, ID_VALUE);
         balanceHeaders.put(SEQUENCE_KEY, SEQUENCE_VALUE);
@@ -115,18 +125,18 @@ public enum EruTable {
         return balanceHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBalanceSumHeaders() {
+    private static Map<String, Object> getBalanceSumHeaders() {
         var balanceSumHeaders = LinkedHashMap.<String, Object>newLinkedHashMap(2);
         balanceSumHeaders.put(TYPE_KEY, TYPE_VALUE);
         balanceSumHeaders.put(VALUE_KEY, VALUE_VALUE);
         return balanceSumHeaders;
     }
 
-    private static LinkedHashMap<String, Object> getBillHeaders() {
+    private static Map<String, Object> getBillHeaders() {
         return LinkedHashMap.newLinkedHashMap(0);
     }
 
-    private static LinkedHashMap<String, Object> getDefaultHeaders(int numMappings) {
+    private static Map<String, Object> getDefaultHeaders(int numMappings) {
         var headers = LinkedHashMap.<String, Object>newLinkedHashMap(numMappings);
         headers.put(ID_KEY, ID_VALUE);
         headers.put(NAME_KEY, NAME_VALUE);

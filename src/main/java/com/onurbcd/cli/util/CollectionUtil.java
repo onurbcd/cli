@@ -22,26 +22,24 @@ public final class CollectionUtil {
 
     public static <T> boolean isEmpty(Collection<T> collection) {
         return collection == null || collection.isEmpty() || collection.stream().allMatch(Objects::isNull) ||
-                collection.stream().allMatch(isObjectEmpty());
+                collection.stream().allMatch(CollectionUtil::isObjectEmpty);
     }
 
     public static <T> boolean isNotEmpty(Collection<T> collection) {
         return !isEmpty(collection);
     }
 
-    private static <T> Predicate<T> isObjectEmpty() {
-        return object -> {
-            try {
-                for (var field : FieldUtils.getAllFields(object.getClass())) {
-                    if (!Objects.isNull(FieldUtils.readField(field, object, true))) {
-                        return false;
-                    }
+    private static <T> boolean isObjectEmpty(T object) {
+        try {
+            for (var field : FieldUtils.getAllFields(object.getClass())) {
+                if (!Objects.isNull(FieldUtils.readField(field, object, true))) {
+                    return false;
                 }
-            } catch (IllegalAccessException _) {
-                return true;
             }
-
+        } catch (IllegalAccessException _) {
             return true;
-        };
+        }
+
+        return true;
     }
 }

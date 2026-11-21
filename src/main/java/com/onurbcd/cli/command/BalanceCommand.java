@@ -4,7 +4,7 @@ import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.balance.BalancePatchDto;
 import com.onurbcd.cli.dto.filter.BalanceFilter;
 import com.onurbcd.cli.enums.*;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
@@ -22,6 +22,7 @@ import org.springframework.shell.core.command.annotation.Option;
 import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BALANCE;
@@ -35,16 +36,18 @@ public class BalanceCommand extends BaseCommand {
     private final SourceService sourceService;
     private final CategoryService categoryService;
     private final AdminProperties config;
+    private final Clock clock;
 
     public BalanceCommand(BalanceService service, SourceService sourceService, CategoryService categoryService,
                           ComponentFlow.Builder flowBuilder, ShellHelper shellHelper, AdminProperties config,
-                          Validator validator) {
+                          Validator validator, Clock clock) {
 
         super(service, flowBuilder, shellHelper, BALANCE, EruTable.BALANCE, validator);
         this.service = service;
         this.sourceService = sourceService;
         this.categoryService = categoryService;
         this.config = config;
+        this.clock = clock;
     }
 
     @Command(name = "balance-save", description = "Create or update a balance.")
@@ -115,7 +118,7 @@ public class BalanceCommand extends BaseCommand {
             @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
-        var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day);
+        var filter = BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day, clock);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
@@ -190,16 +193,16 @@ public class BalanceCommand extends BaseCommand {
     ) {
         return shellHelper.printTable(
                 service.getSum(
-                        BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day)),
+                        BalanceFilter.of(active, search, sourceId, categoryId, balanceType, paymentType).and(year, month, day, clock)),
                 EruTable.BALANCE_SUM);
     }
 
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {
         var sourceItems = sourceService.getItems(null);
-        Action.checkIfNotEmpty(sourceItems).orElseThrow(Error.SOURCE_REQUIRED);
+        Action.checkIfNotEmpty(sourceItems).orElseThrow(ErrorCode.SOURCE_REQUIRED);
         var categoryItems = categoryService.getCategoryItems(null, true);
-        Action.checkIfNotEmpty(categoryItems).orElseThrow(Error.CATEGORY_REQUIRED);
+        Action.checkIfNotEmpty(categoryItems).orElseThrow(ErrorCode.CATEGORY_REQUIRED);
         return SaveFlowParam.balance(sourceItems, categoryItems, config.getFilesPath());
     }
 }

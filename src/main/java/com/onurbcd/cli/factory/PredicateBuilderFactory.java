@@ -1,6 +1,6 @@
 package com.onurbcd.cli.factory;
 
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.persistency.predicate.BasePredicateBuilder;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ public final class PredicateBuilderFactory {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
                  InstantiationException | InvocationTargetException | ExceptionInInitializerError e) {
 
-            throw new ApiException(Error.INTERNAL_SERVER_ERROR, e);
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR, e);
         }
     }
 }

@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
 
 import java.time.LocalDate;
 
@@ -108,16 +109,9 @@ public class Day implements Persistable<Integer> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Day day = (Day) o;
-        return new EqualsBuilder().append(id, day.id).isEquals();
+        // getId(), not the field: for a Hibernate proxy the field is null
+        return this == o || (o instanceof Day day && ProxyUtils.getUserClass(this) == ProxyUtils.getUserClass(o)
+                && new EqualsBuilder().append(getId(), day.getId()).isEquals());
     }
 
     @Override

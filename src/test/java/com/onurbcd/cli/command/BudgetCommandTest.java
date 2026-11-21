@@ -1,5 +1,6 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestClock;
 import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.budget.BudgetPatchDto;
@@ -8,7 +9,7 @@ import com.onurbcd.cli.dto.budget.CopyBudgetDto;
 import com.onurbcd.cli.dto.budget.SumDto;
 import com.onurbcd.cli.dto.filter.BudgetFilter;
 import com.onurbcd.cli.enums.Direction;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
 import com.onurbcd.cli.exception.ApiException;
@@ -37,7 +38,6 @@ import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.io.InterruptedIOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -75,7 +75,7 @@ class BudgetCommandTest {
     @BeforeEach
     void setUp() {
         command = new BudgetCommand(budgetService, flowBuilder, shellHelper, billTypeService,
-                TestValidator.create());
+                TestValidator.create(), TestClock.DEFAULT);
     }
 
     private void stubFlowResult(ComponentContext<?> context) {
@@ -93,7 +93,7 @@ class BudgetCommandTest {
         context.put("refMonth", "7");
         context.put("billTypeId", BILL_TYPE_ID.toString());
         context.put("amount", "250.75");
-        context.put("paid", Boolean.TRUE);
+        context.put("paid", true);
         return context;
     }
 
@@ -108,7 +108,7 @@ class BudgetCommandTest {
 
             assertThatThrownBy(() -> command.save(null))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.BILL_TYPE_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.BILL_TYPE_REQUIRED));
 
             verify(billTypeService).getItems(null);
             verifyNoMoreInteractions(billTypeService);
@@ -306,7 +306,7 @@ class BudgetCommandTest {
             assertThat(pageableCaptor.getValue())
                     .isEqualTo(PageRequest.of(1, 5, Sort.Direction.DESC, expectedProperties));
             assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(
-                    BudgetFilter.of(true, " abc ", (short) 2024, (short) 3, BILL_TYPE_ID, false));
+                    BudgetFilter.of(true, " abc ", (short) 2024, (short) 3, BILL_TYPE_ID, false, TestClock.DEFAULT));
             verify(shellHelper).printTable(page, EruTable.BUDGET);
             verifyNoMoreInteractions(budgetService, shellHelper);
             verifyNoInteractions(billTypeService);
@@ -323,13 +323,14 @@ class BudgetCommandTest {
                     (String[]) null);
 
             assertThat(result).isEqualTo("table");
-            var today = LocalDate.now();
+            var today = TestClock.DEFAULT_DATE;
             var pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
             var filterCaptor = ArgumentCaptor.forClass(BudgetFilter.class);
             verify(budgetService).getAll(pageableCaptor.capture(), filterCaptor.capture());
             assertThat(pageableCaptor.getValue()).isEqualTo(PageRequest.of(0, 10, Sort.Direction.ASC, "sequence"));
             assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(
-                    BudgetFilter.of(null, null, (short) today.getYear(), (short) today.getMonthValue(), null, null));
+                    BudgetFilter.of(null, null, (short) today.getYear(), (short) today.getMonthValue(), null, null,
+                            TestClock.DEFAULT));
             verify(shellHelper).printTable(page, EruTable.BUDGET);
             verifyNoMoreInteractions(budgetService, shellHelper);
         }
@@ -435,7 +436,7 @@ class BudgetCommandTest {
             var filterCaptor = ArgumentCaptor.forClass(BudgetFilter.class);
             verify(budgetService).getSumByMonth(filterCaptor.capture());
             assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(
-                    BudgetFilter.of(true, " abc ", (short) 2024, (short) 3, BILL_TYPE_ID, false));
+                    BudgetFilter.of(true, " abc ", (short) 2024, (short) 3, BILL_TYPE_ID, false, TestClock.DEFAULT));
             verify(shellHelper).printTable(sums, EruTable.BUDGET_SUM_MONTH);
             verifyNoMoreInteractions(budgetService, shellHelper);
             verifyNoInteractions(billTypeService);
@@ -451,11 +452,12 @@ class BudgetCommandTest {
             var result = command.getSumByMonth(null, null, null, null, null, null);
 
             assertThat(result).isEqualTo("sums");
-            var today = LocalDate.now();
+            var today = TestClock.DEFAULT_DATE;
             var filterCaptor = ArgumentCaptor.forClass(BudgetFilter.class);
             verify(budgetService).getSumByMonth(filterCaptor.capture());
             assertThat(filterCaptor.getValue()).usingRecursiveComparison().isEqualTo(
-                    BudgetFilter.of(null, null, (short) today.getYear(), (short) today.getMonthValue(), null, null));
+                    BudgetFilter.of(null, null, (short) today.getYear(), (short) today.getMonthValue(), null, null,
+                            TestClock.DEFAULT));
             verify(shellHelper).printTable(sums, EruTable.BUDGET_SUM_MONTH);
             verifyNoMoreInteractions(budgetService, shellHelper);
         }

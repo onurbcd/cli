@@ -23,6 +23,18 @@ java -version
 ./mvnw spring-boot:run     # start the CLI (requires PostgreSQL)
 ```
 
+### Validate before pushing
+
+`./validate.sh` runs locally what the GitHub Actions workflow runs, except Sonar (which runs on push). If it passes, the workflow's build and lint steps should pass too.
+
+```bash
+./validate.sh              # same steps as the workflow, from a clean build
+./validate.sh --quick      # one strict pass, stops at the first failing tool; faster for iterating
+./validate.sh --no-clean   # reuse the existing target/ directory
+```
+
+The default mode mirrors the workflow: `verify -Plint` in report-only mode first (Error Prone, unit tests, JaCoCo report and gate, Spotless check, then Checkstyle, PMD and SpotBugs, so every tool runs and every report exists), a check that the JaCoCo report exists, and finally the enforcement run that fails on any Checkstyle, PMD or SpotBugs finding. It prints a summary (tests, line coverage, and the number of findings per tool) and exits non-zero on the first failing step, so it can also be used from a git hook. It needs JDK 25 (`sdk env`). `--quick` runs `verify -Plint -Dlint.fail=true` once; it is faster but shows only the first failing linter, so use the default mode before pushing. A full run took about a minute on the author's machine.
+
 ### Import hygiene (Spotless)
 
 The build checks the imports of every Java file under `src` with the Spotless Maven plugin: no unused imports, and a fixed order (all other imports, then `javax`, then `java`, then `static`, each group separated by a blank line; this is IntelliJ's default order). Only imports are checked; code formatting is not.
@@ -40,7 +52,7 @@ If you use IntelliJ, enabling "Reformat code" and "Optimize imports" under Setti
 
 Two layers, with different costs:
 
-**Error Prone (always on).** It runs inside `javac`, so every `compile`, `test` and `verify` reports likely bugs as compiler warnings (`[WARNING] ... [EqualsGetClass] ...`). Generated code (Lombok, MapStruct, QueryDSL) is not reported. Findings are warnings; only Error Prone's error-level checks fail the compilation. `ReturnValueIgnored` is downgraded to a warning because it is a false positive for Mockito's `mockStatic(...).when(LocalDate::now)`.
+**Error Prone (always on).** It runs inside `javac`, so every `compile`, `test` and `verify` reports likely bugs as compiler warnings (`[WARNING] ... [EqualsGetClass] ...`). Generated code (Lombok, MapStruct, QueryDSL) is not reported. Findings are warnings; only Error Prone's error-level checks fail the compilation. The code base currently compiles with no warnings, so any new one is worth looking at.
 
 Error Prone needs the `--add-exports`/`--add-opens` flags for `jdk.compiler` on JDK 17 and later. They live in `.mvn/jvm.config`, which `./mvnw` and IntelliJ's Maven import read automatically. If you run a plain `mvn` from another place, make sure that file is honored, or the compilation fails with `IllegalAccessError`.
 

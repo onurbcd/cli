@@ -4,7 +4,7 @@ import com.onurbcd.cli.dto.budget.BudgetPatchDto;
 import com.onurbcd.cli.dto.budget.CopyBudgetDto;
 import com.onurbcd.cli.dto.filter.BudgetFilter;
 import com.onurbcd.cli.enums.Direction;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
@@ -21,6 +21,7 @@ import org.springframework.shell.core.command.annotation.Option;
 import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.BUDGET;
@@ -33,13 +34,15 @@ public class BudgetCommand extends BaseCommand {
 
     private final BudgetService service;
     private final BillTypeService billTypeService;
+    private final Clock clock;
 
     public BudgetCommand(BudgetService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                         BillTypeService billTypeService, Validator validator) {
+                         BillTypeService billTypeService, Validator validator, Clock clock) {
 
         super(service, flowBuilder, shellHelper, BUDGET, EruTable.BUDGET, validator);
         this.service = service;
         this.billTypeService = billTypeService;
+        this.clock = clock;
     }
 
     @Command(name = "budget-save", description = "Create or update a budget.")
@@ -102,7 +105,7 @@ public class BudgetCommand extends BaseCommand {
             @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
-        var filter = BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid);
+        var filter = BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid, clock);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "sequence"));
     }
 
@@ -170,7 +173,7 @@ public class BudgetCommand extends BaseCommand {
             Boolean paid
     ) {
         return shellHelper.printTable(
-                service.getSumByMonth(BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid)),
+                service.getSumByMonth(BudgetFilter.of(active, search, refYear, refMonth, billTypeId, paid, clock)),
                 EruTable.BUDGET_SUM_MONTH
         );
     }
@@ -214,7 +217,7 @@ public class BudgetCommand extends BaseCommand {
     @Override
     protected SaveFlowParam preSaveFlow(CommandParam params) {
         var billTypeItems = billTypeService.getItems(null);
-        checkIfNotEmpty(billTypeItems).orElseThrow(Error.BILL_TYPE_REQUIRED);
+        checkIfNotEmpty(billTypeItems).orElseThrow(ErrorCode.BILL_TYPE_REQUIRED);
         return SaveFlowParam.budget(billTypeItems);
     }
 }

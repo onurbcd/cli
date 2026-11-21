@@ -1,12 +1,13 @@
 package com.onurbcd.cli.command;
 
+import com.onurbcd.cli.TestClock;
 import com.onurbcd.cli.TestValidator;
 import com.onurbcd.cli.config.property.AdminProperties;
 import com.onurbcd.cli.dto.bill.BillCloseDto;
 import com.onurbcd.cli.dto.bill.BillOpenDto;
 import com.onurbcd.cli.dto.bill.BillSaveDto;
 import com.onurbcd.cli.enums.*;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
@@ -25,7 +26,6 @@ import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
@@ -33,9 +33,13 @@ import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.io.InterruptedIOException;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.onurbcd.cli.TestConstants.ID;
 import static com.onurbcd.cli.TestConstants.SOURCE_ID;
@@ -65,6 +69,8 @@ class BillCommandTest {
     @Mock
     private AdminProperties adminProperties;
     @Mock
+    private Clock clock;
+    @Mock
     private ShellHelper shellHelper;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private ComponentFlow.Builder flowBuilder;
@@ -76,7 +82,7 @@ class BillCommandTest {
     @BeforeEach
     void setUp() {
         command = new BillCommand(billService, flowBuilder, shellHelper, budgetService, sourceService,
-                adminProperties, TestValidator.create());
+                adminProperties, TestValidator.create(), clock);
     }
 
     private void stubFlowBuilder() {
@@ -126,12 +132,20 @@ class BillCommandTest {
         return context;
     }
 
-    private static final LocalDate TODAY = LocalDate.of(2025, 7, 10);
+    private static final LocalDate TODAY = TestClock.DEFAULT_DATE;
 
-    private static MockedStatic<LocalDate> clockAt(LocalDate first, LocalDate... next) {
-        var clock = mockStatic(LocalDate.class, CALLS_REAL_METHODS);
-        clock.when(LocalDate::now).thenReturn(first, next);
-        return clock;
+    private void stubClockAt(LocalDate first, LocalDate... next) {
+        var instants = Stream.of(next).map(date -> date.atStartOfDay(ZoneOffset.UTC).toInstant())
+                .toArray(Instant[]::new);
+
+        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
+        when(clock.instant()).thenReturn(first.atStartOfDay(ZoneOffset.UTC).toInstant(), instants);
+    }
+
+    private void verifyClockReadOnce() {
+        verify(clock).instant();
+        verify(clock).getZone();
+        verifyNoMoreInteractions(clock);
     }
 
     @Nested
@@ -146,8 +160,8 @@ class BillCommandTest {
 
             assertThatThrownBy(() -> command.save(ID))
                     .isInstanceOfSatisfying(ApiException.class, e -> {
-                        assertThat(e.getError()).isEqualTo(Error.BUDGET_REQUIRED);
-                        assertThat(e.getMessage()).isEqualTo(Error.BUDGET_REQUIRED.format((short) 3, (short) 2024));
+                        assertThat(e.getError()).isEqualTo(ErrorCode.BUDGET_REQUIRED);
+                        assertThat(e.getMessage()).isEqualTo(ErrorCode.BUDGET_REQUIRED.format((short) 3, (short) 2024));
                     });
 
             verify(billService).getById(ID);
@@ -165,7 +179,7 @@ class BillCommandTest {
 
             assertThatThrownBy(() -> command.save(ID))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.SOURCE_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.SOURCE_REQUIRED));
 
             verify(billService).getById(ID);
             verify(budgetService).getMonthlyBudget((short) 2024, (short) 3);
@@ -299,8 +313,8 @@ class BillCommandTest {
 
             assertThatThrownBy(() -> command.openBill((short) 2024, (short) 3))
                     .isInstanceOfSatisfying(ApiException.class, e -> {
-                        assertThat(e.getError()).isEqualTo(Error.BUDGET_REQUIRED);
-                        assertThat(e.getMessage()).isEqualTo(Error.BUDGET_REQUIRED.format((short) 3, (short) 2024));
+                        assertThat(e.getError()).isEqualTo(ErrorCode.BUDGET_REQUIRED);
+                        assertThat(e.getMessage()).isEqualTo(ErrorCode.BUDGET_REQUIRED.format((short) 3, (short) 2024));
                     });
 
             verify(budgetService).getMonthlyBudget((short) 2024, (short) 3);
@@ -313,14 +327,15 @@ class BillCommandTest {
         void givenNoYearAndMonth_whenOpenBill_shouldUseCurrentMonth() {
             when(budgetService.getMonthlyBudget((short) 2025, (short) 7)).thenReturn(List.of());
 
-            try (var _ = clockAt(TODAY)) {
-                assertThatThrownBy(() -> command.openBill(null, null))
-                        .isInstanceOfSatisfying(ApiException.class,
-                                e -> assertThat(e.getError()).isEqualTo(Error.BUDGET_REQUIRED));
-            }
+            stubClockAt(TODAY);
+
+            assertThatThrownBy(() -> command.openBill(null, null))
+                    .isInstanceOfSatisfying(ApiException.class,
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.BUDGET_REQUIRED));
 
             verify(budgetService).getMonthlyBudget((short) 2025, (short) 7);
             verifyNoMoreInteractions(budgetService);
+            verifyClockReadOnce();
         }
 
         @Test
@@ -328,11 +343,12 @@ class BillCommandTest {
         void givenClockCrossingNewYear_whenOpenBill_shouldUseConsistentYearAndMonth() {
             when(budgetService.getMonthlyBudget(any(), any())).thenReturn(List.of());
 
-            try (var _ = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
-                assertThatThrownBy(() -> command.openBill(null, null)).isInstanceOf(ApiException.class);
-            }
+            stubClockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1));
+
+            assertThatThrownBy(() -> command.openBill(null, null)).isInstanceOf(ApiException.class);
 
             verify(budgetService).getMonthlyBudget((short) 2024, (short) 12);
+            verifyClockReadOnce();
         }
 
         @Test
@@ -424,9 +440,9 @@ class BillCommandTest {
 
             assertThatThrownBy(() -> command.closeBill((short) 2024, (short) 3))
                     .isInstanceOfSatisfying(ApiException.class, e -> {
-                        assertThat(e.getError()).isEqualTo(Error.OPEN_BILLS_REQUIRED);
+                        assertThat(e.getError()).isEqualTo(ErrorCode.OPEN_BILLS_REQUIRED);
                         assertThat(e.getMessage())
-                                .isEqualTo(Error.OPEN_BILLS_REQUIRED.format((short) 3, (short) 2024));
+                                .isEqualTo(ErrorCode.OPEN_BILLS_REQUIRED.format((short) 3, (short) 2024));
                     });
 
             verify(billService).getOpenBills((short) 2024, (short) 3);
@@ -439,14 +455,15 @@ class BillCommandTest {
         void givenNoYearAndMonth_whenCloseBill_shouldUseCurrentMonth() {
             when(billService.getOpenBills((short) 2025, (short) 7)).thenReturn(List.of());
 
-            try (var _ = clockAt(TODAY)) {
-                assertThatThrownBy(() -> command.closeBill(null, null))
-                        .isInstanceOfSatisfying(ApiException.class,
-                                e -> assertThat(e.getError()).isEqualTo(Error.OPEN_BILLS_REQUIRED));
-            }
+            stubClockAt(TODAY);
+
+            assertThatThrownBy(() -> command.closeBill(null, null))
+                    .isInstanceOfSatisfying(ApiException.class,
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.OPEN_BILLS_REQUIRED));
 
             verify(billService).getOpenBills((short) 2025, (short) 7);
             verifyNoMoreInteractions(billService);
+            verifyClockReadOnce();
         }
 
         @Test
@@ -454,11 +471,12 @@ class BillCommandTest {
         void givenClockCrossingNewYear_whenCloseBill_shouldUseConsistentYearAndMonth() {
             when(billService.getOpenBills(any(), any())).thenReturn(List.of());
 
-            try (var _ = clockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1))) {
-                assertThatThrownBy(() -> command.closeBill(null, null)).isInstanceOf(ApiException.class);
-            }
+            stubClockAt(LocalDate.of(2024, 12, 31), LocalDate.of(2025, 1, 1));
+
+            assertThatThrownBy(() -> command.closeBill(null, null)).isInstanceOf(ApiException.class);
 
             verify(billService).getOpenBills((short) 2024, (short) 12);
+            verifyClockReadOnce();
         }
 
         @Test
@@ -469,7 +487,7 @@ class BillCommandTest {
 
             assertThatThrownBy(() -> command.closeBill((short) 2024, (short) 3))
                     .isInstanceOfSatisfying(ApiException.class,
-                            e -> assertThat(e.getError()).isEqualTo(Error.SOURCE_REQUIRED));
+                            e -> assertThat(e.getError()).isEqualTo(ErrorCode.SOURCE_REQUIRED));
 
             verify(billService).getOpenBills((short) 2024, (short) 3);
             verify(sourceService).getItems(null);
