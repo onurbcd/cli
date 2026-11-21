@@ -273,6 +273,7 @@
                                 <include>com/onurbcd/cli/command/BillCommand.class</include>
                                 <include>com/onurbcd/cli/command/BillTypeCommand.class</include>
                                 <include>com/onurbcd/cli/command/BudgetCommand.class</include>
+                                <include>com/onurbcd/cli/command/CategoryCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>

@@ -57,15 +57,19 @@ jobs:
           test -s target/site/jacoco/jacoco.xml
           grep -o '<counter type="LINE"[^>]*/>' target/site/jacoco/jacoco.xml | tail -n 1
 
+      # qualitygate.wait makes this step fail when the SonarCloud quality gate fails, so the job and the PR check agree
       - name: Run SonarQube Analysis
+        id: sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B --no-transfer-progress org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=onurbcd_cli
+        run: ./mvnw -B --no-transfer-progress org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=onurbcd_cli -Dsonar.qualitygate.wait=true
 
       # Fails the job when Checkstyle, PMD or SpotBugs reported anything. It runs after Sonar on purpose, so the
-      # analysis is published even when this step is red. Tests and JaCoCo already ran above.
+      # analysis is published even when this step is red, and it still runs when the Sonar quality gate fails, so
+      # lint findings are never hidden behind it. Tests and JaCoCo already ran above.
       - name: Enforce lint
+        if: ${{ !cancelled() && (steps.sonar.conclusion == 'success' || steps.sonar.conclusion == 'failure') }}
         run: ./mvnw -B --no-transfer-progress verify -Plint -Dlint.fail=true -DskipTests
 
       - name: Upload reports

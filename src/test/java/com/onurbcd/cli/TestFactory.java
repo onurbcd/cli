@@ -4,6 +4,7 @@ import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.bill.BillDto;
 import com.onurbcd.cli.dto.billtype.BillTypeDto;
 import com.onurbcd.cli.dto.budget.BudgetDto;
+import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
@@ -89,5 +90,19 @@ public final class TestFactory {
         budget.setAmount(new BigDecimal("100.50"));
         budget.setPaid(false);
         return budget;
+    }
+
+    /**
+     * Inactive category with description "description", linked to parent {@link TestConstants#PARENT_ID}.
+     */
+    public static CategoryDto createCategoryDto() {
+        var category = new CategoryDto();
+        category.setId(ID);
+        category.setName("bogus");
+        category.setActive(false);
+        category.setParentId(PARENT_ID);
+        category.setParentName("parent");
+        category.setDescription("description");
+        return category;
     }
 }
