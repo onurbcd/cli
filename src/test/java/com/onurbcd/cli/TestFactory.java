@@ -7,6 +7,7 @@ import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.category.CategoryDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
+import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
 import lombok.AccessLevel;
@@ -116,5 +117,20 @@ public final class TestFactory {
         incomeSource.setName("bogus");
         incomeSource.setActive(false);
         return incomeSource;
+    }
+
+    /**
+     * Inactive secret named "bogus" with description, link, username and password.
+     */
+    public static SecretDto createSecretDto() {
+        var secret = new SecretDto();
+        secret.setId(ID);
+        secret.setName("bogus");
+        secret.setActive(false);
+        secret.setDescription("description");
+        secret.setLink("https://example.com");
+        secret.setUsername("user");
+        secret.setPassword("password");
+        return secret;
     }
 }

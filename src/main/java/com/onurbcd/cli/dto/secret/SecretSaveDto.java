@@ -2,6 +2,7 @@ package com.onurbcd.cli.dto.secret;
 
 import com.onurbcd.cli.dto.PrimeSaveDto;
 import com.onurbcd.cli.util.Constant;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class SecretSaveDto extends PrimeSaveDto {
     @Size(min = 3, max = 50, message = "Username must be between {min} and {max} characters.")
     private String username;
 
-    @NotNull(message = "Password is required.")
+    @NotBlank(message = "Password is required.")
     private String password;
 
     public static SecretSaveDto of(ComponentContext<?> context, @Nullable SecretDto secretDto) {
@@ -44,7 +45,7 @@ public class SecretSaveDto extends PrimeSaveDto {
                 .description(normalizeSpace(getString(context, DESCRIPTION_ID)))
                 .link(normalizeSpace(getString(context, LINK_ID)))
                 .username(normalizeSpace(getString(context, USERNAME_ID)))
-                .password(normalizeSpace(getString(context, PASSWORD_ID)))
+                .password(getString(context, PASSWORD_ID))
                 .build();
     }
 }
