@@ -32,6 +32,6 @@ public enum BalanceOperation {
                 .filter(balanceOperation -> balanceOperation.operation == operation &&
                         balanceOperation.balanceType == balanceType)
                 .findFirst()
-                .orElseThrow(new ApiException(ErrorCode.BALANCE_OPERATION_MISSING, operation.name(), balanceType.name()));
+                .orElseThrow(() -> new ApiException(ErrorCode.BALANCE_OPERATION_MISSING, operation, balanceType));
     }
 }

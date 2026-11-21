@@ -272,6 +272,7 @@
                                 <include>com/onurbcd/cli/command/**/*.class</include>
                                 <include>com/onurbcd/cli/config/**/*.class</include>
                                 <include>com/onurbcd/cli/dto/**/*.class</include>
+                                <include>com/onurbcd/cli/enums/*.class</include>
                             </includes>
                             <rules>
                                 <rule>

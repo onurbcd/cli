@@ -90,7 +90,7 @@ public class BudgetService extends AbstractCrudService<Budget, BudgetDto, Budget
     public BudgetValuesDto getBudgetValues(UUID id) {
         return repository
                 .getBudgetValues(id)
-                .orElseThrow(ApiException.notFound(id));
+                .orElseThrow(() -> ApiException.notFound(id));
     }
 
     public List<SelectItem> getMonthlyBudget(Short refYear, Short refMonth) {
