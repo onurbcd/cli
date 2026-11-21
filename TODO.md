@@ -17,10 +17,20 @@ Atualizar o conjunto de dependências e ferramentas antes de iniciar as demais m
 - [x] Atualizar plugins Maven, Maven Wrapper e ferramentas auxiliares (JaCoCo, Sonar, compilador e processadores de anotações) para versões compatíveis.
 - [x] Remover versões explicitamente fixadas quando houver gerenciamento adequado pelo BOM; manter versões explícitas somente quando justificadas.
 - [x] Resolver incompatibilidades de Jakarta, Hibernate/JPA, QueryDSL, MapStruct, Lombok, Flyway/PostgreSQL e Jackson decorrentes da atualização.
-- [ ] Confirmar que build, empacotamento, migrações e inicialização CLI funcionam na plataforma atualizada.
+- [x] Confirmar que build, empacotamento, migrações e inicialização CLI funcionam na plataforma atualizada.
 - [x] Registrar no README os pré-requisitos atualizados e os comandos de desenvolvimento.
 
 ## Fase 2 — Testes automatizados
+
+Execução por checkpoints para facilitar revisão e commits independentes:
+
+1. Infraestrutura de testes, configuração isolada, documentação, e testes-base de utilitários, validadores e calendário.
+2. Testes dos serviços e regras de domínio, com foco primeiro nos fluxos de maior impacto.
+3. Testes dos comandos Spring Shell, incluindo parâmetros, fluxos e saída.
+4. Testes de integração com PostgreSQL/Testcontainers, migrações e consultas de persistência.
+5. Aumentar progressivamente os limites JaCoCo até 100% de linhas e branches do código de produção escrito à mão; excluir somente código gerado e bootstrap sem comportamento de domínio exercitável.
+
+**Retomada:** o checkpoint 1 foi implementado, mas ainda não foi executado nem verificado. Na próxima sessão, leia o resultado de `./mvnw test` informado pelo usuário; corrija eventuais falhas. Se passar, registre o checkpoint como concluído e comece o checkpoint 2, cobrindo os serviços e as regras de domínio. Os arquivos do checkpoint 1 são `pom.xml`, `README.md`, `src/test/resources/application.properties` e os testes em `src/test/java/com/onurbcd/cli/{util,validator,service,persistency/repository}`. Não marque as tarefas da Fase 2 abaixo como concluídas antes dessa verificação.
 
 - [ ] Criar testes unitários em `src/test/java`, seguindo os pacotes de produção e sufixo `*Test`.
 - [ ] Cobrir primeiro regras de serviço, validadores, conversores e fluxos com maior impacto.

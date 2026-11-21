@@ -30,6 +30,15 @@
         <lombok.version>1.18.48</lombok.version>
         <jacoco.maven.plugin.version>0.8.16</jacoco.maven.plugin.version>
         <sonar.jacoco.plugin.version>1.5.1.5340</sonar.jacoco.plugin.version>
+        <pitest.maven.version>1.30.2</pitest.maven.version>
+        <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
+
+        <!-- Coverage gate, grown class by class: one JaCoCo class-file pattern (e.g. com/onurbcd/cli/util/NumberUtil.class; wildcards allowed).
+             Matching classes must reach 100% line and branch coverage. To gate several classes permanently, add more
+             <include> entries in the jacoco-check execution. The default matches nothing, so `verify` passes until then. -->
+        <jacoco.check.includes>com/onurbcd/cli/__none__.class</jacoco.check.includes>
+        <!-- PIT target, passed on the command line: -Dpit.target.classes=... -Dpit.target.tests=... -->
+        <pit.mutation.threshold>90</pit.mutation.threshold>
 
         <sonar.organization>onurbcd</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -146,6 +155,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -209,13 +219,90 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>jacoco-initialize-it</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                            <!-- same file as unit tests, so report and check see unit + integration coverage -->
+                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>jacoco-site</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <haltOnFailure>true</haltOnFailure>
+                            <includes>
+                                <include>${jacoco.check.includes}</include>
+                            </includes>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1.00</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1.00</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
                 </executions>
+            </plugin>
+            <!-- Integration tests (*IT): run by `verify`; unit tests (*Test) stay in Surefire. Version managed by Boot. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Mutation testing, on demand only (not bound to the build):
+                 ./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests=<fqcn>Test* -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.maven.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>${pitest.junit5.plugin.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>${pit.target.classes}</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>${pit.target.tests}</param>
+                    </targetTests>
+                    <mutationThreshold>${pit.mutation.threshold}</mutationThreshold>
+                    <timestampedReports>false</timestampedReports>
+                </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.sonarsource.jacoco/sonar-jacoco-plugin -->
             <plugin>
