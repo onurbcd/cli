@@ -61,7 +61,7 @@ Because the project is covered one class at a time, use `<element>CLASS</element
 
 ## Mutation testing (PIT)
 
-Coverage shows code ran, not that it was checked. Use PIT on the target class:
+Coverage shows code ran, not that it was checked. PIT is mandatory for every class (workflow step 8, never skipped). Use it on the target class:
 
 ```xml
 <plugin>
@@ -79,7 +79,7 @@ Coverage shows code ran, not that it was checked. Use PIT on the target class:
 </plugin>
 ```
 
-Run: `./mvnw org.pitest:pitest-maven:mutationCoverage -DtargetClasses=<fqcn> -DtargetTests=<fqcn>Test*`. Report: `target/pit-reports/`. Each SURVIVED mutant is a missing assertion (return value not checked, boundary not tested, call not verified). Fix by asserting more, then re-run. Keep PIT out of the default build (slow); run it per class or in a CI profile. Confirm PIT and its JUnit plugin versions support the project's JUnit major and Java release before adding.
+Run: `./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`. Report: `target/pit-reports/`. Each SURVIVED mutant is a missing assertion (return value not checked, boundary not tested, call not verified). Fix by asserting more, then re-run. Keep PIT out of the default build (slow); run it per class or in a CI profile. Confirm PIT and its JUnit plugin versions support the project's JUnit major and Java release before adding.
 
 ## Final report template
 

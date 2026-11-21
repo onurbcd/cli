@@ -247,6 +247,7 @@
                                 <include>${jacoco.check.includes}</include>
                                 <include>com/onurbcd/cli/command/BalanceCommand.class</include>
                                 <include>com/onurbcd/cli/command/BillCommand.class</include>
+                                <include>com/onurbcd/cli/command/BillTypeCommand.class</include>
                             </includes>
                             <rules>
                                 <rule>

@@ -76,7 +76,7 @@ The project has a skill, `.claude/skills/spring-boot-testing`, that writes the t
 /spring-boot-testing NumberUtil
 ```
 
-The skill finds the class, reads `pom.xml` to match the project's versions, lists every branch, exception and collaborator call, writes `NumberUtilTest` (and an `*IT` when a real database is needed), measures coverage with JaCoCo until the class reaches 100%, runs PIT, and reports what it did. It never runs write git commands, so review and commit the result yourself. A typical session for one class:
+The skill finds the class, reads `pom.xml` to match the project's versions, lists every branch, exception and collaborator call, writes `NumberUtilTest` (and an `*IT` when a real database is needed), measures coverage with JaCoCo until the class reaches 100%, runs PIT (always, never skipped), and reports what it did. The skill is not allowed to skip any of its steps. It never runs write git commands, so review and commit the result yourself. A typical session for one class:
 
 1. `/spring-boot-testing <ClassName>`
 2. `./mvnw verify -Djacoco.check.includes=<package/path>/<ClassName>.class` to confirm 100%

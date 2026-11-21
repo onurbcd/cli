@@ -17,6 +17,7 @@ Writes the tests for **one class per run**, given as the argument (`$ARGUMENTS`)
 - Do not test private members via reflection. Exception: `ReflectionTestUtils.setField` for `@Value` fields.
 - Never claim coverage or a green build you did not measure. Report real command output.
 - The README "Automated Tests" section is the user-facing source of truth for commands and conventions; if it conflicts with this skill, tell the user and follow the README until resolved.
+- **Never skip, merge or reorder workflow steps (1-11).** Every step is mandatory, including measuring (7), PIT (8) and locking in (9). Before reporting, walk the checklist below and confirm each step ran in this session. If a step truly cannot run, stop, say which step and why, and ask the user; never silently omit it or declare it "not configured" without having grepped `pom.xml`, `README.md` and `references/` for it first.
 - Test code language: English (names, `@DisplayName`, comments). Talk to the user in their language.
 
 ## Workflow
@@ -33,13 +34,22 @@ Writes the tests for **one class per run**, given as the argument (`$ARGUMENTS`)
    Default to the cheapest level that proves the behavior; add a higher level only for what a unit test cannot prove.
 6. **Write the tests** with the templates in `references/templates/` (create `TestFactory`, `TestConstants`, `TestArguments` only if the project has none; extend them otherwise).
 7. **Measure.** Run `./mvnw -q test -Dtest=<Name>Test` first, then `./mvnw verify` when `*IT` or JaCoCo is involved. Read `target/site/jacoco/jacoco.xml` (or `jacoco.csv`) for the target class: missed lines and branches. Add cases until both are zero. See `references/coverage-and-quality.md`. Allowed exclusions: generated code only (Lombok `@Generated`, MapStruct impls, QueryDSL `Q*`, `main`).
-8. **Strengthen.** When PIT is configured, run it on the class; kill surviving mutants with stronger assertions, not with more mocks.
+8. **Strengthen (PIT, always).** Run PIT on the class every time; it is configured in `pom.xml` (`pitest-maven`):
+   `./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`.
+   Kill every surviving mutant with stronger assertions, not with more mocks, then re-run until none survive (at minimum the `pit.mutation.threshold`; justify any survivor in the report). Report killed/total from the real output.
 9. **Lock it in** (repos that use the `jacoco.check.includes` gate, like this one; the README documents it):
    - Confirm with `./mvnw verify -Djacoco.check.includes=<package/path>/<Name>.class`. It must pass.
    - Add `<package/path>/<Name>.class` as a new `<include>` in the `jacoco-check` execution of `pom.xml` (do not change anything else there).
    - Tick the matching item in `TODO.md` only if every item in that checkpoint is truly done and verified.
 10. **Keep docs in sync.** If you change a command, property, convention or workflow described in the README "Automated Tests" section, or this skill's references, update both so they agree. Do not rewrite the README beyond that section.
-11. **Report** in a short list: tests created, case matrix covered, commands run with real results, anything left uncovered and why, any production bug found (do not fix production code unless asked).
+11. **Report** in a short list: tests created, case matrix covered, commands run with real results (JaCoCo and PIT numbers), anything left uncovered and why, any production bug found (do not fix production code unless asked).
+
+## Step completion checklist (confirm before reporting)
+
+- [ ] 1 class resolved · [ ] 2 stack detected · [ ] 3 class mapped · [ ] 4 case matrix built
+- [ ] 5 level chosen · [ ] 6 tests written · [ ] 7 JaCoCo measured, 0 missed lines/branches
+- [ ] 8 PIT run, no unjustified survivors · [ ] 9 gate include added and `verify` green
+- [ ] 10 docs in sync · [ ] 11 report includes JaCoCo and PIT results
 
 ## Per-test checklist (all must hold)
 

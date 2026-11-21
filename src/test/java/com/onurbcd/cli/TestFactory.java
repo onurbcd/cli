@@ -2,6 +2,7 @@ package com.onurbcd.cli;
 
 import com.onurbcd.cli.dto.balance.BalanceDto;
 import com.onurbcd.cli.dto.bill.BillDto;
+import com.onurbcd.cli.dto.billtype.BillTypeDto;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.PaymentType;
@@ -55,5 +56,19 @@ public final class TestFactory {
         bill.setClosed(false);
         bill.setReferenceDayCalendarDate(LocalDate.of(2024, 3, 15));
         return bill;
+    }
+
+    /**
+     * Inactive bill type with path "bills/water" linked to the default category.
+     */
+    public static BillTypeDto createBillTypeDto() {
+        var billType = new BillTypeDto();
+        billType.setId(ID);
+        billType.setName("bogus");
+        billType.setActive(false);
+        billType.setPath("bills/water");
+        billType.setCategoryId(CATEGORY_ID);
+        billType.setCategoryName("category");
+        return billType;
     }
 }
