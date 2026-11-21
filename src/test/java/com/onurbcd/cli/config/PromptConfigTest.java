@@ -18,7 +18,7 @@ class PromptConfigTest {
         void whenGetPrompt_shouldReturnBluePrompt() {
             var result = new PromptConfig().getPrompt();
 
-            assertThat(result.toString()).isEqualTo("eru-shell:> ");
+            assertThat(result).hasToString("eru-shell:> ");
             assertThat(result.styleAt(0)).isEqualTo(AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));
             assertThat(result.styleAt(result.length() - 1))
                     .isEqualTo(AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));

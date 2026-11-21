@@ -7,8 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.shell.jline.tui.component.context.ComponentContext;
+
+import java.util.stream.Stream;
 
 import static com.onurbcd.cli.TestConstants.CATEGORY_ID;
 import static com.onurbcd.cli.TestFactory.createBillTypeDto;
@@ -92,13 +96,21 @@ class BillTypeSaveDtoTest {
             assertThat(TestValidator.messages(validator, dto)).containsExactly("Category is required");
         }
 
-        @Test
-        @DisplayName("a missing path is rejected")
-        void givenNoPath_shouldBeRejected() {
+        @ParameterizedTest(name = "path [{0}] reports: {1}")
+        @MethodSource("pathsWithMessage")
+        @DisplayName("a missing, short or malformed path reports its own message")
+        void givenBadPath_shouldReportMessage(String path, String message) {
             var dto = validDto();
-            dto.setPath(null);
+            dto.setPath(path);
 
-            assertThat(TestValidator.messages(validator, dto)).containsExactly("Path is required");
+            assertThat(TestValidator.messages(validator, dto)).containsExactly(message);
+        }
+
+        static Stream<Arguments> pathsWithMessage() {
+            return Stream.of(
+                    Arguments.of(null, "Path is required"),
+                    Arguments.of("ab", "Path must be between 3 and 250 characters"),
+                    Arguments.of("bills water", "Path format is invalid"));
         }
 
         @ParameterizedTest
@@ -109,24 +121,6 @@ class BillTypeSaveDtoTest {
             dto.setPath(path);
 
             assertThat(TestValidator.messages(validator, dto)).isNotEmpty();
-        }
-
-        @Test
-        @DisplayName("a path shorter than 3 characters reports the size message")
-        void givenShortPath_shouldReportSize() {
-            var dto = validDto();
-            dto.setPath("ab");
-
-            assertThat(TestValidator.messages(validator, dto)).containsExactly("Path must be between 3 and 250 characters");
-        }
-
-        @Test
-        @DisplayName("a path with invalid characters reports the format message")
-        void givenInvalidFormat_shouldReportFormat() {
-            var dto = validDto();
-            dto.setPath("bills water");
-
-            assertThat(TestValidator.messages(validator, dto)).containsExactly("Path format is invalid");
         }
 
         @Test

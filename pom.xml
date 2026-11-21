@@ -273,6 +273,7 @@
                                 <include>com/onurbcd/cli/config/**/*.class</include>
                                 <include>com/onurbcd/cli/dto/**/*.class</include>
                                 <include>com/onurbcd/cli/enums/*.class</include>
+                                <include>com/onurbcd/cli/exception/ApiException.class</include>
                             </includes>
                             <rules>
                                 <rule>
