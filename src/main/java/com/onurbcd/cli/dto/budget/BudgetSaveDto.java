@@ -31,7 +31,7 @@ import static com.onurbcd.cli.util.StringUtil.normalizeSpace;
 @Validated
 public class BudgetSaveDto extends PrimeSaveDto {
 
-    @Min(value = 1, message = "Sequence must be greater than {min}")
+    @Min(value = 1, message = "Sequence must be greater than or equal to {value}")
     private Short sequence;
 
     @NotNull(message = "Reference year is mandatory")

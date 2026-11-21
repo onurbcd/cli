@@ -106,7 +106,7 @@ The goal is 100% line and branch coverage of handwritten production code, reache
 ./mvnw verify -Djacoco.check.includes=com/onurbcd/cli/util/NumberUtil.class
 ```
 
-The value is one class-file pattern: slashes, `.class` suffix, wildcards allowed. If the class is below 100% the build fails and prints which rule was violated. Once a class reaches 100%, add its pattern as an `<include>` in the `jacoco-check` execution of `pom.xml` so it stays protected, and then tick it off in `TODO.md`. Generated code (mapper implementations, QueryDSL `Q*` classes) and the application bootstrap are not part of the target.
+The value is one class-file pattern: slashes, `.class` suffix, wildcards allowed. If the class is below 100% the build fails and prints which rule was violated. Once a class reaches 100%, add its pattern as an `<include>` in the `jacoco-check` execution of `pom.xml` so it stays protected, and then tick it off in `TODO.md`. When a whole package is done, one pattern for the package is enough (for example `com/onurbcd/cli/dto/**/*.class`); from then on, any new class in it must be tested too or the build fails. Generated code (mapper implementations, QueryDSL `Q*` classes) and the application bootstrap are not part of the target.
 
 ### Mutation testing (PIT)
 
@@ -136,7 +136,7 @@ The skill finds the class, reads `pom.xml` to match the project's versions, list
 1. `/spring-boot-testing <ClassName>`
 2. `./mvnw verify -Djacoco.check.includes=<package/path>/<ClassName>.class` to confirm 100%
 3. Run the PIT command above and fix any surviving mutant
-4. Add the class to the permanent gate in `pom.xml` and update `TODO.md`
+4. Add the class (or, for a finished package, the package pattern) to the permanent gate in `pom.xml` and update `TODO.md`
 
 Test conventions used by the skill: method names as `given<Input>_when<Condition>_should<Result>`, a `@Nested` class per method under test, English `@DisplayName`, AssertJ assertions only, `verifyNoMoreInteractions` on every mock, and no dependence between tests.
 

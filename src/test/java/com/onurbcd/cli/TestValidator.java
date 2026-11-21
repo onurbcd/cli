@@ -1,11 +1,15 @@
 package com.onurbcd.cli;
 
 import com.onurbcd.cli.config.property.AdminProperties;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestValidator {
@@ -25,5 +29,14 @@ public final class TestValidator {
         factory.setApplicationContext(context);
         factory.afterPropertiesSet();
         return factory;
+    }
+
+    /**
+     * Distinct violation messages produced by validating {@code target}.
+     */
+    public static Set<String> messages(Validator validator, Object target) {
+        return validator.validate(target).stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toSet());
     }
 }

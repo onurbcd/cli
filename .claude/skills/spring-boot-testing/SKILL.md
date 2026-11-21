@@ -42,7 +42,7 @@ Writes the tests for **one class or one package per run**, given as the argument
    Kill every surviving mutant with stronger assertions, not with more mocks, then re-run until none survive (at minimum the `pit.mutation.threshold`; justify any survivor in the report). Report killed/total from the real output.
 9. **Lock it in** (repos that use the `jacoco.check.includes` gate, like this one; the README documents it):
    - Confirm with `./mvnw verify -Djacoco.check.includes=<package/path>/<Name>.class`. It must pass.
-   - Add `<package/path>/<Name>.class` as a new `<include>` in the `jacoco-check` execution of `pom.xml` (do not change anything else there).
+   - Add `<package/path>/<Name>.class` as a new `<include>` in the `jacoco-check` execution of `pom.xml` (do not change anything else there). For a package run, add one Ant pattern for the whole package instead (`<package/path>/*.class`, or `<package/path>/**/*.class` with sub-packages), replacing any per-class includes it makes redundant.
    - Tick the matching item in `TODO.md` only if every item in that checkpoint is truly done and verified.
 10. **Keep docs in sync.** If you change a command, property, convention or workflow described in the README "Automated Tests" section, or this skill's references, update both so they agree. Do not rewrite the README beyond that section.
 11. **Report** (for a package, one block per class plus a summary table class × JaCoCo × PIT) in a short list: tests created, case matrix covered, commands run with real results (JaCoCo and PIT numbers), anything left uncovered and why, any production bug found (do not fix production code unless asked).

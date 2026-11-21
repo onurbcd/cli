@@ -40,8 +40,8 @@
         <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
 
         <!-- Coverage gate, grown class by class: one JaCoCo class-file pattern (e.g. com/onurbcd/cli/util/NumberUtil.class; wildcards allowed).
-             Matching classes must reach 100% line and branch coverage. To gate several classes permanently, add more
-             <include> entries in the jacoco-check execution. The default matches nothing, so `verify` passes until then. -->
+             Matching classes must reach 100% line and branch coverage. To gate classes permanently, add <include> entries in the
+             jacoco-check execution: one per class, or one Ant pattern per finished package (e.g. com/onurbcd/cli/dto/**/*.class). The default matches nothing, so `verify` passes until then. -->
         <jacoco.check.includes>com/onurbcd/cli/__none__.class</jacoco.check.includes>
         <!-- PIT target, passed on the command line: -Dpit.target.classes=... -Dpit.target.tests=... -->
         <pit.mutation.threshold>90</pit.mutation.threshold>
@@ -269,20 +269,9 @@
                             <haltOnFailure>true</haltOnFailure>
                             <includes>
                                 <include>${jacoco.check.includes}</include>
-                                <include>com/onurbcd/cli/command/BalanceCommand.class</include>
-                                <include>com/onurbcd/cli/command/BillCommand.class</include>
-                                <include>com/onurbcd/cli/command/BillTypeCommand.class</include>
-                                <include>com/onurbcd/cli/command/BudgetCommand.class</include>
-                                <include>com/onurbcd/cli/command/CategoryCommand.class</include>
-                                <include>com/onurbcd/cli/command/DayCommand.class</include>
-                                <include>com/onurbcd/cli/command/IncomeSourceCommand.class</include>
-                                <include>com/onurbcd/cli/command/SecretCommand.class</include>
-                                <include>com/onurbcd/cli/command/SourceCommand.class</include>
-                                <include>com/onurbcd/cli/config/ClockConfig.class</include>
-                                <include>com/onurbcd/cli/config/EruConfig.class</include>
-                                <include>com/onurbcd/cli/config/JpaConfig.class</include>
-                                <include>com/onurbcd/cli/config/PromptConfig.class</include>
-                                <include>com/onurbcd/cli/dto/secret/SecretSaveDto.class</include>
+                                <include>com/onurbcd/cli/command/**/*.class</include>
+                                <include>com/onurbcd/cli/config/**/*.class</include>
+                                <include>com/onurbcd/cli/dto/**/*.class</include>
                             </includes>
                             <rules>
                                 <rule>
