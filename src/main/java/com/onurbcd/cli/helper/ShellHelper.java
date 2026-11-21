@@ -14,6 +14,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 
 import static com.onurbcd.cli.util.Constant.*;
 
@@ -31,7 +32,8 @@ public class ShellHelper {
     }
 
     public String printTable(Page<Dtoable> page, EruTable table) {
-        var tableBuilder = new TableBuilder(new BeanListTableModel<>(page.getContent(), table.getHeaders()))
+        var tableBuilder = new TableBuilder(new BeanListTableModel<>(
+                page.getContent(), new LinkedHashMap<>(table.getHeaders())))
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(LocalDateTime.class)).addFormatter(localDateTimeFormatter)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
@@ -46,7 +48,7 @@ public class ShellHelper {
     }
 
     public <T> String printTable(Iterable<T> iterable, EruTable table) {
-        return new TableBuilder(new BeanListTableModel<>(iterable, table.getHeaders()))
+        return new TableBuilder(new BeanListTableModel<>(iterable, new LinkedHashMap<>(table.getHeaders())))
                 .addFullBorder(BorderStyle.fancy_heavy)
                 .on(CellMatchers.ofType(BigDecimal.class)).addFormatter(bigDecimalFormatter)
                 .on(CellMatchers.ofType(Number.class)).addAligner(SimpleHorizontalAligner.right)

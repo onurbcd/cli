@@ -2,6 +2,7 @@ package com.onurbcd.cli.enums;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,17 +24,16 @@ public enum EruTable {
     BALANCE_SUM(getBalanceSumHeaders()),
     BILL(getBillHeaders());
 
-    // never modified after construction; getHeaders() hands out a copy
+    // never modified after construction; getHeaders() hands out a read-only view
     @SuppressWarnings("ImmutableEnumChecker")
     private final Map<String, Object> headers;
 
     /**
-     * Spring Shell's {@code BeanListTableModel} only accepts a {@link LinkedHashMap}, so each caller gets its own copy
-     * (in the same order) and can never change the table definition.
+     * Read-only view in the table's column order. Callers that need a {@link LinkedHashMap} (Spring Shell's
+     * {@code BeanListTableModel}) make their own copy.
      */
-    @SuppressWarnings("NonApiType")
-    public LinkedHashMap<String, Object> getHeaders() {
-        return new LinkedHashMap<>(headers);
+    public Map<String, Object> getHeaders() {
+        return Collections.unmodifiableMap(headers);
     }
 
     private static Map<String, Object> getSecretHeaders() {

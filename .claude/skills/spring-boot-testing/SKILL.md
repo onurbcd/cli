@@ -1,18 +1,21 @@
 ---
 name: spring-boot-testing
-description: Creates complete JUnit/Mockito/AssertJ tests (unit, slice, integration/e2e with Testcontainers) for ONE Spring Boot class, aiming at 100% line and branch coverage with every input, output, exception, collaborator call and mutated parameter verified. Use when asked to "criar testes", "testar a classe X", "aumentar cobertura", "unit test", "integration test", "teste e2e" or "JaCoCo" in a Java/Maven/Spring Boot project.
-argument-hint: <ClassName | fully.qualified.ClassName>
+description: Creates complete JUnit/Mockito/AssertJ tests (unit, slice, integration/e2e with Testcontainers) for ONE Spring Boot class, or every class of ONE package, aiming at 100% line and branch coverage with every input, output, exception, collaborator call and mutated parameter verified. Use when asked to "criar testes", "testar a classe X", "aumentar cobertura", "unit test", "integration test", "teste e2e" or "JaCoCo" in a Java/Maven/Spring Boot project.
+argument-hint: <ClassName | fully.qualified.ClassName | package.name>
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash(./mvnw *), Bash(mvn *), Bash(ls *)
 ---
 
 # spring-boot-testing
 
-Writes the tests for **one class per run**, given as the argument (`$ARGUMENTS`). Target: 100% line and branch coverage of that class, with strong assertions.
+Writes the tests for **one class or one package per run**, given as the argument (`$ARGUMENTS`). Target: 100% line and branch coverage of every target class, with strong assertions.
+
+**Target resolution.** The argument is a simple class name, a fully qualified class name, or a package (`com.onurbcd.cli.config`, a path such as `config`, or a trailing `.*`). A package means the handwritten classes directly in that package; sub-packages are included only when the argument ends in `.**` (e.g. `com.onurbcd.cli.service.**`). The package form runs the workflow below once per class, so every class gets the full treatment.
 
 ## Hard rules
 
 - Never run write git operations (commit, push, checkout, ...). Leave changes in the working tree.
-- One class per run. If `$ARGUMENTS` is empty or lists several classes, ask which one. Touch only `<Name>Test` (and `<Name>IT` when needed) and shared test helpers.
+- One class or one package per run. If `$ARGUMENTS` is empty, ambiguous or lists several unrelated targets, ask which one. Touch only `<Name>Test` (and `<Name>IT` when needed) of the target classes and shared test helpers.
+- Package runs: each class goes through workflow steps 2-9 on its own, one after another (finish a class, gate included, before starting the next). Never batch several classes into one measurement and never lower the bar for a class because the package is large. Steps 10 and 11 run once, at the end.
 - Never use `@Disabled`, `lenient()` or `@SuppressWarnings` to make a test pass. Never delete a failing assertion.
 - Do not test private members via reflection. Exception: `ReflectionTestUtils.setField` for `@Value` fields.
 - Never claim coverage or a green build you did not measure. Report real command output.
@@ -22,7 +25,7 @@ Writes the tests for **one class per run**, given as the argument (`$ARGUMENTS`)
 
 ## Workflow
 
-1. **Resolve the class.** Glob `**/<Name>.java` under `src/main/java`. Several hits: ask which. None: stop and say so. Read the class and its direct collaborators' signatures (not their bodies).
+1. **Resolve the target.** Class: glob `**/<Name>.java` under `src/main/java`; several hits: ask which; none: stop and say so. Package: list the `.java` files of that package under `src/main/java` (none: stop and say so). Drop what is not testable (generated code, `main`/bootstrap class, `package-info`, pure marker interfaces or annotations with no logic) and say what was dropped and why. Classes that already have a `<Name>Test` and are in the `jacoco-check` gate are skipped (list them); an existing test without the gate entry is reviewed and completed, not rewritten. Show the final ordered list (leaf classes with no project collaborators first). With more than ~8 classes, ask for confirmation before starting. For each class, read it and its direct collaborators' signatures (not their bodies).
 2. **Detect the stack.** Read the "Automated Tests" section of `README.md` (commands, gate, PIT, conventions) and `TODO.md` (current phase); follow them. Read `pom.xml` (Java release, Spring Boot parent, JUnit, Mockito, JaCoCo, Surefire/Failsafe, Testcontainers) and existing tests. Pick conventions from `references/versions.md`. Existing project conventions win over this skill's defaults, except the Hard rules.
 3. **Map the class.** List: every branch (`if`, `switch`, ternary, `&&`/`||` operands, loops, `catch`, lambdas, `Optional` paths), every collaborator call, every thrown exception, every parameter that is mutated, every return path, static calls, `@Value`/config inputs.
 4. **Build the case matrix** before writing code. One row per branch and per boundary (null, empty, blank, zero, max, invalid, collaborator throws). Columns: case, inputs, stubs, expected return/exception, expected calls (with arguments), expected state changes. Show it to the user when it has more than ~10 rows.
@@ -42,14 +45,15 @@ Writes the tests for **one class per run**, given as the argument (`$ARGUMENTS`)
    - Add `<package/path>/<Name>.class` as a new `<include>` in the `jacoco-check` execution of `pom.xml` (do not change anything else there).
    - Tick the matching item in `TODO.md` only if every item in that checkpoint is truly done and verified.
 10. **Keep docs in sync.** If you change a command, property, convention or workflow described in the README "Automated Tests" section, or this skill's references, update both so they agree. Do not rewrite the README beyond that section.
-11. **Report** in a short list: tests created, case matrix covered, commands run with real results (JaCoCo and PIT numbers), anything left uncovered and why, any production bug found (do not fix production code unless asked).
+11. **Report** (for a package, one block per class plus a summary table class × JaCoCo × PIT) in a short list: tests created, case matrix covered, commands run with real results (JaCoCo and PIT numbers), anything left uncovered and why, any production bug found (do not fix production code unless asked).
 
 ## Step completion checklist (confirm before reporting)
 
-- [ ] 1 class resolved · [ ] 2 stack detected · [ ] 3 class mapped · [ ] 4 case matrix built
+- [ ] 1 target resolved (class list confirmed for packages) · [ ] 2 stack detected · [ ] 3 class mapped · [ ] 4 case matrix built
 - [ ] 5 level chosen · [ ] 6 tests written · [ ] 7 JaCoCo measured, 0 missed lines/branches
 - [ ] 8 PIT run, no unjustified survivors · [ ] 9 gate include added and `verify` green
 - [ ] 10 docs in sync · [ ] 11 report includes JaCoCo and PIT results
+- Package runs: the checklist applies to **each** class; do not report until every class in the list is done or explicitly reported as blocked.
 
 ## Per-test checklist (all must hold)
 

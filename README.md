@@ -122,11 +122,14 @@ The report is written to `target/pit-reports/index.html`. The build fails if few
 
 ### Writing tests with the Claude Code skill
 
-The project has a skill, `.claude/skills/spring-boot-testing`, that writes the tests for **one class per run**. In Claude Code, run:
+The project has a skill, `.claude/skills/spring-boot-testing`, that writes the tests for **one class or one whole package per run**. In Claude Code, run:
 
 ```
 /spring-boot-testing NumberUtil
+/spring-boot-testing com.onurbcd.cli.config
 ```
+
+A package argument covers the classes directly in that package (add `.**` to include sub-packages, e.g. `com.onurbcd.cli.service.**`). The skill lists the classes, skips what is not testable or already gated, asks for confirmation when there are more than about 8, and then runs the full workflow (tests, JaCoCo, PIT, gate) class by class. Use it for packages with few classes or when you want to do more in one go.
 
 The skill finds the class, reads `pom.xml` to match the project's versions, lists every branch, exception and collaborator call, writes `NumberUtilTest` (and an `*IT` when a real database is needed), measures coverage with JaCoCo until the class reaches 100%, runs PIT (always, never skipped), and reports what it did. The skill is not allowed to skip any of its steps. It never runs write git commands, so review and commit the result yourself. A typical session for one class:
 

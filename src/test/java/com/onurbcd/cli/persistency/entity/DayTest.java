@@ -64,8 +64,8 @@ class DayTest {
         @Test
         @DisplayName("should be the same for equal days and differ for different ids")
         void givenIds_whenHashCode_shouldFollowEquals() {
-            assertThat(day(20240315).hashCode()).isEqualTo(day(20240315).hashCode());
-            assertThat(day(20240315).hashCode()).isNotEqualTo(day(20240316).hashCode());
+            assertThat(day(20240315)).hasSameHashCodeAs(day(20240315));
+            assertThat(day(20240315)).doesNotHaveSameHashCodeAs(day(20240316));
         }
     }
 }

@@ -76,19 +76,19 @@ class PrimeTest {
         @Test
         @DisplayName("should be the same for equal entities")
         void givenEqualEntities_whenHashCode_shouldMatch() {
-            assertThat(new Category(ID).hashCode()).isEqualTo(new Category(ID).hashCode());
+            assertThat(new Category(ID)).hasSameHashCodeAs(new Category(ID));
         }
 
         @Test
         @DisplayName("should differ for different ids")
         void givenDifferentIds_whenHashCode_shouldDiffer() {
-            assertThat(new Category(ID).hashCode()).isNotEqualTo(new Category(OTHER_ID).hashCode());
+            assertThat(new Category(ID)).doesNotHaveSameHashCodeAs(new Category(OTHER_ID));
         }
 
         @Test
         @DisplayName("should not fail when the id is not set yet")
         void givenNoId_whenHashCode_shouldNotFail() {
-            assertThat(new Category((UUID) null).hashCode()).isEqualTo(new Category((UUID) null).hashCode());
+            assertThat(new Category((UUID) null)).hasSameHashCodeAs(new Category((UUID) null));
         }
     }
 }

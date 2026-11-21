@@ -58,8 +58,8 @@ class CreateMonthDtoTest {
         @Test
         @DisplayName("should be the same for equal dtos and differ otherwise")
         void givenDtos_whenHashCode_shouldFollowEquals() {
-            assertThat(dto(2024, 3).hashCode()).isEqualTo(dto(2024, 3).hashCode());
-            assertThat(dto(2024, 3).hashCode()).isNotEqualTo(dto(2024, 4).hashCode());
+            assertThat(dto(2024, 3)).hasSameHashCodeAs(dto(2024, 3));
+            assertThat(dto(2024, 3)).doesNotHaveSameHashCodeAs(dto(2024, 4));
         }
     }
 }

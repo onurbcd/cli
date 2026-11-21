@@ -69,8 +69,8 @@ class DocumentTest {
         @Test
         @DisplayName("should be the same for equal documents and differ for different ids")
         void givenIds_whenHashCode_shouldFollowEquals() {
-            assertThat(document(DOCUMENT_ID).hashCode()).isEqualTo(document(DOCUMENT_ID).hashCode());
-            assertThat(document(DOCUMENT_ID).hashCode()).isNotEqualTo(document(OTHER_ID).hashCode());
+            assertThat(document(DOCUMENT_ID)).hasSameHashCodeAs(document(DOCUMENT_ID));
+            assertThat(document(DOCUMENT_ID)).doesNotHaveSameHashCodeAs(document(OTHER_ID));
         }
     }
 }
