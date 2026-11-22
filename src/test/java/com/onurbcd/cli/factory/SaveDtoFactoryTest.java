@@ -195,7 +195,9 @@ class SaveDtoFactoryTest {
         void givenWrongDtoType_shouldThrowClassCastException() {
             PrimeDto wrong = createBillDto();
 
-            assertThatThrownBy(() -> SaveDtoFactory.create(context(), wrong, FlowType.CATEGORY))
+            var context = context();
+
+            assertThatThrownBy(() -> SaveDtoFactory.create(context, wrong, FlowType.CATEGORY))
                     .isInstanceOf(ClassCastException.class);
         }
     }
