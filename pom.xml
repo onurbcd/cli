@@ -275,6 +275,7 @@
                                 <include>com/onurbcd/cli/enums/*.class</include>
                                 <include>com/onurbcd/cli/exception/ApiException.class</include>
                                 <include>com/onurbcd/cli/factory/*.class</include>
+                                <include>com/onurbcd/cli/formatter/*.class</include>
                             </includes>
                             <rules>
                                 <rule>
