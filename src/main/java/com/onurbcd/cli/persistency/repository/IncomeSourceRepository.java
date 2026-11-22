@@ -1,15 +1,14 @@
 package com.onurbcd.cli.persistency.repository;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.onurbcd.cli.dto.ItemDto;
+import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
+import com.onurbcd.cli.persistency.entity.IncomeSource;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.onurbcd.cli.dto.ItemDto;
-import com.onurbcd.cli.dto.incomesource.IncomeSourceDto;
-import com.onurbcd.cli.persistency.entity.IncomeSource;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface IncomeSourceRepository extends MiddlewareRepository<IncomeSource, IncomeSourceDto> {

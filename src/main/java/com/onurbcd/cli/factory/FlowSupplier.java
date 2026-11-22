@@ -1,6 +1,6 @@
 package com.onurbcd.cli.factory;
 
-import org.springframework.shell.component.flow.ComponentFlow;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 
 import java.util.function.Supplier;
 

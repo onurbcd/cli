@@ -2,7 +2,7 @@ package com.onurbcd.cli.service;
 
 import com.onurbcd.cli.dto.day.CreateMonthDto;
 import com.onurbcd.cli.dto.day.DayDto;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.persistency.entity.Day;
 import com.onurbcd.cli.persistency.repository.DayRepository;
 import com.onurbcd.cli.validator.Action;
@@ -28,7 +28,7 @@ public class DayService {
 
     public void createMonth(CreateMonthDto dto) {
         Action.checkIf(repository.numberOfDaysInMonth(dto) < 1)
-                .orElseThrow(Error.MONTH_ALREADY_EXISTS, dto.getCalendarMonth(), dto.getCalendarYear());
+                .orElseThrow(ErrorCode.MONTH_ALREADY_EXISTS, dto.getCalendarMonth(), dto.getCalendarYear());
 
         var days = createDays(dto);
         repository.saveAll(days);
@@ -66,13 +66,13 @@ public class DayService {
         day.setCalendarYear((short) calendarDate.getYear());
         day.setCalendarQuarter((short) calendarDate.get(IsoFields.QUARTER_OF_YEAR));
         day.setCalendarMonth((short) calendarDate.getMonthValue());
-        day.setCalendarMonthName(calendarDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase());
+        day.setCalendarMonthName(calendarDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase(Locale.ROOT));
         day.setCalendarWeekInYear((short) calendarDate.get(WeekFields.ISO.weekOfYear()));
         day.setCalendarWeekInMonth((short) calendarDate.get(WeekFields.ISO.weekOfMonth()));
         day.setCalendarDayInYear((short) calendarDate.getDayOfYear());
         day.setCalendarDayInWeek((short) calendarDate.get(WeekFields.ISO.dayOfWeek()));
         day.setCalendarDayInMonth((short) calendarDate.getDayOfMonth());
-        day.setCalendarWeekdayName(calendarDate.getDayOfWeek().name().toLowerCase());
+        day.setCalendarWeekdayName(calendarDate.getDayOfWeek().name().toLowerCase(Locale.ROOT));
         return day;
     }
 }

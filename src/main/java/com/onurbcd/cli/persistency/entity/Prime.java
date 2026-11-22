@@ -2,6 +2,7 @@ package com.onurbcd.cli.persistency.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.data.util.ProxyUtils;
 
 import java.util.UUID;
 
@@ -23,7 +25,7 @@ import java.util.UUID;
 public class Prime extends Audit implements Entityable {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(unique = true)
@@ -36,6 +38,10 @@ public class Prime extends Audit implements Entityable {
     @NotNull
     @Getter
     private Boolean active;
+
+    protected Prime(UUID id) {
+        this.id = id;
+    }
 
     @Override
     public void setActive(Boolean active) {
@@ -54,13 +60,9 @@ public class Prime extends Audit implements Entityable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Prime prime = (Prime) o;
-
-        return new EqualsBuilder().append(id, prime.id).isEquals();
+        // getId(), not the field: for a Hibernate proxy the field is null
+        return this == o || (o instanceof Prime prime && ProxyUtils.getUserClass(this) == ProxyUtils.getUserClass(o)
+                && new EqualsBuilder().append(getId(), prime.getId()).isEquals());
     }
 
     @Override

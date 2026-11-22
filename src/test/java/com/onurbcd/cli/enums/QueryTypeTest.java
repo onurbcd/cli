@@ -1,0 +1,25 @@
+package com.onurbcd.cli.enums;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class QueryTypeTest {
+
+    @Test
+    @DisplayName("declares exactly these constants, in this order")
+    void givenValues_whenListed_shouldContainTheDeclaredConstants() {
+        assertThat(QueryType.values()).containsExactly(
+                QueryType.JPA,
+                QueryType.CUSTOM);
+    }
+
+    @Test
+    @DisplayName("valueOf resolves every constant by name")
+    void givenConstantName_whenValueOf_shouldReturnSameConstant() {
+        for (var constant : QueryType.values()) {
+            assertThat(QueryType.valueOf(constant.name())).isSameAs(constant);
+        }
+    }
+}

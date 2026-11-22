@@ -2,7 +2,7 @@ package com.onurbcd.cli.helper;
 
 import com.onurbcd.cli.annotation.Helper;
 import com.onurbcd.cli.config.property.AdminProperties;
-import com.onurbcd.cli.enums.Error;
+import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -47,17 +48,17 @@ public class CryptoHelper {
                  NoSuchPaddingException e) {
 
             log.error("crypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 
     private String encrypt(Cipher cipher, String plainText) {
         try {
-            var cipherText = cipher.doFinal(plainText.getBytes());
+            var cipherText = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(cipherText);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("encrypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 
@@ -65,10 +66,10 @@ public class CryptoHelper {
         try {
             var cipherText = Base64.getDecoder().decode(encodedCipherText);
             var plainText = cipher.doFinal(cipherText);
-            return new String(plainText);
+            return new String(plainText, StandardCharsets.UTF_8);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             log.error("decrypt", e);
-            throw new ApiException(Error.CRYPTO, e);
+            throw new ApiException(ErrorCode.CRYPTO, e);
         }
     }
 }

@@ -10,7 +10,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.jpa.impl.JPAQuery;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 

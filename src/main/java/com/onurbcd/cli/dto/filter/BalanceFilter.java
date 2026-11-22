@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
-import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYearAndMonth;
 
 @SuperBuilder
 @Getter
@@ -40,9 +40,10 @@ public class BalanceFilter extends AbstractFilterable {
                 .build();
     }
 
-    public BalanceFilter and(Short year, Short month, Short day) {
-        this.dayCalendarYear = orCurrentYear(year);
-        this.dayCalendarMonth = orCurrentMonth(month);
+    public BalanceFilter and(Short year, Short month, Short day, Clock clock) {
+        var reference = orCurrentYearAndMonth(year, month, clock);
+        this.dayCalendarYear = reference.year();
+        this.dayCalendarMonth = reference.month();
         this.dayCalendarDayInMonth = day;
         return this;
     }

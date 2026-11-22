@@ -1,10 +1,10 @@
 package com.onurbcd.cli.service;
 
-import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.dto.document.MultipartFileDto;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.param.BillDocParams;
 import com.onurbcd.cli.persistency.entity.Document;
+import com.onurbcd.cli.util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

@@ -12,7 +12,7 @@ import com.onurbcd.cli.dto.source.SourceDto;
 import com.onurbcd.cli.param.flow.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SaveFlowParamFactory {

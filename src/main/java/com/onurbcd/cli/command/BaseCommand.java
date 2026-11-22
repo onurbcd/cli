@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.PrimeDto;
 import com.onurbcd.cli.dto.PrimeSaveDto;
@@ -15,11 +14,12 @@ import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.CrudService;
 import com.onurbcd.cli.util.FlowUtil;
 import com.onurbcd.cli.util.ValidatorUtil;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.ComponentFlow;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +34,7 @@ public abstract class BaseCommand {
     protected final ShellHelper shellHelper;
     private final String name;
     private final EruTable table;
+    private final Validator validator;
 
     protected abstract SaveFlowParam preSaveFlow(CommandParam params);
 
@@ -44,9 +45,9 @@ public abstract class BaseCommand {
             return shellHelper.warning(OPERATION_CANCELLED);
         }
 
-        String violations;
+        var violations = ValidatorUtil.validate(validator, saveDto);
 
-        if ((violations = ValidatorUtil.validate(saveDto)) != null) {
+        if (violations != null) {
             return shellHelper.error(violations);
         }
 
@@ -59,7 +60,7 @@ public abstract class BaseCommand {
         return shellHelper.success(DELETE_SUCCESS.formatted(name, id));
     }
 
-    protected String baseGet(UUID id) throws JsonProcessingException {
+    protected String baseGet(UUID id) {
         var dto = crudService.getById(id);
         return shellHelper.printJson(dto);
     }

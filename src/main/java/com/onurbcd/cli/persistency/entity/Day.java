@@ -2,14 +2,6 @@ package com.onurbcd.cli.persistency.entity;
 
 import com.onurbcd.cli.annotation.MaxYear;
 import com.onurbcd.cli.annotation.MinYear;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.data.domain.Persistable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,6 +11,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
+
 import java.time.LocalDate;
 
 @Entity
@@ -108,16 +109,9 @@ public class Day implements Persistable<Integer> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Day day = (Day) o;
-        return new EqualsBuilder().append(id, day.id).isEquals();
+        // getId(), not the field: for a Hibernate proxy the field is null
+        return this == o || (o instanceof Day day && ProxyUtils.getUserClass(this) == ProxyUtils.getUserClass(o)
+                && new EqualsBuilder().append(getId(), day.getId()).isEquals());
     }
 
     @Override

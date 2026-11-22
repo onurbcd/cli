@@ -2,9 +2,9 @@ package com.onurbcd.cli.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
-import org.springframework.shell.component.flow.ComponentFlow;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
 
 import java.io.IOError;
 import java.io.InterruptedIOException;
@@ -21,8 +21,7 @@ public final class FlowUtil {
      * @return ComponentFlow.ComponentFlowResult if successful, null if cancelled by
      * user
      */
-    @Nullable
-    public static ComponentFlow.ComponentFlowResult runFlowSafely(
+    public static ComponentFlow.@Nullable ComponentFlowResult runFlowSafely(
             Supplier<ComponentFlow.ComponentFlowResult> flowSupplier) {
 
         try {

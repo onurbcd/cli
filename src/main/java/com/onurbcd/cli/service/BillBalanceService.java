@@ -1,12 +1,12 @@
 package com.onurbcd.cli.service;
 
-import com.onurbcd.cli.util.Constant;
 import com.onurbcd.cli.dto.balance.BalanceSaveDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.param.BillBalanceParams;
 import com.onurbcd.cli.persistency.entity.Balance;
 import com.onurbcd.cli.persistency.entity.Bill;
+import com.onurbcd.cli.util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

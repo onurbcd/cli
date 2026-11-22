@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.context.ComponentContext;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.context.ComponentContext;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;

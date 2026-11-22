@@ -1,13 +1,5 @@
 package com.onurbcd.cli.service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.onurbcd.cli.annotation.PrimeService;
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.category.CategoryDto;
@@ -22,6 +14,13 @@ import com.onurbcd.cli.persistency.predicate.CategoryPredicateBuilder;
 import com.onurbcd.cli.persistency.repository.CategoryRepository;
 import com.onurbcd.cli.validator.CategoryValidator;
 import com.querydsl.core.types.Predicate;
+import org.jspecify.annotations.Nullable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @PrimeService(Domain.CATEGORY)
 public class CategoryService
@@ -32,7 +31,7 @@ public class CategoryService
     private final CategoryValidator validationService;
 
     public CategoryService(CategoryRepository repository, CategoryToEntityMapper toEntityMapper,
-            CategoryValidator validationService) {
+                           CategoryValidator validationService) {
 
         super(repository, toEntityMapper, QueryType.CUSTOM, CategoryPredicateBuilder.class);
         this.repository = repository;
@@ -50,7 +49,7 @@ public class CategoryService
         var category = fillValues(categorySaveDto, current, parent);
         category = repository.save(category);
 
-        if (id == null && parent != null && Boolean.TRUE.equals(parent.getLastBranch())) {
+        if (id == null && Boolean.TRUE.equals(parent.getLastBranch())) {
             repository.updateLastBranch(Boolean.FALSE, parent.getId());
         }
 
@@ -83,7 +82,7 @@ public class CategoryService
     }
 
     private Category fillValues(CategorySaveDto categorySaveDto, @Nullable CategoryDto current,
-            @Nullable CategoryDto parent) {
+                                @Nullable CategoryDto parent) {
 
         var category = toEntityMapper.apply(categorySaveDto);
         category.setCreatedDate(current != null ? current.getCreatedDate() : null);

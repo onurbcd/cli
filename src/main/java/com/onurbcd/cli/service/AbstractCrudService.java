@@ -1,14 +1,5 @@
 package com.onurbcd.cli.service;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
-import org.springframework.shell.component.flow.SelectItem;
-
 import com.onurbcd.cli.dto.Dtoable;
 import com.onurbcd.cli.dto.filter.Filterable;
 import com.onurbcd.cli.enums.QueryType;
@@ -19,6 +10,14 @@ import com.onurbcd.cli.persistency.predicate.BasePredicateBuilder;
 import com.onurbcd.cli.persistency.repository.EruRepository;
 import com.onurbcd.cli.validator.Action;
 import com.querydsl.core.types.Predicate;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 
 public abstract class AbstractCrudService<E extends Entityable, D extends Dtoable, P extends BasePredicateBuilder, S extends Dtoable>
         implements CrudService {
@@ -30,7 +29,7 @@ public abstract class AbstractCrudService<E extends Entityable, D extends Dtoabl
     private final Class<P> predicateClass;
 
     protected AbstractCrudService(EruRepository<E, D> repository, Function<E, D> toDtoMapper,
-            EntityMapper<S, E> toEntityMapper, QueryType queryType, Class<P> predicateClass) {
+                                  EntityMapper<S, E> toEntityMapper, QueryType queryType, Class<P> predicateClass) {
 
         this.repository = repository;
         this.toDtoMapper = toDtoMapper;
@@ -40,7 +39,7 @@ public abstract class AbstractCrudService<E extends Entityable, D extends Dtoabl
     }
 
     protected AbstractCrudService(EruRepository<E, D> repository, EntityMapper<S, E> toEntityMapper,
-            QueryType queryType, Class<P> predicateClass) {
+                                  QueryType queryType, Class<P> predicateClass) {
 
         this.repository = repository;
         this.toEntityMapper = toEntityMapper;

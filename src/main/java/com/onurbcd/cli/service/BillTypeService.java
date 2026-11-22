@@ -27,7 +27,7 @@ public class BillTypeService extends AbstractCrudService<BillType, BillTypeDto, 
     public BillTypeValuesDto getValues(UUID id) {
         return repository
                 .getValues(id)
-                .orElseThrow(ApiException.notFound(id));
+                .orElseThrow(() -> ApiException.notFound(id));
     }
 
     @Override

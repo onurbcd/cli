@@ -1,13 +1,20 @@
 package com.onurbcd.cli.validator;
 
 import com.onurbcd.cli.annotation.MaxYear;
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.time.LocalDateTime;
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+
+import java.time.Clock;
+import java.time.LocalDate;
 
 public class MaxYearValidator implements ConstraintValidator<MaxYear, Short> {
+
+    private final Clock clock;
+
+    public MaxYearValidator(Clock clock) {
+        this.clock = clock;
+    }
 
     @Override
     public boolean isValid(Short value, ConstraintValidatorContext context) {
@@ -15,7 +22,7 @@ public class MaxYearValidator implements ConstraintValidator<MaxYear, Short> {
             return true;
         }
 
-        var currentYear = LocalDateTime.now().getYear();
+        var currentYear = LocalDate.now(clock).getYear();
         var result = value <= currentYear;
 
         if (!result) {

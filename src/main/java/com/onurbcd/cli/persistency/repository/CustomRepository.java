@@ -10,11 +10,11 @@ import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -52,10 +52,13 @@ public interface CustomRepository<D extends Dtoable, E extends Entityable> {
 
     BigDecimal getSum(Predicate predicate);
 
-    private Long countTotalRows(List<D> dtos, Pageable pageable, Predicate predicate) {
-        return dtos.size() < pageable.getPageSize()
-                ? dtos.size()
-                : mainQuery(predicate).select(Projections.appending(entityPathBase().count())).fetchFirst();
+    private long countTotalRows(List<D> dtos, Pageable pageable, Predicate predicate) {
+        if (dtos.size() < pageable.getPageSize()) {
+            return dtos.size();
+        }
+
+        Long total = mainQuery(predicate).select(Projections.appending(entityPathBase().count())).fetchFirst();
+        return total == null ? 0L : total;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

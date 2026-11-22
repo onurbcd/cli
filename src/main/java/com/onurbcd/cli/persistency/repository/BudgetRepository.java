@@ -1,22 +1,21 @@
 package com.onurbcd.cli.persistency.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.onurbcd.cli.dto.budget.BudgetDto;
 import com.onurbcd.cli.dto.budget.BudgetSumDto;
 import com.onurbcd.cli.dto.budget.BudgetValuesDto;
 import com.onurbcd.cli.dto.budget.MonthlyBudgetDto;
 import com.onurbcd.cli.param.SequenceParam;
 import com.onurbcd.cli.persistency.entity.Budget;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Repository
 public interface BudgetRepository extends EruRepository<Budget, BudgetDto>, SequenceRepository {

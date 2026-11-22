@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Clock;
 import java.util.UUID;
 
-import static com.onurbcd.cli.util.DateUtil.orCurrentMonth;
-import static com.onurbcd.cli.util.DateUtil.orCurrentYear;
+import static com.onurbcd.cli.util.DateUtil.orCurrentYearAndMonth;
 
 @SuperBuilder
 @Getter
@@ -20,14 +20,16 @@ public class BudgetFilter extends AbstractFilterable {
     private Boolean paid;
 
     public static BudgetFilter of(Boolean active, String search, Short refYear, Short refMonth, UUID billTypeId,
-                                  Boolean paid) {
+                                  Boolean paid, Clock clock) {
+
+        var reference = orCurrentYearAndMonth(refYear, refMonth, clock);
 
         return BudgetFilter
                 .builder()
                 .active(active)
                 .search(search)
-                .refYear(orCurrentYear(refYear))
-                .refMonth(orCurrentMonth(refMonth))
+                .refYear(reference.year())
+                .refMonth(reference.month())
                 .billTypeId(billTypeId)
                 .paid(paid)
                 .build();

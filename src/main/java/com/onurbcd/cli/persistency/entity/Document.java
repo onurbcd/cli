@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
 
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class Document implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
@@ -50,16 +51,9 @@ public class Document implements Persistable<UUID> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        var document = (Document) o;
-        return new EqualsBuilder().append(id, document.id).isEquals();
+        // getId(), not the field: for a Hibernate proxy the field is null
+        return this == o || (o instanceof Document document && ProxyUtils.getUserClass(this) == ProxyUtils.getUserClass(o)
+                && new EqualsBuilder().append(getId(), document.getId()).isEquals());
     }
 
     @Override

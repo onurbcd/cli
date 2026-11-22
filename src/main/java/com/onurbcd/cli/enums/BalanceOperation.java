@@ -22,6 +22,8 @@ public enum BalanceOperation {
 
     private final Operation operation;
     private final BalanceType balanceType;
+    // stateless method references (NumberUtil::add / NumberUtil::subtract)
+    @SuppressWarnings("ImmutableEnumChecker")
     private final BinaryOperator<BigDecimal> func;
 
     public static BalanceOperation from(Operation operation, BalanceType balanceType) {
@@ -30,6 +32,6 @@ public enum BalanceOperation {
                 .filter(balanceOperation -> balanceOperation.operation == operation &&
                         balanceOperation.balanceType == balanceType)
                 .findFirst()
-                .orElseThrow(new ApiException(Error.BALANCE_OPERATION_MISSING, operation.name(), balanceType.name()));
+                .orElseThrow(() -> new ApiException(ErrorCode.BALANCE_OPERATION_MISSING, operation, balanceType));
     }
 }

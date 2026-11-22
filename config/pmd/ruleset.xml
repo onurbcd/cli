@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="eru-service"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>Bug-prone and best-practice rules only. Style rules are left to Checkstyle.</description>
+
+    <rule ref="category/java/errorprone.xml">
+        <!-- Serializable is not used in this project; Spring components hold their own state -->
+        <exclude name="MissingSerialVersionUID"/>
+        <!-- fires on every Spring component that logs or builds strings; too noisy -->
+        <exclude name="AvoidLiteralsInIfCondition"/>
+        <!-- Spring Shell option descriptions ("The budget's id.") repeat by design -->
+        <exclude name="AvoidDuplicateLiterals"/>
+        <exclude name="NullAssignment"/>
+        <exclude name="ImplicitSwitchFallThrough"/>
+    </rule>
+
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="GuardLogStatement"/>
+        <exclude name="LooseCoupling"/>
+        <exclude name="UseVarargs"/>
+        <!-- abstract base classes that only share state (Audit, BasePredicateBuilder) are not meant to be instantiated -->
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <!-- MapStruct mappers and marker interfaces are not meant to be lambdas -->
+        <exclude name="ImplicitFunctionalInterface"/>
+        <!-- MapStruct and marker interfaces are not meant to be lambdas -->
+        
+        <exclude name="AvoidReassigningParameters"/>
+    </rule>
+
+    <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
+    <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector"/>
+    <rule ref="category/java/design.xml/SimplifyBooleanReturns"/>
+    <rule ref="category/java/design.xml/SimplifiedTernary"/>
+</ruleset>

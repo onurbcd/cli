@@ -1,6 +1,5 @@
 package com.onurbcd.cli.command;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.onurbcd.cli.dto.filter.SecretFilter;
 import com.onurbcd.cli.dto.secret.SecretPatchDto;
 import com.onurbcd.cli.enums.EruTable;
@@ -9,87 +8,89 @@ import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.SecretService;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Sort;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.shell.jline.tui.component.flow.ComponentFlow;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 import static com.onurbcd.cli.util.Constant.SECRET;
 import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 
-@ShellComponent
-@ShellCommandGroup(SECRET)
+@Component
+@CommandGroup(name = SECRET)
 public class SecretCommand extends BaseCommand {
 
-    public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper) {
-        super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET);
+    public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
+                         Validator validator) {
+        super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET, validator);
     }
 
-    @ShellMethod(key = "secret-save", value = "Create or update a secret.")
+    @Command(name = "secret-save", description = "Create or update a secret.")
     public String save(
-            @ShellOption(value = {"id", "-i"}, help = "The secret's id.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'i', longName = "id", description = "The secret's id.")
             UUID id
     ) {
         return baseSave(CommandParam.of(id));
     }
 
-    @ShellMethod(key = "secret-delete", value = "Delete secret by id.")
+    @Command(name = "secret-delete", description = "Delete secret by id.")
     public String delete(
-            @ShellOption(value = {"id", "-i"}, help = "The secret's id.")
+            @Option(shortName = 'i', longName = "id", description = "The secret's id.", required = true)
             @NotNull
             UUID id
     ) {
         return baseDelete(id);
     }
 
-    @ShellMethod(key = "secret-get", value = "Get secret by id.")
+    @Command(name = "secret-get", description = "Get secret by id.")
     public String get(
-            @ShellOption(value = {"id", "-i"}, help = "The secret's id.")
+            @Option(shortName = 'i', longName = "id", description = "The secret's id.", required = true)
             @NotNull
             UUID id
-    ) throws JsonProcessingException {
+    ) {
         return baseGet(id);
     }
 
-    @ShellMethod(key = "secret-get-all", value = "Get secret's list.")
+    @Command(name = "secret-get-all", description = "Get secret's list.")
     public String getAll(
-            @ShellOption(value = {"pageNumber", "-n"}, help = "The page's number.", defaultValue = "1")
+            @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")
             @Min(1)
             Integer pageNumber,
 
-            @ShellOption(value = {"pageSize", "-s"}, help = "The page's size.", defaultValue = "10")
+            @Option(shortName = 's', longName = "pageSize", description = "The page's size.", defaultValue = "10")
             @Min(1)
             Integer pageSize,
 
-            @ShellOption(value = {"direction", "-d"}, help = "The page's sort direction.", defaultValue = "ASC")
+            @Option(shortName = 'd', longName = "direction", description = "The page's sort direction.", defaultValue = "ASC")
             Sort.Direction direction,
 
-            @ShellOption(value = {"active", "-a"}, help = "Filter's active option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
             Boolean active,
 
-            @ShellOption(value = {"search", "-f"}, help = "Filter's search option.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'f', longName = "search", description = "Filter's search option.")
             String search,
 
-            @ShellOption(value = {"properties", "-p"}, help = "The page's sort properties.", defaultValue = ShellOption.NULL)
+            @Option(shortName = 'p', longName = "properties", description = "The page's sort properties.")
             String... properties
     ) {
         var filter = SecretFilter.of(active, search);
         return baseGetAll(filter, pageNumber, pageSize, direction, getSortProps(properties, "name"));
     }
 
-    @ShellMethod(key = "secret-update", value = "Update secret's status by id.")
+    @Command(name = "secret-update", description = "Update secret's status by id.")
     public String update(
-            @ShellOption(value = {"id", "-i"}, help = "The secret's id.")
+            @Option(shortName = 'i', longName = "id", description = "The secret's id.", required = true)
             @NotNull
             UUID id,
 
-            @ShellOption(value = {"active", "-a"}, help = "The secret's status.", defaultValue = "false")
+            @Option(shortName = 'a', longName = "active", description = "The secret's status.", defaultValue = "false")
             Boolean active
     ) {
         return baseUpdate(SecretPatchDto.of(active), id);
