@@ -17,6 +17,6 @@ public class MultipartFile {
     private InputStream inputStream;
 
     public boolean isEmpty() {
-        return size == 0;
+        return size == null || size == 0;
     }
 }
