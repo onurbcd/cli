@@ -16,6 +16,6 @@ public abstract class SecretToDtoMapper implements Function<Secret, SecretDto> {
     protected CryptoHelper cryptoHelper;
 
     @Override
-    @Mapping(target = "password", expression = "java(cryptoHelper.decrypt(secret.getPassword()))")
+    @Mapping(target = "password", expression = "java(secret != null ? cryptoHelper.decrypt(secret.getPassword()) : null)")
     public abstract SecretDto apply(Secret secret);
 }
