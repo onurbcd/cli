@@ -280,6 +280,7 @@
                                 <include>com/onurbcd/cli/mapper/*.class</include>
                                 <include>com/onurbcd/cli/param/**/*.class</include>
                                 <include>com/onurbcd/cli/persistency/entity/*.class</include>
+                                <include>com/onurbcd/cli/persistency/predicate/*.class</include>
                             </includes>
                             <excludes>
                                 <!-- QueryDSL generated metamodel classes -->
