@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validator
@@ -41,9 +42,11 @@ public class BalanceValidator {
         Action.checkIf(id != null || dayNotFuture(dto.getDayCalendarDate())).orElseThrow(ErrorCode.DAY_IN_FUTURE);
     }
 
-    private boolean equalDay(BalanceSaveDto dto, Balance balance) {
-        return DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(),
-                balance.getSequenceYear(), balance.getSequenceMonth(), balance.getDayInMonth());
+    private boolean equalDay(BalanceSaveDto dto, @Nullable Balance balance) {
+        return Optional.ofNullable(balance)
+                .map(b -> DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(),
+                        b.getSequenceYear(), b.getSequenceMonth(), b.getDayInMonth()))
+                .orElse(Boolean.FALSE);
     }
 
     private boolean dayNotFuture(LocalDate dayCalendarDate) {

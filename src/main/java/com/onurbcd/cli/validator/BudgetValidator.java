@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validator
@@ -38,9 +39,11 @@ public class BudgetValidator {
         return getFromBudget(copyBudgetDto);
     }
 
-    private boolean equalRef(BudgetSaveDto budgetSaveDto, Budget budget) {
-        return DateUtil.equalMonth(budgetSaveDto.getRefYear(), budgetSaveDto.getRefMonth(),
-                budget.getRefYear(), budget.getRefMonth());
+    private boolean equalRef(BudgetSaveDto budgetSaveDto, @Nullable Budget budget) {
+        return Optional.ofNullable(budget)
+                .map(b -> DateUtil.equalMonth(budgetSaveDto.getRefYear(), budgetSaveDto.getRefMonth(),
+                        b.getRefYear(), b.getRefMonth()))
+                .orElse(Boolean.FALSE);
     }
 
     private void validateCopyBudget(CopyBudgetDto copyBudgetDto) {
