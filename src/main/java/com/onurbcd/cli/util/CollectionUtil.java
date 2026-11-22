@@ -38,8 +38,8 @@ public final class CollectionUtil {
             return true;
         }
 
-        // JDK classes live in named modules whose private state cannot be reflected on (InaccessibleObjectException);
-        // a non-null String, UUID, etc. is a value, never an empty holder.
+        // JDK classes live in named modules whose private state cannot be reflected on.
+        // A non-null String or UUID is a value, never an empty holder.
         if (object.getClass().getModule().isNamed()) {
             return false;
         }

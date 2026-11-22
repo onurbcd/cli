@@ -260,6 +260,8 @@
                     <excludes>
                         <!-- QueryDSL generated metamodel classes -->
                         <exclude>com/onurbcd/cli/persistency/entity/Q*.class</exclude>
+                        <!-- bootstrap class, also excluded from Sonar coverage (sonar.coverage.exclusions) -->
+                        <exclude>com/onurbcd/cli/CliApp.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -311,6 +313,7 @@
                                 <include>com/onurbcd/cli/persistency/repository/**/*.class</include>
                                 <include>com/onurbcd/cli/service/*.class</include>
                                 <include>com/onurbcd/cli/util/*.class</include>
+                                <include>com/onurbcd/cli/validator/*.class</include>
                             </includes>
                             <rules>
                                 <rule>

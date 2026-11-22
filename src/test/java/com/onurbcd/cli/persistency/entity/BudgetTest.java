@@ -98,8 +98,8 @@ class BudgetTest {
     void givenIds_whenEqualsAndHashCode_shouldFollowId() {
         var budget = Budget.builder().id(ID).build();
 
-        assertThat(budget).isEqualTo(Budget.builder().id(ID).build()).hasSameHashCodeAs(Budget.builder().id(ID).build());
-        assertThat(budget).isNotEqualTo(Budget.builder().id(OTHER_ID).build())
+        assertThat(budget).isEqualTo(Budget.builder().id(ID).build()).hasSameHashCodeAs(Budget.builder().id(ID).build())
+                .isNotEqualTo(Budget.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(Budget.builder().id(OTHER_ID).build());
     }
 }

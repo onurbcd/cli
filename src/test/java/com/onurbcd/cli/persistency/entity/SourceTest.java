@@ -78,8 +78,8 @@ class SourceTest {
     void givenIds_whenEqualsAndHashCode_shouldFollowId() {
         var source = Source.builder().id(ID).build();
 
-        assertThat(source).isEqualTo(Source.builder().id(ID).build()).hasSameHashCodeAs(Source.builder().id(ID).build());
-        assertThat(source).isNotEqualTo(Source.builder().id(OTHER_ID).build())
+        assertThat(source).isEqualTo(Source.builder().id(ID).build()).hasSameHashCodeAs(Source.builder().id(ID).build())
+                .isNotEqualTo(Source.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(Source.builder().id(OTHER_ID).build());
     }
 }

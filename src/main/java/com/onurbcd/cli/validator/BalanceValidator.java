@@ -41,8 +41,8 @@ public class BalanceValidator {
         Action.checkIf(id != null || dayNotFuture(dto.getDayCalendarDate())).orElseThrow(ErrorCode.DAY_IN_FUTURE);
     }
 
-    private boolean equalDay(BalanceSaveDto dto, @Nullable Balance balance) {
-        return balance != null && DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(),
+    private boolean equalDay(BalanceSaveDto dto, Balance balance) {
+        return DateUtil.equalDay(dto.getYear(), dto.getMonth(), dto.getDay(),
                 balance.getSequenceYear(), balance.getSequenceMonth(), balance.getDayInMonth());
     }
 

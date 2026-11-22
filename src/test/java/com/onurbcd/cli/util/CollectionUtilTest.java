@@ -34,7 +34,7 @@ class CollectionUtilTest {
         static final String CONSTANT = "constant";
     }
 
-    private static Stream<Arguments> emptyCollections() {
+    static Stream<Arguments> emptyCollections() {
         return Stream.of(
                 Arguments.of((Collection<Object>) null),
                 Arguments.of(List.of()),
@@ -46,7 +46,7 @@ class CollectionUtilTest {
                 Arguments.of(List.of(new Empty())));
     }
 
-    private static Stream<Arguments> nonEmptyCollections() {
+    static Stream<Arguments> nonEmptyCollections() {
         return Stream.of(
                 Arguments.of(List.of(new Holder("a", null))),
                 Arguments.of(List.of(new Holder(null, 1))),

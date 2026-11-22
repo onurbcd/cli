@@ -23,7 +23,7 @@ Typical hidden branches: `&&`/`||` operands, `switch` defaults, `Optional.orElse
 - `./mvnw verify -Djacoco.check.includes=com/onurbcd/cli/util/NumberUtil.class` fails the build unless that class has 100% line and branch coverage. The value is **one Ant-style class-file pattern** (slashes, `.class` suffix); a dotted name matches nothing. Default (`__none__`) gates nothing.
 - When a class reaches 100%, add its pattern as a new `<include>` in the `jacoco-check` execution so it stays gated (once a whole package is done, use one package pattern such as `com/onurbcd/cli/dto/**/*.class` instead of one include per class; new classes in it must then be tested too), and tick it off in `TODO.md` (Fase 2).
 - Unit (`*Test`, Surefire) and integration (`*IT`, Failsafe) coverage go to the same `target/jacoco.exec`, so the report and check see both.
-- PIT (on demand): `./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'` (threshold `pit.mutation.threshold`, default 90). Verified working with Java 25 and Boot 4.0.9 on `BalanceCommand`. `withHistory` needs an extra plugin, so it is off.
+- PIT (on demand): `./mvnw test-compile org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'` (threshold `pit.mutation.threshold`, default 90). Verified working with Java 25 and Boot 4.0.9 on `BalanceCommand`. `withHistory` needs an extra plugin, so it is off.
 
 ## Maven setup for other projects (propose to the user; do not apply silently when `pom.xml` has uncommitted changes)
 
@@ -79,7 +79,7 @@ Coverage shows code ran, not that it was checked. PIT is mandatory for every cla
 </plugin>
 ```
 
-Run: `./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`. Report: `target/pit-reports/`. Each SURVIVED mutant is a missing assertion (return value not checked, boundary not tested, call not verified). Fix by asserting more, then re-run. Keep PIT out of the default build (slow); run it per class or in a CI profile. Confirm PIT and its JUnit plugin versions support the project's JUnit major and Java release before adding.
+Run: `./mvnw test-compile org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`. Report: `target/pit-reports/`. Each SURVIVED mutant is a missing assertion (return value not checked, boundary not tested, call not verified). Fix by asserting more, then re-run. Keep PIT out of the default build (slow); run it per class or in a CI profile. Confirm PIT and its JUnit plugin versions support the project's JUnit major and Java release before adding.
 
 ## Final report template
 

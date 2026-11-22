@@ -157,8 +157,8 @@ class BalanceTest {
     void givenIds_whenEqualsAndHashCode_shouldFollowId() {
         var balance = Balance.builder().id(ID).build();
 
-        assertThat(balance).isEqualTo(Balance.builder().id(ID).build()).hasSameHashCodeAs(Balance.builder().id(ID).build());
-        assertThat(balance).isNotEqualTo(Balance.builder().id(OTHER_ID).build())
+        assertThat(balance).isEqualTo(Balance.builder().id(ID).build()).hasSameHashCodeAs(Balance.builder().id(ID).build())
+                .isNotEqualTo(Balance.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(Balance.builder().id(OTHER_ID).build());
     }
 }

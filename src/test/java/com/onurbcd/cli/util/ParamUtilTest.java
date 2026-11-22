@@ -27,7 +27,7 @@ class ParamUtilTest {
     private static final String INPUT = "input";
     private static final String[] DEFAULTS = {"name", "id"};
 
-    private static Stream<Arguments> blankOrMissingProperties() {
+    static Stream<Arguments> blankOrMissingProperties() {
         return Stream.of(
                 Arguments.of((Object) null),
                 Arguments.of((Object) new String[0]),

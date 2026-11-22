@@ -60,8 +60,8 @@ class BillTypeTest {
         var billType = BillType.builder().id(ID).build();
 
         assertThat(billType).isEqualTo(BillType.builder().id(ID).build())
-                .hasSameHashCodeAs(BillType.builder().id(ID).build());
-        assertThat(billType).isNotEqualTo(BillType.builder().id(OTHER_ID).build())
+                .hasSameHashCodeAs(BillType.builder().id(ID).build())
+                .isNotEqualTo(BillType.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(BillType.builder().id(OTHER_ID).build());
     }
 }

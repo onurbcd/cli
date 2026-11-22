@@ -113,12 +113,12 @@ The value is one class-file pattern: slashes, `.class` suffix, wildcards allowed
 100% coverage proves the code ran, not that the tests would notice a bug. PIT changes the code in small ways (flips a condition, removes a call) and checks that some test fails; a change that no test notices is a "surviving mutant" and means an assertion is missing. It is slow, so it is not part of the normal build. Run it on one class:
 
 ```bash
-./mvnw org.pitest:pitest-maven:mutationCoverage \
+./mvnw test-compile org.pitest:pitest-maven:mutationCoverage \
   -Dpit.target.classes=com.onurbcd.cli.util.NumberUtil \
   -Dpit.target.tests='com.onurbcd.cli.util.NumberUtilTest*'
 ```
 
-The report is written to `target/pit-reports/index.html`. The build fails if fewer than 90% of mutants are killed (`pit.mutation.threshold`).
+`test-compile` is part of the command on purpose: the PIT goal does not compile, so without it PIT mutates against stale `target/test-classes` and reports survivors that no longer exist. The report is written to `target/pit-reports/index.html`. The build fails if fewer than 90% of mutants are killed (`pit.mutation.threshold`).
 
 ### Writing tests with the Claude Code skill
 

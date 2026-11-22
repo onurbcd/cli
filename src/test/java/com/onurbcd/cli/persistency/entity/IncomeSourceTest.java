@@ -29,8 +29,8 @@ class IncomeSourceTest {
         var incomeSource = IncomeSource.builder().id(ID).build();
 
         assertThat(incomeSource).isEqualTo(IncomeSource.builder().id(ID).build())
-                .hasSameHashCodeAs(IncomeSource.builder().id(ID).build());
-        assertThat(incomeSource).isNotEqualTo(IncomeSource.builder().id(OTHER_ID).build())
+                .hasSameHashCodeAs(IncomeSource.builder().id(ID).build())
+                .isNotEqualTo(IncomeSource.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(IncomeSource.builder().id(OTHER_ID).build());
     }
 }

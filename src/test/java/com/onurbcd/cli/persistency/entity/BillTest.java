@@ -171,8 +171,8 @@ class BillTest {
     void givenIds_whenEqualsAndHashCode_shouldFollowId() {
         var bill = Bill.builder().id(ID).build();
 
-        assertThat(bill).isEqualTo(Bill.builder().id(ID).build()).hasSameHashCodeAs(Bill.builder().id(ID).build());
-        assertThat(bill).isNotEqualTo(Bill.builder().id(OTHER_ID).build())
+        assertThat(bill).isEqualTo(Bill.builder().id(ID).build()).hasSameHashCodeAs(Bill.builder().id(ID).build())
+                .isNotEqualTo(Bill.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(Bill.builder().id(OTHER_ID).build());
     }
 }

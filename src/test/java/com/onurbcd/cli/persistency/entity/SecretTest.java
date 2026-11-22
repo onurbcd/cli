@@ -69,8 +69,8 @@ class SecretTest {
     void givenIds_whenEqualsAndHashCode_shouldFollowId() {
         var secret = Secret.builder().id(ID).build();
 
-        assertThat(secret).isEqualTo(Secret.builder().id(ID).build()).hasSameHashCodeAs(Secret.builder().id(ID).build());
-        assertThat(secret).isNotEqualTo(Secret.builder().id(OTHER_ID).build())
+        assertThat(secret).isEqualTo(Secret.builder().id(ID).build()).hasSameHashCodeAs(Secret.builder().id(ID).build())
+                .isNotEqualTo(Secret.builder().id(OTHER_ID).build())
                 .doesNotHaveSameHashCodeAs(Secret.builder().id(OTHER_ID).build());
     }
 }

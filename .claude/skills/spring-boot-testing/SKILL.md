@@ -39,7 +39,7 @@ Writes the tests for **one class or one package per run**, given as the argument
 6. **Write the tests** with the templates in `references/templates/` (create `TestFactory`, `TestConstants`, `TestArguments` only if the project has none; extend them otherwise).
 7. **Measure.** Run `./mvnw -q test -Dtest=<Name>Test` first, then `./mvnw verify` when `*IT` or JaCoCo is involved. Read `target/site/jacoco/jacoco.xml` (or `jacoco.csv`) for the target class: missed lines and branches. Add cases until both are zero. See `references/coverage-and-quality.md`. Allowed exclusions: generated code only (Lombok `@Generated`, MapStruct impls, QueryDSL `Q*`, `main`).
 8. **Strengthen (PIT, always).** Run PIT on the class every time; it is configured in `pom.xml` (`pitest-maven`):
-   `./mvnw org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`.
+   `./mvnw test-compile org.pitest:pitest-maven:mutationCoverage -Dpit.target.classes=<fqcn> -Dpit.target.tests='<fqcn>Test*'`.
    Kill every surviving mutant with stronger assertions, not with more mocks, then re-run until none survive (at minimum the `pit.mutation.threshold`; justify any survivor in the report). Report killed/total from the real output.
 9. **Lock it in** (repos that use the `jacoco.check.includes` gate, like this one; the README documents it):
    - Confirm with `./mvnw verify -Djacoco.check.includes=<package/path>/<Name>.class`. It must pass.

@@ -19,7 +19,7 @@ class NumberUtilTest {
     private static final BigDecimal TEN = new BigDecimal("10.50");
     private static final BigDecimal FOUR = new BigDecimal("4.25");
 
-    private static Stream<Arguments> shortPairs() {
+    static Stream<Arguments> shortPairs() {
         return Stream.of(
                 Arguments.of(null, null, true),
                 Arguments.of(null, (short) 1, false),
@@ -68,8 +68,8 @@ class NumberUtilTest {
         @DisplayName("two values are summed and the operands are not changed")
         void givenBoth_shouldSum() {
             assertThat(NumberUtil.add(TEN, FOUR)).isEqualByComparingTo("14.75");
-            assertThat(TEN).isEqualTo(new BigDecimal("10.50"));
-            assertThat(FOUR).isEqualTo(new BigDecimal("4.25"));
+            assertThat(TEN).hasToString("10.50");
+            assertThat(FOUR).hasToString("4.25");
         }
     }
 
@@ -100,8 +100,8 @@ class NumberUtilTest {
         void givenBoth_shouldSubtract() {
             assertThat(NumberUtil.subtract(TEN, FOUR)).isEqualByComparingTo("6.25");
             assertThat(NumberUtil.subtract(FOUR, TEN)).isEqualByComparingTo("-6.25");
-            assertThat(TEN).isEqualTo(new BigDecimal("10.50"));
-            assertThat(FOUR).isEqualTo(new BigDecimal("4.25"));
+            assertThat(TEN).hasToString("10.50");
+            assertThat(FOUR).hasToString("4.25");
         }
     }
 
