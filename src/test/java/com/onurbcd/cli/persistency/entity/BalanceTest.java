@@ -57,19 +57,20 @@ class BalanceTest {
                 .paymentType(PaymentType.PIX)
                 .build();
 
-        assertThat(balance.getId()).isEqualTo(ID);
-        assertThat(balance.getName()).isEqualTo("sale");
-        assertThat(balance.getActive()).isTrue();
-        assertThat(balance.getSequence()).isEqualTo((short) 3);
-        assertThat(balance.getDay()).isSameAs(day);
-        assertThat(balance.getSource()).isSameAs(source);
-        assertThat(balance.getCategory()).isSameAs(category);
-        assertThat(balance.getAmount()).isEqualTo(AMOUNT);
-        assertThat(balance.getCode()).isEqualTo("code-1");
-        assertThat(balance.getDescription()).isEqualTo("description");
-        assertThat(balance.getBalanceType()).isEqualTo(BalanceType.INCOME);
-        assertThat(balance.getPaymentType()).isEqualTo(PaymentType.PIX);
-        assertThat(balance.getDocuments()).isEmpty();
+        assertThat(balance)
+                .returns(ID, Balance::getId)
+                .returns("sale", Balance::getName)
+                .returns(true, Balance::getActive)
+                .returns((short) 3, Balance::getSequence)
+                .satisfies(a -> assertThat(a.getDay()).isSameAs(day))
+                .satisfies(a -> assertThat(a.getSource()).isSameAs(source))
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category))
+                .returns(AMOUNT, Balance::getAmount)
+                .returns("code-1", Balance::getCode)
+                .returns("description", Balance::getDescription)
+                .returns(BalanceType.INCOME, Balance::getBalanceType)
+                .returns(PaymentType.PIX, Balance::getPaymentType)
+                .satisfies(a -> assertThat(a.getDocuments()).isEmpty());
     }
 
     @Test
@@ -93,16 +94,17 @@ class BalanceTest {
         var balance = new Balance((short) 4, day, source, category, AMOUNT, "code-2", "text", BalanceType.OUTCOME,
                 PaymentType.PIX, documents);
 
-        assertThat(balance.getSequence()).isEqualTo((short) 4);
-        assertThat(balance.getDay()).isSameAs(day);
-        assertThat(balance.getSource()).isSameAs(source);
-        assertThat(balance.getCategory()).isSameAs(category);
-        assertThat(balance.getAmount()).isEqualTo(AMOUNT);
-        assertThat(balance.getCode()).isEqualTo("code-2");
-        assertThat(balance.getDescription()).isEqualTo("text");
-        assertThat(balance.getBalanceType()).isEqualTo(BalanceType.OUTCOME);
-        assertThat(balance.getPaymentType()).isEqualTo(PaymentType.PIX);
-        assertThat(balance.getDocuments()).isSameAs(documents);
+        assertThat(balance)
+                .returns((short) 4, Balance::getSequence)
+                .satisfies(a -> assertThat(a.getDay()).isSameAs(day))
+                .satisfies(a -> assertThat(a.getSource()).isSameAs(source))
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category))
+                .returns(AMOUNT, Balance::getAmount)
+                .returns("code-2", Balance::getCode)
+                .returns("text", Balance::getDescription)
+                .returns(BalanceType.OUTCOME, Balance::getBalanceType)
+                .returns(PaymentType.PIX, Balance::getPaymentType)
+                .satisfies(a -> assertThat(a.getDocuments()).isSameAs(documents));
     }
 
     @Test
@@ -125,16 +127,17 @@ class BalanceTest {
         balance.setPaymentType(PaymentType.PIX);
         balance.setDocuments(documents);
 
-        assertThat(balance.getSequence()).isEqualTo((short) 9);
-        assertThat(balance.getDay()).isSameAs(day);
-        assertThat(balance.getSource()).isSameAs(source);
-        assertThat(balance.getCategory()).isSameAs(category);
-        assertThat(balance.getAmount()).isEqualTo(AMOUNT);
-        assertThat(balance.getCode()).isEqualTo("code-3");
-        assertThat(balance.getDescription()).isEqualTo("desc");
-        assertThat(balance.getBalanceType()).isEqualTo(BalanceType.OUTCOME);
-        assertThat(balance.getPaymentType()).isEqualTo(PaymentType.PIX);
-        assertThat(balance.getDocuments()).isSameAs(documents);
+        assertThat(balance)
+                .returns((short) 9, Balance::getSequence)
+                .satisfies(a -> assertThat(a.getDay()).isSameAs(day))
+                .satisfies(a -> assertThat(a.getSource()).isSameAs(source))
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category))
+                .returns(AMOUNT, Balance::getAmount)
+                .returns("code-3", Balance::getCode)
+                .returns("desc", Balance::getDescription)
+                .returns(BalanceType.OUTCOME, Balance::getBalanceType)
+                .returns(PaymentType.PIX, Balance::getPaymentType)
+                .satisfies(a -> assertThat(a.getDocuments()).isSameAs(documents));
     }
 
     @Test
@@ -142,10 +145,11 @@ class BalanceTest {
     void givenDay_whenDerivedAccessors_shouldExposeDayAndSequence() {
         var balance = Balance.builder().day(day()).sequence((short) 5).build();
 
-        assertThat(balance.getDayInMonth()).isEqualTo((short) 15);
-        assertThat(balance.getSequenceYear()).isEqualTo((short) 2024);
-        assertThat(balance.getSequenceMonth()).isEqualTo((short) 3);
-        assertThat(balance.getSequenceValue()).isEqualTo((short) 5);
+        assertThat(balance)
+                .returns((short) 15, Balance::getDayInMonth)
+                .returns((short) 2024, Balance::getSequenceYear)
+                .returns((short) 3, Balance::getSequenceMonth)
+                .returns((short) 5, Balance::getSequenceValue);
     }
 
     @Test

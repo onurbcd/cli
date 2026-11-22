@@ -20,11 +20,12 @@ class BillTypeTest {
 
         var billType = BillType.builder().id(ID).name("water").active(true).path("home/water").category(category).build();
 
-        assertThat(billType.getId()).isEqualTo(ID);
-        assertThat(billType.getName()).isEqualTo("water");
-        assertThat(billType.getActive()).isTrue();
-        assertThat(billType.getPath()).isEqualTo("home/water");
-        assertThat(billType.getCategory()).isSameAs(category);
+        assertThat(billType)
+                .returns(ID, BillType::getId)
+                .returns("water", BillType::getName)
+                .returns(true, BillType::getActive)
+                .returns("home/water", BillType::getPath)
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category));
     }
 
     @Test
@@ -34,8 +35,9 @@ class BillTypeTest {
 
         var billType = new BillType("home/light", category);
 
-        assertThat(billType.getPath()).isEqualTo("home/light");
-        assertThat(billType.getCategory()).isSameAs(category);
+        assertThat(billType)
+                .returns("home/light", BillType::getPath)
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category));
     }
 
     @Test
@@ -47,8 +49,9 @@ class BillTypeTest {
         billType.setPath("home/gas");
         billType.setCategory(category);
 
-        assertThat(billType.getPath()).isEqualTo("home/gas");
-        assertThat(billType.getCategory()).isSameAs(category);
+        assertThat(billType)
+                .returns("home/gas", BillType::getPath)
+                .satisfies(a -> assertThat(a.getCategory()).isSameAs(category));
     }
 
     @Test

@@ -63,24 +63,25 @@ class BillTest {
                 .balance(balance)
                 .build();
 
-        assertThat(bill.getId()).isEqualTo(ID);
-        assertThat(bill.getName()).isEqualTo("light");
-        assertThat(bill.getActive()).isTrue();
-        assertThat(bill.getReferenceDay()).isSameAs(referenceDay);
-        assertThat(bill.getDocumentDate()).isSameAs(documentDate);
-        assertThat(bill.getDueDate()).isSameAs(dueDate);
-        assertThat(bill.getValue()).isEqualTo(VALUE);
-        assertThat(bill.getPaymentDate()).isSameAs(paymentDate);
-        assertThat(bill.getBillDocument()).isSameAs(billDocument);
-        assertThat(bill.getReceipt()).isSameAs(receipt);
-        assertThat(bill.getObservation()).isEqualTo("note");
-        assertThat(bill.getInstallment()).isEqualTo((short) 2);
-        assertThat(bill.getBillType()).isSameAs(billType);
-        assertThat(bill.getDocumentType()).isEqualTo(DocumentType.BILLET);
-        assertThat(bill.getBudget()).isSameAs(budget);
-        assertThat(bill.getReferenceType()).isEqualTo(ReferenceType.MONTH);
-        assertThat(bill.getClosed()).isTrue();
-        assertThat(bill.getBalance()).isSameAs(balance);
+        assertThat(bill)
+                .returns(ID, Bill::getId)
+                .returns("light", Bill::getName)
+                .returns(true, Bill::getActive)
+                .satisfies(a -> assertThat(a.getReferenceDay()).isSameAs(referenceDay))
+                .satisfies(a -> assertThat(a.getDocumentDate()).isSameAs(documentDate))
+                .satisfies(a -> assertThat(a.getDueDate()).isSameAs(dueDate))
+                .returns(VALUE, Bill::getValue)
+                .satisfies(a -> assertThat(a.getPaymentDate()).isSameAs(paymentDate))
+                .satisfies(a -> assertThat(a.getBillDocument()).isSameAs(billDocument))
+                .satisfies(a -> assertThat(a.getReceipt()).isSameAs(receipt))
+                .returns("note", Bill::getObservation)
+                .returns((short) 2, Bill::getInstallment)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(DocumentType.BILLET, Bill::getDocumentType)
+                .satisfies(a -> assertThat(a.getBudget()).isSameAs(budget))
+                .returns(ReferenceType.MONTH, Bill::getReferenceType)
+                .returns(true, Bill::getClosed)
+                .satisfies(a -> assertThat(a.getBalance()).isSameAs(balance));
     }
 
     @Test
@@ -99,21 +100,22 @@ class BillTest {
         var bill = new Bill(referenceDay, documentDate, dueDate, VALUE, paymentDate, billDocument, receipt, "obs",
                 (short) 3, billType, DocumentType.INVOICE, budget, ReferenceType.YEAR, false, balance);
 
-        assertThat(bill.getReferenceDay()).isSameAs(referenceDay);
-        assertThat(bill.getDocumentDate()).isSameAs(documentDate);
-        assertThat(bill.getDueDate()).isSameAs(dueDate);
-        assertThat(bill.getValue()).isEqualTo(VALUE);
-        assertThat(bill.getPaymentDate()).isSameAs(paymentDate);
-        assertThat(bill.getBillDocument()).isSameAs(billDocument);
-        assertThat(bill.getReceipt()).isSameAs(receipt);
-        assertThat(bill.getObservation()).isEqualTo("obs");
-        assertThat(bill.getInstallment()).isEqualTo((short) 3);
-        assertThat(bill.getBillType()).isSameAs(billType);
-        assertThat(bill.getDocumentType()).isEqualTo(DocumentType.INVOICE);
-        assertThat(bill.getBudget()).isSameAs(budget);
-        assertThat(bill.getReferenceType()).isEqualTo(ReferenceType.YEAR);
-        assertThat(bill.getClosed()).isFalse();
-        assertThat(bill.getBalance()).isSameAs(balance);
+        assertThat(bill)
+                .satisfies(a -> assertThat(a.getReferenceDay()).isSameAs(referenceDay))
+                .satisfies(a -> assertThat(a.getDocumentDate()).isSameAs(documentDate))
+                .satisfies(a -> assertThat(a.getDueDate()).isSameAs(dueDate))
+                .returns(VALUE, Bill::getValue)
+                .satisfies(a -> assertThat(a.getPaymentDate()).isSameAs(paymentDate))
+                .satisfies(a -> assertThat(a.getBillDocument()).isSameAs(billDocument))
+                .satisfies(a -> assertThat(a.getReceipt()).isSameAs(receipt))
+                .returns("obs", Bill::getObservation)
+                .returns((short) 3, Bill::getInstallment)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(DocumentType.INVOICE, Bill::getDocumentType)
+                .satisfies(a -> assertThat(a.getBudget()).isSameAs(budget))
+                .returns(ReferenceType.YEAR, Bill::getReferenceType)
+                .returns(false, Bill::getClosed)
+                .satisfies(a -> assertThat(a.getBalance()).isSameAs(balance));
     }
 
     @Test
@@ -146,21 +148,22 @@ class BillTest {
         bill.setClosed(true);
         bill.setBalance(balance);
 
-        assertThat(bill.getReferenceDay()).isSameAs(referenceDay);
-        assertThat(bill.getDocumentDate()).isSameAs(documentDate);
-        assertThat(bill.getDueDate()).isSameAs(dueDate);
-        assertThat(bill.getValue()).isEqualTo(VALUE);
-        assertThat(bill.getPaymentDate()).isSameAs(paymentDate);
-        assertThat(bill.getBillDocument()).isSameAs(billDocument);
-        assertThat(bill.getReceipt()).isSameAs(receipt);
-        assertThat(bill.getObservation()).isEqualTo("text");
-        assertThat(bill.getInstallment()).isEqualTo((short) 4);
-        assertThat(bill.getBillType()).isSameAs(billType);
-        assertThat(bill.getDocumentType()).isEqualTo(DocumentType.BILLET);
-        assertThat(bill.getBudget()).isSameAs(budget);
-        assertThat(bill.getReferenceType()).isEqualTo(ReferenceType.MONTH);
-        assertThat(bill.getClosed()).isTrue();
-        assertThat(bill.getBalance()).isSameAs(balance);
+        assertThat(bill)
+                .satisfies(a -> assertThat(a.getReferenceDay()).isSameAs(referenceDay))
+                .satisfies(a -> assertThat(a.getDocumentDate()).isSameAs(documentDate))
+                .satisfies(a -> assertThat(a.getDueDate()).isSameAs(dueDate))
+                .returns(VALUE, Bill::getValue)
+                .satisfies(a -> assertThat(a.getPaymentDate()).isSameAs(paymentDate))
+                .satisfies(a -> assertThat(a.getBillDocument()).isSameAs(billDocument))
+                .satisfies(a -> assertThat(a.getReceipt()).isSameAs(receipt))
+                .returns("text", Bill::getObservation)
+                .returns((short) 4, Bill::getInstallment)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(DocumentType.BILLET, Bill::getDocumentType)
+                .satisfies(a -> assertThat(a.getBudget()).isSameAs(budget))
+                .returns(ReferenceType.MONTH, Bill::getReferenceType)
+                .returns(true, Bill::getClosed)
+                .satisfies(a -> assertThat(a.getBalance()).isSameAs(balance));
     }
 
     @Test

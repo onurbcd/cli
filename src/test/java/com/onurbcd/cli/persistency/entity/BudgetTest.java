@@ -32,15 +32,16 @@ class BudgetTest {
                 .paid(false)
                 .build();
 
-        assertThat(budget.getId()).isEqualTo(ID);
-        assertThat(budget.getName()).isEqualTo("rent");
-        assertThat(budget.getActive()).isTrue();
-        assertThat(budget.getSequence()).isEqualTo((short) 2);
-        assertThat(budget.getRefYear()).isEqualTo((short) 2024);
-        assertThat(budget.getRefMonth()).isEqualTo((short) 3);
-        assertThat(budget.getBillType()).isSameAs(billType);
-        assertThat(budget.getAmount()).isEqualTo(AMOUNT);
-        assertThat(budget.getPaid()).isFalse();
+        assertThat(budget)
+                .returns(ID, Budget::getId)
+                .returns("rent", Budget::getName)
+                .returns(true, Budget::getActive)
+                .returns((short) 2, Budget::getSequence)
+                .returns((short) 2024, Budget::getRefYear)
+                .returns((short) 3, Budget::getRefMonth)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(AMOUNT, Budget::getAmount)
+                .returns(false, Budget::getPaid);
     }
 
     @Test
@@ -50,12 +51,13 @@ class BudgetTest {
 
         var budget = new Budget((short) 4, (short) 2025, (short) 5, billType, AMOUNT, true);
 
-        assertThat(budget.getSequence()).isEqualTo((short) 4);
-        assertThat(budget.getRefYear()).isEqualTo((short) 2025);
-        assertThat(budget.getRefMonth()).isEqualTo((short) 5);
-        assertThat(budget.getBillType()).isSameAs(billType);
-        assertThat(budget.getAmount()).isEqualTo(AMOUNT);
-        assertThat(budget.getPaid()).isTrue();
+        assertThat(budget)
+                .returns((short) 4, Budget::getSequence)
+                .returns((short) 2025, Budget::getRefYear)
+                .returns((short) 5, Budget::getRefMonth)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(AMOUNT, Budget::getAmount)
+                .returns(true, Budget::getPaid);
     }
 
     @Test
@@ -71,12 +73,13 @@ class BudgetTest {
         budget.setAmount(AMOUNT);
         budget.setPaid(true);
 
-        assertThat(budget.getSequence()).isEqualTo((short) 7);
-        assertThat(budget.getRefYear()).isEqualTo((short) 2026);
-        assertThat(budget.getRefMonth()).isEqualTo((short) 8);
-        assertThat(budget.getBillType()).isSameAs(billType);
-        assertThat(budget.getAmount()).isEqualTo(AMOUNT);
-        assertThat(budget.getPaid()).isTrue();
+        assertThat(budget)
+                .returns((short) 7, Budget::getSequence)
+                .returns((short) 2026, Budget::getRefYear)
+                .returns((short) 8, Budget::getRefMonth)
+                .satisfies(a -> assertThat(a.getBillType()).isSameAs(billType))
+                .returns(AMOUNT, Budget::getAmount)
+                .returns(true, Budget::getPaid);
     }
 
     @Test
@@ -84,9 +87,10 @@ class BudgetTest {
     void givenBudget_whenSequenceAccessors_shouldExposeReferenceAndSequence() {
         var budget = Budget.builder().sequence((short) 6).refYear((short) 2024).refMonth((short) 11).build();
 
-        assertThat(budget.getSequenceYear()).isEqualTo((short) 2024);
-        assertThat(budget.getSequenceMonth()).isEqualTo((short) 11);
-        assertThat(budget.getSequenceValue()).isEqualTo((short) 6);
+        assertThat(budget)
+                .returns((short) 2024, Budget::getSequenceYear)
+                .returns((short) 11, Budget::getSequenceMonth)
+                .returns((short) 6, Budget::getSequenceValue);
     }
 
     @Test

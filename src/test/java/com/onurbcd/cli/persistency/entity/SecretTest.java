@@ -25,13 +25,14 @@ class SecretTest {
                 .password("pass")
                 .build();
 
-        assertThat(secret.getId()).isEqualTo(ID);
-        assertThat(secret.getName()).isEqualTo("mail");
-        assertThat(secret.getActive()).isTrue();
-        assertThat(secret.getDescription()).isEqualTo("personal mail");
-        assertThat(secret.getLink()).isEqualTo("https://mail.example.com");
-        assertThat(secret.getUsername()).isEqualTo("user");
-        assertThat(secret.getPassword()).isEqualTo("pass");
+        assertThat(secret)
+                .returns(ID, Secret::getId)
+                .returns("mail", Secret::getName)
+                .returns(true, Secret::getActive)
+                .returns("personal mail", Secret::getDescription)
+                .returns("https://mail.example.com", Secret::getLink)
+                .returns("user", Secret::getUsername)
+                .returns("pass", Secret::getPassword);
     }
 
     @Test
@@ -39,10 +40,11 @@ class SecretTest {
     void givenAllArgs_whenConstruct_shouldKeepEveryField() {
         var secret = new Secret("description", "https://link.example.com", "user", "pass");
 
-        assertThat(secret.getDescription()).isEqualTo("description");
-        assertThat(secret.getLink()).isEqualTo("https://link.example.com");
-        assertThat(secret.getUsername()).isEqualTo("user");
-        assertThat(secret.getPassword()).isEqualTo("pass");
+        assertThat(secret)
+                .returns("description", Secret::getDescription)
+                .returns("https://link.example.com", Secret::getLink)
+                .returns("user", Secret::getUsername)
+                .returns("pass", Secret::getPassword);
     }
 
     @Test
@@ -55,10 +57,11 @@ class SecretTest {
         secret.setUsername("name");
         secret.setPassword("word");
 
-        assertThat(secret.getDescription()).isEqualTo("text");
-        assertThat(secret.getLink()).isEqualTo("https://x.example.com");
-        assertThat(secret.getUsername()).isEqualTo("name");
-        assertThat(secret.getPassword()).isEqualTo("word");
+        assertThat(secret)
+                .returns("text", Secret::getDescription)
+                .returns("https://x.example.com", Secret::getLink)
+                .returns("name", Secret::getUsername)
+                .returns("word", Secret::getPassword);
     }
 
     @Test

@@ -182,9 +182,9 @@ class CustomRepositoryTest {
 
             assertThat(capturedOrders).hasSize(2);
             assertThat(capturedOrders.get(0).getOrder()).isEqualTo(Order.ASC);
-            assertThat(capturedOrders.get(0).getTarget().toString()).isEqualTo("incomeSource.name");
+            assertThat(capturedOrders.get(0).getTarget()).hasToString("incomeSource.name");
             assertThat(capturedOrders.get(1).getOrder()).isEqualTo(Order.DESC);
-            assertThat(capturedOrders.get(1).getTarget().toString()).isEqualTo("incomeSource.active");
+            assertThat(capturedOrders.get(1).getTarget()).hasToString("incomeSource.active");
         }
     }
 }

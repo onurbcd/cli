@@ -31,13 +31,14 @@ class SourceTest {
                 .balance(BALANCE)
                 .build();
 
-        assertThat(source.getId()).isEqualTo(ID);
-        assertThat(source.getName()).isEqualTo("wallet");
-        assertThat(source.getActive()).isTrue();
-        assertThat(source.getIncomeSource()).isSameAs(incomeSource);
-        assertThat(source.getSourceType()).isEqualTo(SourceType.USABLE);
-        assertThat(source.getCurrencyType()).isEqualTo(CurrencyType.MONEY);
-        assertThat(source.getBalance()).isEqualTo(BALANCE);
+        assertThat(source)
+                .returns(ID, Source::getId)
+                .returns("wallet", Source::getName)
+                .returns(true, Source::getActive)
+                .satisfies(a -> assertThat(a.getIncomeSource()).isSameAs(incomeSource))
+                .returns(SourceType.USABLE, Source::getSourceType)
+                .returns(CurrencyType.MONEY, Source::getCurrencyType)
+                .returns(BALANCE, Source::getBalance);
     }
 
     @Test
@@ -47,10 +48,11 @@ class SourceTest {
 
         var source = new Source(incomeSource, SourceType.UNUSABLE, CurrencyType.DIGITAL, BALANCE);
 
-        assertThat(source.getIncomeSource()).isSameAs(incomeSource);
-        assertThat(source.getSourceType()).isEqualTo(SourceType.UNUSABLE);
-        assertThat(source.getCurrencyType()).isEqualTo(CurrencyType.DIGITAL);
-        assertThat(source.getBalance()).isEqualTo(BALANCE);
+        assertThat(source)
+                .satisfies(a -> assertThat(a.getIncomeSource()).isSameAs(incomeSource))
+                .returns(SourceType.UNUSABLE, Source::getSourceType)
+                .returns(CurrencyType.DIGITAL, Source::getCurrencyType)
+                .returns(BALANCE, Source::getBalance);
     }
 
     @Test
@@ -64,10 +66,11 @@ class SourceTest {
         source.setCurrencyType(CurrencyType.DIGITAL);
         source.setBalance(BALANCE);
 
-        assertThat(source.getIncomeSource()).isSameAs(incomeSource);
-        assertThat(source.getSourceType()).isEqualTo(SourceType.USABLE);
-        assertThat(source.getCurrencyType()).isEqualTo(CurrencyType.DIGITAL);
-        assertThat(source.getBalance()).isEqualTo(BALANCE);
+        assertThat(source)
+                .satisfies(a -> assertThat(a.getIncomeSource()).isSameAs(incomeSource))
+                .returns(SourceType.USABLE, Source::getSourceType)
+                .returns(CurrencyType.DIGITAL, Source::getCurrencyType)
+                .returns(BALANCE, Source::getBalance);
     }
 
     @Test

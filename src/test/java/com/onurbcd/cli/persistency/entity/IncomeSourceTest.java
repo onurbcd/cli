@@ -17,9 +17,10 @@ class IncomeSourceTest {
     void givenBuilder_whenBuild_shouldFillInheritedFields() {
         var incomeSource = IncomeSource.builder().id(ID).name("salary").active(true).build();
 
-        assertThat(incomeSource.getId()).isEqualTo(ID);
-        assertThat(incomeSource.getName()).isEqualTo("salary");
-        assertThat(incomeSource.getActive()).isTrue();
+        assertThat(incomeSource)
+                .returns(ID, IncomeSource::getId)
+                .returns("salary", IncomeSource::getName)
+                .returns(true, IncomeSource::getActive);
     }
 
     @Test

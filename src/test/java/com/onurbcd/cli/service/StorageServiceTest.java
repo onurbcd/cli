@@ -59,7 +59,7 @@ class StorageServiceTest {
 
         @Test
         @DisplayName("should create the folders and store the content as <hash>.<extension>")
-        void shouldStoreFile() throws IOException {
+        void shouldStoreFile() {
             var stream = new ByteArrayInputStream(CONTENT.getBytes(StandardCharsets.UTF_8));
 
             service.saveFile(document, upload(stream));
