@@ -309,6 +309,7 @@
                                 <include>com/onurbcd/cli/persistency/entity/*.class</include>
                                 <include>com/onurbcd/cli/persistency/predicate/*.class</include>
                                 <include>com/onurbcd/cli/persistency/repository/**/*.class</include>
+                                <include>com/onurbcd/cli/service/*.class</include>
                             </includes>
                             <rules>
                                 <rule>
