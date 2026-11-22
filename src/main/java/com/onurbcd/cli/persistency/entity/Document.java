@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Document implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 

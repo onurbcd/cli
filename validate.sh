@@ -71,7 +71,14 @@ line_coverage() {
 }
 
 step "Summary"
-printf '  %-28s %s\n' "Tests" "$(grep -E 'Tests run:.*[0-9]$' "$log" | tail -n 1 | sed -E 's/^\[[A-Z]+\] //')"
+# Surefire (unit) and Failsafe (integration) each print a total line: add them up
+test_totals() {
+    grep -E 'Tests run:.*[0-9]$' "$log" | sed -E 's/^\[[A-Z]+\] //' | awk -F'[:,]' '
+        { run += $2; fail += $4; err += $6; skip += $8 }
+        END { printf "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d", run, fail, err, skip }'
+}
+
+printf '  %-28s %s\n' "Tests" "$(test_totals)"
 printf '  %-28s %s\n' "Line coverage (JaCoCo)" "$(line_coverage)"
 printf '  %-28s %s\n' "Error Prone warnings" "$(grep -cE '^\[WARNING\] [^ ]+\.java:\[' "$log" || true)"
 printf '  %-28s %s\n' "Checkstyle violations" "$(count '<error ' target/checkstyle-result.xml)"

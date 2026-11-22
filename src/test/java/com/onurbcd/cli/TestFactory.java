@@ -171,7 +171,7 @@ public final class TestFactory {
         bill.setInstallment((short) 2);
         bill.setDocumentType(DocumentType.BILLET);
         bill.setBudgetId(PARENT_ID);
-        bill.setReferenceType(ReferenceType.values()[0]);
+        bill.setReferenceType(ReferenceType.YEAR);
         bill.setPaymentType(PaymentType.PIX);
         bill.setSourceId(SOURCE_ID);
         return bill;

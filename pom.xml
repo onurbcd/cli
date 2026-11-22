@@ -169,6 +169,28 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- @DataJpaTest slice (Spring Boot 4 ships each test slice in its own starter) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Disposable PostgreSQL for the *IT tests; versions are managed by the Boot BOM -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -234,6 +256,11 @@
                 <configuration>
                     <output>file</output>
                     <append>true</append>
+                    <!-- applies to agent, report and check: generated code is neither instrumented nor reported -->
+                    <excludes>
+                        <!-- QueryDSL generated metamodel classes -->
+                        <exclude>com/onurbcd/cli/persistency/entity/Q*.class</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -281,11 +308,8 @@
                                 <include>com/onurbcd/cli/param/**/*.class</include>
                                 <include>com/onurbcd/cli/persistency/entity/*.class</include>
                                 <include>com/onurbcd/cli/persistency/predicate/*.class</include>
+                                <include>com/onurbcd/cli/persistency/repository/**/*.class</include>
                             </includes>
-                            <excludes>
-                                <!-- QueryDSL generated metamodel classes -->
-                                <exclude>com/onurbcd/cli/persistency/entity/Q*.class</exclude>
-                            </excludes>
                             <rules>
                                 <rule>
                                     <element>CLASS</element>

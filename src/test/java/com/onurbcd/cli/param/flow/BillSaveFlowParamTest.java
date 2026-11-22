@@ -61,7 +61,7 @@ class BillSaveFlowParamTest {
                     .documentTypeItems(getCodeableItems(DocumentType.values()))
                     .budget(PARENT_ID.toString())
                     .budgetItems(BUDGETS)
-                    .referenceType(ReferenceType.values()[0].name())
+                    .referenceType(ReferenceType.YEAR.name())
                     .referenceTypeItems(getCodeableItems(ReferenceType.values()))
                     .filesNames(List.of(SelectItem.of("bill.txt", file.toString())))
                     .paymentType("PIX")
