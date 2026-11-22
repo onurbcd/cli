@@ -279,7 +279,12 @@
                                 <include>com/onurbcd/cli/helper/*.class</include>
                                 <include>com/onurbcd/cli/mapper/*.class</include>
                                 <include>com/onurbcd/cli/param/**/*.class</include>
+                                <include>com/onurbcd/cli/persistency/entity/*.class</include>
                             </includes>
+                            <excludes>
+                                <!-- QueryDSL generated metamodel classes -->
+                                <exclude>com/onurbcd/cli/persistency/entity/Q*.class</exclude>
+                            </excludes>
                             <rules>
                                 <rule>
                                     <element>CLASS</element>

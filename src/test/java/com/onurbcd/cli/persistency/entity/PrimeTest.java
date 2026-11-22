@@ -69,6 +69,30 @@ class PrimeTest {
         }
     }
 
+    @Test
+    @DisplayName("the accessors store id, name and active flag")
+    void givenValues_whenSet_shouldReturnThemFromGetters() {
+        var secret = new Secret();
+
+        secret.setId(ID);
+        secret.setName("name");
+        secret.setActive(true);
+
+        assertThat(secret.getId()).isEqualTo(ID);
+        assertThat(secret.getName()).isEqualTo("name");
+        assertThat(secret.getActive()).isTrue();
+    }
+
+    @Test
+    @DisplayName("the all-args constructor keeps the id, name and active flag")
+    void givenAllArgs_whenConstruct_shouldKeepFields() {
+        var prime = new Prime(ID, "name", false);
+
+        assertThat(prime.getId()).isEqualTo(ID);
+        assertThat(prime.getName()).isEqualTo("name");
+        assertThat(prime.getActive()).isFalse();
+    }
+
     @Nested
     @DisplayName("hashCode")
     class HashCode {

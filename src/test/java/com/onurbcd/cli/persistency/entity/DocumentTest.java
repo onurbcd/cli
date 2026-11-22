@@ -54,12 +54,51 @@ class DocumentTest {
         }
 
         @Test
+        @DisplayName("should be false for a subclass with the same id, in both directions")
+        void givenSubclassWithSameId_whenEquals_shouldBeFalse() {
+            var document = document(DOCUMENT_ID);
+            var subclass = new Document() {
+            };
+            subclass.setId(DOCUMENT_ID);
+
+            assertThat(document.equals(subclass)).isFalse();
+            assertThat(subclass.equals(document)).isFalse();
+        }
+
+        @Test
         @DisplayName("should be false for another type")
         void givenOtherType_whenEquals_shouldBeFalse() {
             Object notADocument = DOCUMENT_ID;
 
             assertThat(document(DOCUMENT_ID).equals(notADocument)).isFalse();
         }
+    }
+
+    @Test
+    @DisplayName("a document is always new, so Spring Data never selects before inserting")
+    void givenDocument_whenIsNew_shouldBeTrue() {
+        assertThat(document(DOCUMENT_ID).isNew()).isTrue();
+        assertThat(new Document().isNew()).isTrue();
+    }
+
+    @Test
+    @DisplayName("setters store each field")
+    void givenValues_whenSet_shouldReturnThemFromGetters() {
+        var document = new Document();
+
+        document.setId(DOCUMENT_ID);
+        document.setName("invoice.pdf");
+        document.setPath("docs/invoice.pdf");
+        document.setMimeType("application/pdf");
+        document.setSize(2048L);
+        document.setHash("d41d8cd98f00b204e9800998ecf8427e");
+
+        assertThat(document.getId()).isEqualTo(DOCUMENT_ID);
+        assertThat(document.getName()).isEqualTo("invoice.pdf");
+        assertThat(document.getPath()).isEqualTo("docs/invoice.pdf");
+        assertThat(document.getMimeType()).isEqualTo("application/pdf");
+        assertThat(document.getSize()).isEqualTo(2048L);
+        assertThat(document.getHash()).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
     }
 
     @Nested
