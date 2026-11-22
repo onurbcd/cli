@@ -11,13 +11,17 @@ import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.dto.source.SourceDto;
 import com.onurbcd.cli.enums.BalanceType;
 import com.onurbcd.cli.enums.CurrencyType;
+import com.onurbcd.cli.enums.DocumentType;
 import com.onurbcd.cli.enums.PaymentType;
+import com.onurbcd.cli.enums.ReferenceType;
 import com.onurbcd.cli.enums.SourceType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.shell.jline.tui.component.flow.SelectItem;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static com.onurbcd.cli.TestConstants.*;
@@ -151,5 +155,32 @@ public final class TestFactory {
         source.setCurrencyType(CurrencyType.DIGITAL);
         source.setBalance(new BigDecimal("100.50"));
         return source;
+    }
+
+    /**
+     * Bill with every date, document, enum and reference id filled in (receipt and bill document use distinct ids).
+     */
+    public static BillDto createFullBillDto() {
+        var bill = createBillDto();
+        bill.setDocumentDateCalendarDate(LocalDate.of(2024, 3, 10));
+        bill.setDueDateCalendarDate(LocalDate.of(2024, 3, 20));
+        bill.setPaymentDateCalendarDate(LocalDate.of(2024, 3, 18));
+        bill.setBillDocument(createDocumentDto());
+        bill.setReceipt(new DocumentDto(RECEIPT_ID, "receipt.pdf", "bill/receipt.pdf", "application/pdf", 5L, "h2"));
+        bill.setObservation("observation");
+        bill.setInstallment((short) 2);
+        bill.setDocumentType(DocumentType.BILLET);
+        bill.setBudgetId(PARENT_ID);
+        bill.setReferenceType(ReferenceType.values()[0]);
+        bill.setPaymentType(PaymentType.PIX);
+        bill.setSourceId(SOURCE_ID);
+        return bill;
+    }
+
+    /**
+     * Two select items whose names and values start with the given prefix.
+     */
+    public static List<SelectItem> createSelectItems(String prefix) {
+        return List.of(SelectItem.of(prefix + "-1", prefix + "-id-1"), SelectItem.of(prefix + "-2", prefix + "-id-2"));
     }
 }

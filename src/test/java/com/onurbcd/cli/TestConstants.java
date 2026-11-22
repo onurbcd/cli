@@ -14,4 +14,5 @@ public final class TestConstants {
     public static final UUID DOCUMENT_ID = UUID.fromString("44444444-4444-4444-4444-444444444444");
     public static final UUID PARENT_ID = UUID.fromString("77777777-7777-7777-7777-777777777777");
     public static final UUID BILL_TYPE_ID = UUID.fromString("66666666-6666-6666-6666-666666666666");
+    public static final UUID RECEIPT_ID = UUID.fromString("55555555-5555-5555-5555-555555555555");
 }
