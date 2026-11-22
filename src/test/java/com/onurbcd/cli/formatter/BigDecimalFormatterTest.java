@@ -42,18 +42,10 @@ class BigDecimalFormatterTest {
         }
 
         @ParameterizedTest(name = "[{index}] {0}")
-        @MethodSource("com.onurbcd.cli.formatter.BigDecimalFormatterTest#otherValues")
-        @DisplayName("when value is not a BigDecimal, should return a single empty string")
-        void givenNonBigDecimal_whenFormat_shouldReturnEmpty(Object value) {
-            var result = formatter.format(value);
-
-            assertThat(result).containsExactly("");
-        }
-
-        @ParameterizedTest
         @NullSource
-        @DisplayName("when value is null, should return a single empty string")
-        void givenNull_whenFormat_shouldReturnEmpty(Object value) {
+        @MethodSource("com.onurbcd.cli.formatter.BigDecimalFormatterTest#otherValues")
+        @DisplayName("when value is null or not a BigDecimal, should return a single empty string")
+        void givenNonBigDecimal_whenFormat_shouldReturnEmpty(Object value) {
             var result = formatter.format(value);
 
             assertThat(result).containsExactly("");

@@ -39,18 +39,10 @@ class LocalDateTimeFormatterTest {
         }
 
         @ParameterizedTest(name = "[{index}] {0}")
-        @MethodSource("com.onurbcd.cli.formatter.LocalDateTimeFormatterTest#otherValues")
-        @DisplayName("when value is not a LocalDateTime, should return a single empty string")
-        void givenNonLocalDateTime_whenFormat_shouldReturnEmpty(Object value) {
-            var result = formatter.format(value);
-
-            assertThat(result).containsExactly("");
-        }
-
-        @ParameterizedTest
         @NullSource
-        @DisplayName("when value is null, should return a single empty string")
-        void givenNull_whenFormat_shouldReturnEmpty(Object value) {
+        @MethodSource("com.onurbcd.cli.formatter.LocalDateTimeFormatterTest#otherValues")
+        @DisplayName("when value is null or not a LocalDateTime, should return a single empty string")
+        void givenNonLocalDateTime_whenFormat_shouldReturnEmpty(Object value) {
             var result = formatter.format(value);
 
             assertThat(result).containsExactly("");

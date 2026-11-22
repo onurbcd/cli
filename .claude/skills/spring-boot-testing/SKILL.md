@@ -2,7 +2,7 @@
 name: spring-boot-testing
 description: Creates complete JUnit/Mockito/AssertJ tests (unit, slice, integration/e2e with Testcontainers) for ONE Spring Boot class, or every class of ONE package, aiming at 100% line and branch coverage with every input, output, exception, collaborator call and mutated parameter verified. Use when asked to "criar testes", "testar a classe X", "aumentar cobertura", "unit test", "integration test", "teste e2e" or "JaCoCo" in a Java/Maven/Spring Boot project.
 argument-hint: <ClassName | fully.qualified.ClassName | package.name>
-allowed-tools: Read, Grep, Glob, Edit, Write, Bash(./mvnw *), Bash(mvn *), Bash(ls *)
+allowed-tools: Read, Grep, Glob, Edit, Write, Bash(./mvnw *), Bash(mvn *), Bash(ls *), Bash(gh pr view *), Bash(gh pr checks *), Bash(gh pr list *), Bash(gh api repos/*), Bash(git branch --show-current)
 ---
 
 # spring-boot-testing
@@ -25,6 +25,7 @@ Writes the tests for **one class or one package per run**, given as the argument
 
 ## Workflow
 
+0. **Pending Sonar issues (always first).** Before touching the target, check whether the current branch's PR has open SonarCloud/SonarQube issues: `gh pr list --head "$(git branch --show-current)"`, then `gh pr checks <n>` / `gh pr view <n> --comments` for the Sonar quality gate and its issue links. If Sonar issues are visible, list them and ask whether to fix them first (as part of this run, in the affected test files only). If they cannot be read (no PR, no token, private dashboard), ask the user to paste the pending issues instead of assuming there are none. Never skip this step silently.
 1. **Resolve the target.** Class: glob `**/<Name>.java` under `src/main/java`; several hits: ask which; none: stop and say so. Package: list the `.java` files of that package under `src/main/java` (none: stop and say so). Drop what is not testable (generated code, `main`/bootstrap class, `package-info`, pure marker interfaces or annotations with no logic) and say what was dropped and why. Classes that already have a `<Name>Test` and are in the `jacoco-check` gate are skipped (list them); an existing test without the gate entry is reviewed and completed, not rewritten. Show the final ordered list (leaf classes with no project collaborators first). With more than ~8 classes, ask for confirmation before starting. For each class, read it and its direct collaborators' signatures (not their bodies).
 2. **Detect the stack.** Read the "Automated Tests" section of `README.md` (commands, gate, PIT, conventions) and `TODO.md` (current phase); follow them. Read `pom.xml` (Java release, Spring Boot parent, JUnit, Mockito, JaCoCo, Surefire/Failsafe, Testcontainers) and existing tests. Pick conventions from `references/versions.md`. Existing project conventions win over this skill's defaults, except the Hard rules.
 3. **Map the class.** List: every branch (`if`, `switch`, ternary, `&&`/`||` operands, loops, `catch`, lambdas, `Optional` paths), every collaborator call, every thrown exception, every parameter that is mutated, every return path, static calls, `@Value`/config inputs.
@@ -49,7 +50,7 @@ Writes the tests for **one class or one package per run**, given as the argument
 
 ## Step completion checklist (confirm before reporting)
 
-- [ ] 1 target resolved (class list confirmed for packages) · [ ] 2 stack detected · [ ] 3 class mapped · [ ] 4 case matrix built
+- [ ] 0 pending Sonar issues checked or user asked · [ ] 1 target resolved (class list confirmed for packages) · [ ] 2 stack detected · [ ] 3 class mapped · [ ] 4 case matrix built
 - [ ] 5 level chosen · [ ] 6 tests written · [ ] 7 JaCoCo measured, 0 missed lines/branches
 - [ ] 8 PIT run, no unjustified survivors · [ ] 9 gate include added and `verify` green
 - [ ] 10 docs in sync · [ ] 11 report includes JaCoCo and PIT results
@@ -72,4 +73,8 @@ Writes the tests for **one class or one package per run**, given as the argument
 - `@Nested` class per method under test, `@DisplayName` in English on the nested class and on non-obvious tests.
 - Blank lines separate arrange / act / assert / verify. No `// Arrange` comments. `var` for locals.
 - AssertJ only. No JUnit `Assertions`, no Hamcrest.
+- **Sonar-clean tests (recurring PR issues).** Fix these while writing, not after the commit:
+  - Never two test methods with identical bodies (Sonar S4144, "implementation identical to ..."), even if the inputs differ by data source. Merge them into one `@ParameterizedTest`: stack `@NullSource` / `@EmptySource` / `@ValueSource` / `@EnumSource` with `@MethodSource` on the same method (e.g. `@NullSource` + `@MethodSource("otherValues")` for "null or not the expected type"), or add the case to the existing `@MethodSource` provider. Keep a separate method only when its body or assertions really differ.
+  - Before finishing each test class, scan it for methods whose bodies match (same calls, same assertions) and merge them.
+  - Also avoid: unused imports/variables, empty or assertion-less tests, commented-out code, duplicated string literals (extract constants), `Thread.sleep`, and tests with several unrelated assertions of different behaviors.
 - Repeated shapes → `@ParameterizedTest` (`@MethodSource`, `@ArgumentsSource`, `@EnumSource`, `@NullAndEmptySource`), with a readable `name`.
