@@ -6,6 +6,7 @@ import com.onurbcd.cli.enums.ErrorCode;
 import com.onurbcd.cli.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Named;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -28,10 +29,12 @@ public class CryptoHelper {
 
     private final AdminProperties config;
 
+    @Named("encrypt")
     public String encrypt(String plainText) {
         return crypt(this::encrypt, plainText, Cipher.ENCRYPT_MODE);
     }
 
+    @Named("decrypt")
     public String decrypt(String encodedCipherText) {
         return crypt(this::decrypt, encodedCipherText, Cipher.DECRYPT_MODE);
     }

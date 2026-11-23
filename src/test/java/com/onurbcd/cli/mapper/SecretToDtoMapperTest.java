@@ -35,8 +35,7 @@ class SecretToDtoMapperTest {
 
     @BeforeEach
     void setUp() {
-        mapper = new SecretToDtoMapperImpl();
-        mapper.cryptoHelper = cryptoHelper;
+        mapper = new SecretToDtoMapperImpl(cryptoHelper);
     }
 
     private static Secret createSecret() {
