@@ -100,8 +100,9 @@ class DocumentServiceTest {
             assertThat(documents).extracting(Document::getMimeType).containsOnly(MIME);
             assertThat(documents).extracting(Document::getSize).containsExactly(10L, 20L);
             var identifiers = documents.stream().map(Document::getHash).toList();
-            assertThat(identifiers).allSatisfy(identifier -> assertThat(identifier).matches(DOCUMENT_IDENTIFIER_PATTERN));
-            assertThat(identifiers).doesNotHaveDuplicates();
+            assertThat(identifiers)
+                    .allSatisfy(identifier -> assertThat(identifier).matches(DOCUMENT_IDENTIFIER_PATTERN))
+                    .doesNotHaveDuplicates();
             verifyNoMoreInteractions(storageService, repository);
             verifyNoInteractions(toDtoMapper);
         }
