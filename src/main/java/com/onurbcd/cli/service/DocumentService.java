@@ -3,7 +3,6 @@ package com.onurbcd.cli.service;
 import com.onurbcd.cli.dto.document.DocumentDto;
 import com.onurbcd.cli.dto.document.MultipartFileDto;
 import com.onurbcd.cli.enums.ErrorCode;
-import com.onurbcd.cli.exception.ApiException;
 import com.onurbcd.cli.mapper.DocumentToDtoMapper;
 import com.onurbcd.cli.param.MultipartFile;
 import com.onurbcd.cli.persistency.entity.Document;
@@ -14,19 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentService {
 
-    private static final int RADIX = 16;
     private final DocumentRepository repository;
     private final StorageService storageService;
     private final DocumentToDtoMapper toDtoMapper;
@@ -77,22 +72,13 @@ public class DocumentService {
         document.setPath(path);
         document.setMimeType(Objects.requireNonNull(multipartFile.getContentType()));
         document.setSize(multipartFile.getSize());
-        var hash = generateHash(document);
+        var hash = generateIdentifier();
         document.setHash(hash);
         storageService.saveFile(document, multipartFile);
         return document;
     }
 
-    private String generateHash(Document document) {
-        try {
-            var transformedName = document.getName() + document.getPath() + document.getMimeType() +
-                    document.getSize() + System.currentTimeMillis();
-
-            var messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(transformedName.getBytes(StandardCharsets.UTF_8));
-            return new BigInteger(1, messageDigest.digest()).toString(RADIX);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ApiException(ErrorCode.DOCUMENT_GENERATE_HASH, e);
-        }
+    private String generateIdentifier() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

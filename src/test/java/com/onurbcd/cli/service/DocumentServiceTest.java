@@ -24,15 +24,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.LongStream;
 
 import static com.onurbcd.cli.TestConstants.DOCUMENT_ID;
 import static com.onurbcd.cli.TestConstants.ID;
@@ -42,7 +37,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -51,6 +45,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DocumentServiceTest {
 
+    private static final String DOCUMENT_IDENTIFIER_PATTERN = "[0-9a-f]{32}";
     private static final String PATH = "balance/2024/03/05";
     private static final String MIME = "application/pdf";
 
@@ -79,25 +74,6 @@ class DocumentServiceTest {
         return MultipartFileDto.builder().path(PATH).name(name).multipartFile(file).build();
     }
 
-    /**
-     * The hash is an MD5 of the document data plus the current time in millis, so it is checked against every
-     * millisecond the call could have run in.
-     */
-    private static void assertHashFor(Document document, String name, long size, long from, long to) {
-        var candidates = LongStream.rangeClosed(from, to).mapToObj(millis -> md5(name + PATH + MIME + size + millis));
-
-        assertThat(document.getHash()).isIn(candidates.toList());
-    }
-
-    private static String md5(String text) {
-        try {
-            var digest = MessageDigest.getInstance("MD5").digest(text.getBytes(StandardCharsets.UTF_8));
-            return new BigInteger(1, digest).toString(16);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
     @Nested
     @DisplayName("save")
     class Save {
@@ -110,11 +86,8 @@ class DocumentServiceTest {
             var persisted = new Document();
             persisted.setId(DOCUMENT_ID);
             when(repository.saveAll(any())).thenReturn(List.of(persisted));
-            var before = System.currentTimeMillis();
-
             var result = service.save(many(first, second));
 
-            var after = System.currentTimeMillis();
             assertThat(result).containsExactly(persisted);
             InOrder order = inOrder(storageService, repository);
             order.verify(storageService).saveFile(documentCaptor.capture(), same(first));
@@ -126,8 +99,9 @@ class DocumentServiceTest {
             assertThat(documents).extracting(Document::getPath).containsOnly(PATH);
             assertThat(documents).extracting(Document::getMimeType).containsOnly(MIME);
             assertThat(documents).extracting(Document::getSize).containsExactly(10L, 20L);
-            assertHashFor(documents.get(0), "a.pdf", 10L, before, after);
-            assertHashFor(documents.get(1), "b.pdf", 20L, before, after);
+            var identifiers = documents.stream().map(Document::getHash).toList();
+            assertThat(identifiers).allSatisfy(identifier -> assertThat(identifier).matches(DOCUMENT_IDENTIFIER_PATTERN));
+            assertThat(identifiers).doesNotHaveDuplicates();
             verifyNoMoreInteractions(storageService, repository);
             verifyNoInteractions(toDtoMapper);
         }
@@ -173,11 +147,8 @@ class DocumentServiceTest {
             var file = upload("original.pdf", MIME, 10L);
             var persisted = new Document();
             when(repository.save(any(Document.class))).thenReturn(persisted);
-            var before = System.currentTimeMillis();
-
             var result = service.saveOne(one(file, "custom.pdf"));
 
-            var after = System.currentTimeMillis();
             assertThat(result).isSameAs(persisted);
             verify(storageService).saveFile(documentCaptor.capture(), same(file));
             verify(repository).save(documentCaptor.getValue());
@@ -186,7 +157,7 @@ class DocumentServiceTest {
             assertThat(document.getPath()).isEqualTo(PATH);
             assertThat(document.getMimeType()).isEqualTo(MIME);
             assertThat(document.getSize()).isEqualTo(10L);
-            assertHashFor(document, "custom.pdf", 10L, before, after);
+            assertThat(document.getHash()).matches(DOCUMENT_IDENTIFIER_PATTERN);
             verifyNoMoreInteractions(storageService, repository);
         }
 
@@ -273,30 +244,6 @@ class DocumentServiceTest {
             assertThatThrownBy(() -> service.save(dto))
                     .isInstanceOfSatisfying(ApiException.class,
                             e -> assertThat(e.getError()).isEqualTo(ErrorCode.DOCUMENT_SIZE_IS_ZERO));
-
-            verifyNoInteractions(storageService, repository);
-        }
-    }
-
-    @Nested
-    @DisplayName("hash generation")
-    class HashGeneration {
-
-        @Test
-        @DisplayName("when MD5 is unavailable, should throw a document hash error with the cause")
-        void givenNoMd5_shouldThrowHashError() {
-            var failure = new NoSuchAlgorithmException("MD5");
-            var dto = many(upload("a.pdf", MIME, 10L));
-
-            try (var digest = mockStatic(MessageDigest.class)) {
-                digest.when(() -> MessageDigest.getInstance("MD5")).thenThrow(failure);
-
-                assertThatThrownBy(() -> service.save(dto))
-                        .isInstanceOfSatisfying(ApiException.class, e -> {
-                            assertThat(e.getError()).isEqualTo(ErrorCode.DOCUMENT_GENERATE_HASH);
-                            assertThat(e.getCause()).isSameAs(failure);
-                        });
-            }
 
             verifyNoInteractions(storageService, repository);
         }
