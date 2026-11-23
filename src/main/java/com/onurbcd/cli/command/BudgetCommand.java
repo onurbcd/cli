@@ -71,6 +71,8 @@ public class BudgetCommand extends BaseCommand {
         return baseGet(id);
     }
 
+    // Each argument is a separate public Spring Shell option; grouping them would change the CLI contract.
+    @SuppressWarnings("java:S107")
     @Command(name = "budget-get-all", description = "Get budget's list.")
     public String getAll(
             @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")

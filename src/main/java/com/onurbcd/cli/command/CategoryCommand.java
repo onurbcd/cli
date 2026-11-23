@@ -60,6 +60,8 @@ public class CategoryCommand extends BaseCommand {
         return baseGet(id);
     }
 
+    // Each argument is a separate public Spring Shell option; grouping them would change the CLI contract.
+    @SuppressWarnings("java:S107")
     @Command(name = "category-get-all", description = "Get category's list.")
     public String getAll(
             @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")

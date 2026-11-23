@@ -75,6 +75,8 @@ public class BalanceCommand extends BaseCommand {
         return baseGet(id);
     }
 
+    // Each argument is a separate public Spring Shell option; grouping them would change the CLI contract.
+    @SuppressWarnings("java:S107")
     @Command(name = "balance-get-all", description = "Get balance's list.")
     public String getAll(
             @Option(shortName = 'n', longName = "pageNumber", description = "The page's number.", defaultValue = "1")
@@ -162,6 +164,8 @@ public class BalanceCommand extends BaseCommand {
         return shellHelper.success("Balance with id: '%s' updated with success (position).".formatted(id));
     }
 
+    // Each argument is a separate public Spring Shell option; grouping them would change the CLI contract.
+    @SuppressWarnings("java:S107")
     @Command(name = "balance-sum", description = "Get balance's sum.")
     public String getSum(
             @Option(shortName = 'a', longName = "active", description = "Filter's active option.")
