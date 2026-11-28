@@ -30,11 +30,12 @@ When the user refers to the TODO ("pega o todo", "próximo item"), follow this f
 1. Always read all the steps written here and execute every one of them, without skipping any.
 2. Take the first unchecked item of the active phase, one item at a time; do not start the next one on your own.
 3. Analyze the current state of the code, present a short plan and ask only about decisions that are the user's to make; then execute.
-4. Verify before closing: run `./validate.sh` (or at least `./mvnw test` when the change is small) and mark the item `[x]` in `TODO.md` only after it passes.
-5. When a phase has no unchecked items left, update "Fase ativa" in `TODO.md`.
-6. Do not run write git operations; leave changes in the working tree for the user to commit.
-7. Finish by stating what was verified and what was not (for example, startup against a real database).
-8. Generate the commit message for the work done, following the Conventional Commit style described in "Commit & Pull Request Guidelines", and present it for the user to commit (do not commit).
+4. Whenever the work involves generating or changing tests, use the `java-testing` skill (invoke it via the Skill tool) instead of writing the tests ad hoc.
+5. Verify before closing: run `./validate.sh` (or at least `./mvnw test` when the change is small) and mark the item `[x]` in `TODO.md` only after it passes.
+6. When a phase has no unchecked items left, update "Fase ativa" in `TODO.md`.
+7. Do not run write git operations; leave changes in the working tree for the user to commit.
+8. Finish by stating what was verified and what was not (for example, startup against a real database).
+9. Generate the commit message for the work done, following the Conventional Commit style described in "Commit & Pull Request Guidelines", and present it for the user to commit (do not commit).
 
 ## Commit & Pull Request Guidelines
 

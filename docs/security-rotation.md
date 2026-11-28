@@ -24,8 +24,8 @@ Os dados da base podem ser apagados. Por isso a rotação não precisa preservar
 
 ## Procedimento
 
-1. Gere valores novos: senha do banco, chave AES (16, 24 ou 32 caracteres ASCII) e IV (exatamente 16 caracteres ASCII).
-2. Atualize `CLI_DB_PASSWORD`, `CLI_CRYPTO_KEY1` e `CLI_CRYPTO_KEY2` no `.env`.
+1. Gere valores novos: senha do banco, chave AES (`openssl rand -base64 32`).
+2. Atualize `CLI_DB_PASSWORD` e `CLI_CRYPTO_KEY` (Base64 de 32 bytes; ver [`secrets-storage.md`](secrets-storage.md)) no `.env`.
 3. Rode `./reset-db.sh`. Isso remove o container `postgres-cli` e cria outro com a senha nova. Como o script não usa volume, **todos os dados são perdidos**, inclusive os registros cifrados com as chaves antigas.
 4. Inicie a aplicação; o Flyway recria o esquema.
 5. Troque nos serviços de origem os segredos reais que passaram pelo app.

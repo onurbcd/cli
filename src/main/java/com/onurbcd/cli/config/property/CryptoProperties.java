@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 public class CryptoProperties {
 
-    private String key1;
-    private String key2;
-    private String algorithm;
-    private String transformation;
+    /** Base64 encoding of the 32 random bytes of the AES-256 key. */
+    private String key;
 }

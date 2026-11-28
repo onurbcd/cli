@@ -35,10 +35,7 @@ logging:
 
 admin:
   crypto:
-    algorithm: AES
-    key1: ${CLI_CRYPTO_KEY1}
-    key2: ${CLI_CRYPTO_KEY2}
-    transformation: AES/CBC/PKCS5PADDING
+    key: ${CLI_CRYPTO_KEY}
   minYear: 2013
   storagePath: /media/bruno-domingues/UUI/storage
   filesPath: /home/bruno-domingues/Downloads
