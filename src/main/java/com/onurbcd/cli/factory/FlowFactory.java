@@ -87,7 +87,7 @@ public final class FlowFactory {
                 .input(FlowField.DESCRIPTION, params.getDescription())
                 .input(FlowField.LINK, params.getLink())
                 .input(FlowField.USERNAME, params.getUsername())
-                .input(FlowField.PASSWORD, params.getPassword())
+                .secretInput(FlowField.PASSWORD)
                 .execute();
     }
 

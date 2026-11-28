@@ -69,6 +69,16 @@ class FlowBuilderWrapperTest {
         }
     }
 
+    @Test
+    @DisplayName("secretInput adds a masked string input without any default value")
+    void givenField_whenSecretInput_shouldAddMaskedInputWithoutDefault() {
+        var result = wrapper.secretInput(FIELD);
+
+        assertThat(result).isSameAs(wrapper);
+        assertThat(recording.steps()).containsExactly(
+                new Step("string", FIELD.getId(), Map.of("name", FIELD.getName(), "maskCharacter", '*')));
+    }
+
     @Nested
     @DisplayName("select")
     class Select {

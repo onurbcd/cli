@@ -168,7 +168,7 @@ class FlowFactoryTest {
         }
 
         @Test
-        @DisplayName("SECRET, should build the five text steps")
+        @DisplayName("SECRET, should build four text steps and a masked password step without default")
         void givenSecret_shouldBuildSecretFlow() {
             var params = SecretSaveFlowParam.builder()
                     .name("n").description("d").link("l").username("u").password("p").build();
@@ -178,7 +178,8 @@ class FlowFactoryTest {
                     input(FlowField.DESCRIPTION, "d"),
                     input(FlowField.LINK, "l"),
                     input(FlowField.USERNAME, "u"),
-                    input(FlowField.PASSWORD, "p"));
+                    new Step("string", FlowField.PASSWORD.getId(),
+                            Map.of("name", FlowField.PASSWORD.getName(), "maskCharacter", '*')));
         }
 
         @Test

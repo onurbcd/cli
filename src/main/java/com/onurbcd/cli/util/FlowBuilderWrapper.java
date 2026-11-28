@@ -13,6 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FlowBuilderWrapper {
 
+    private static final char MASK_CHARACTER = '*';
+
     private final ComponentFlow.Builder builder;
 
     public static FlowBuilderWrapper init(ComponentFlow.Builder builder) {
@@ -36,6 +38,19 @@ public final class FlowBuilderWrapper {
 
     public FlowBuilderWrapper input(FlowField field) {
         return input(field, null);
+    }
+
+    /**
+     * Adds a masked text input for sensitive values. The typed characters are echoed as {@code *} and no default is
+     * offered, because the default would be printed in clear text.
+     */
+    public FlowBuilderWrapper secretInput(FlowField field) {
+        builder.withStringInput(field.getId())
+                .name(field.getName())
+                .maskCharacter(MASK_CHARACTER)
+                .and();
+
+        return this;
     }
 
     public FlowBuilderWrapper select(FlowField field, List<SelectItem> items, @Nullable String defaultValue) {
