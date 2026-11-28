@@ -7,6 +7,7 @@ import com.onurbcd.cli.dto.secret.SecretPatchDto;
 import com.onurbcd.cli.dto.secret.SecretSaveDto;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
+import com.onurbcd.cli.helper.ClipboardHelper;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
@@ -62,6 +63,8 @@ class SecretCommandTest {
     private SecretService secretService;
     @Mock
     private ShellHelper shellHelper;
+    @Mock
+    private ClipboardHelper clipboardHelper;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private ComponentFlow.Builder flowBuilder;
     @Captor
@@ -73,7 +76,7 @@ class SecretCommandTest {
 
     @BeforeEach
     void setUp() {
-        command = new SecretCommand(secretService, flowBuilder, shellHelper, TestValidator.create());
+        command = new SecretCommand(secretService, flowBuilder, shellHelper, TestValidator.create(), clipboardHelper);
     }
 
     private void stubFlowResult(ComponentContext<?> context) {
@@ -236,6 +239,46 @@ class SecretCommandTest {
             verify(secretService).getById(ID);
             verify(shellHelper).printJson(dto);
             verifyNoMoreInteractions(secretService, shellHelper);
+        }
+    }
+
+    @Nested
+    @DisplayName("copy")
+    class Copy {
+
+        @Test
+        @DisplayName("should copy the password with the clipboard tool without printing it")
+        void givenId_whenCopy_shouldCopyAndReturnSuccessMessage() {
+            when(secretService.getById(ID)).thenReturn(createSecretDto());
+            when(clipboardHelper.copy("password")).thenReturn(true);
+            when(shellHelper.success(messageCaptor.capture())).thenReturn("ok");
+
+            var result = command.copy(ID);
+
+            assertThat(result).isEqualTo("ok");
+            assertThat(messageCaptor.getValue()).isEqualTo("Password of secret " + ID + " copied to the clipboard.")
+                    .doesNotContain("password");
+            verify(secretService).getById(ID);
+            verify(clipboardHelper).copy("password");
+            verify(shellHelper).success(messageCaptor.getValue());
+            verifyNoMoreInteractions(secretService, clipboardHelper, shellHelper);
+        }
+
+        @Test
+        @DisplayName("should fall back to OSC 52 and warn when no clipboard tool works")
+        void givenNoClipboardTool_whenCopy_shouldReturnOscSequenceAndWarning() {
+            when(secretService.getById(ID)).thenReturn(createSecretDto());
+            when(clipboardHelper.copy("password")).thenReturn(false);
+            when(shellHelper.warning(messageCaptor.capture())).thenReturn("warn");
+
+            var result = command.copy(ID);
+
+            assertThat(result).isEqualTo("\u001b]52;c;cGFzc3dvcmQ=\u0007warn");
+            assertThat(messageCaptor.getValue()).contains("wl-clipboard").doesNotContain("password");
+            verify(secretService).getById(ID);
+            verify(clipboardHelper).copy("password");
+            verify(shellHelper).warning(messageCaptor.getValue());
+            verifyNoMoreInteractions(secretService, clipboardHelper, shellHelper);
         }
     }
 

@@ -38,7 +38,6 @@ public final class Constant {
     public static final String DESCRIPTION_KEY = "description";
     public static final String LINK_KEY = "link";
     public static final String USERNAME_KEY = "username";
-    public static final String PASSWORD_KEY = "password";
     public static final String CALENDAR_YEAR_KEY = "calendarYear";
     public static final String CALENDAR_MONTH_KEY = "calendarMonth";
     public static final String PARENT_ID_KEY = "parentId";
@@ -79,7 +78,6 @@ public final class Constant {
     public static final String DESCRIPTION_VALUE = "Description";
     public static final String LINK_VALUE = "Link";
     public static final String USERNAME_VALUE = "Username";
-    public static final String PASSWORD_VALUE = "Password";
     public static final String CALENDAR_YEAR_VALUE = "Calendar Year";
     public static final String CALENDAR_MONTH_VALUE = "Calendar Month";
     public static final String PARENT_ID_VALUE = "Parent Id";

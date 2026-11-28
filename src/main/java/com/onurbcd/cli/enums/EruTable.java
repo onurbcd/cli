@@ -41,7 +41,6 @@ public enum EruTable {
         secretHeaders.put(DESCRIPTION_KEY, DESCRIPTION_VALUE);
         secretHeaders.put(LINK_KEY, LINK_VALUE);
         secretHeaders.put(USERNAME_KEY, USERNAME_VALUE);
-        secretHeaders.put(PASSWORD_KEY, PASSWORD_VALUE);
         return secretHeaders;
     }
 

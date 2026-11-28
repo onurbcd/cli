@@ -28,8 +28,7 @@ class EruTableTest {
     static Stream<Arguments> tables() {
         return Stream.of(
                 Arguments.of(EruTable.SECRET, headers("id", "Id", "name", "Name", "active", "Active",
-                        "description", "Description", "link", "Link", "username", "Username",
-                        "password", "Password")),
+                        "description", "Description", "link", "Link", "username", "Username")),
                 Arguments.of(EruTable.DAY, headers("calendarYear", "Calendar Year", "calendarMonth", "Calendar Month")),
                 Arguments.of(EruTable.INCOME_SOURCE, headers("id", "Id", "name", "Name", "active", "Active")),
                 Arguments.of(EruTable.CATEGORY, headers("id", "Id", "name", "Name", "active", "Active",
@@ -78,8 +77,16 @@ class EruTableTest {
     void givenTable_whenModifyingHeaders_shouldThrow(EruTable table, Map<String, Object> expected) {
         var headers = table.getHeaders();
 
-        assertThatThrownBy(() -> headers.put("extra", "Extra")).isInstanceOf(UnsupportedOperationException.class);
-        assertThatThrownBy(headers::clear).isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> addExtra(headers)).isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> removeAll(headers)).isInstanceOf(UnsupportedOperationException.class);
         assertThat(table.getHeaders()).containsExactlyEntriesOf(expected);
+    }
+
+    private static void addExtra(Map<String, Object> headers) {
+        headers.put("extra", "Extra");
+    }
+
+    private static void removeAll(Map<String, Object> headers) {
+        headers.clear();
     }
 }

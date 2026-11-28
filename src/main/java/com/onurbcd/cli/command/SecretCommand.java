@@ -1,13 +1,16 @@
 package com.onurbcd.cli.command;
 
 import com.onurbcd.cli.dto.filter.SecretFilter;
+import com.onurbcd.cli.dto.secret.SecretDto;
 import com.onurbcd.cli.dto.secret.SecretPatchDto;
 import com.onurbcd.cli.enums.EruTable;
 import com.onurbcd.cli.enums.FlowType;
+import com.onurbcd.cli.helper.ClipboardHelper;
 import com.onurbcd.cli.helper.ShellHelper;
 import com.onurbcd.cli.param.CommandParam;
 import com.onurbcd.cli.param.flow.SaveFlowParam;
 import com.onurbcd.cli.service.SecretService;
+import com.onurbcd.cli.util.ClipboardUtil;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -27,9 +30,14 @@ import static com.onurbcd.cli.util.ParamUtil.getSortProps;
 @CommandGroup(name = SECRET)
 public class SecretCommand extends BaseCommand {
 
+    private final SecretService service;
+    private final ClipboardHelper clipboardHelper;
+
     public SecretCommand(SecretService service, ComponentFlow.Builder flowBuilder, ShellHelper shellHelper,
-                         Validator validator) {
+                         Validator validator, ClipboardHelper clipboardHelper) {
         super(service, flowBuilder, shellHelper, SECRET, EruTable.SECRET, validator);
+        this.service = service;
+        this.clipboardHelper = clipboardHelper;
     }
 
     @Command(name = "secret-save", description = "Create or update a secret.")
@@ -56,6 +64,24 @@ public class SecretCommand extends BaseCommand {
             UUID id
     ) {
         return baseGet(id);
+    }
+
+    @Command(name = "secret-copy", description = "Copy the secret's password to the clipboard without printing it.")
+    public String copy(
+            @Option(shortName = 'i', longName = "id", description = "The secret's id.", required = true)
+            @NotNull
+            UUID id
+    ) {
+        var password = ((SecretDto) service.getById(id)).getPassword();
+
+        if (clipboardHelper.copy(password)) {
+            return shellHelper.success("Password of secret %s copied to the clipboard.".formatted(id));
+        }
+
+        // No clipboard tool (wl-copy, xclip, xsel): ask the terminal, which only works if it supports OSC 52.
+        return ClipboardUtil.osc52Copy(password) + shellHelper.warning(
+                "No clipboard tool found (install wl-clipboard or xclip). Sent to the terminal via OSC 52; "
+                        + "this only works if your terminal supports it.");
     }
 
     @Command(name = "secret-get-all", description = "Get secret's list.")
