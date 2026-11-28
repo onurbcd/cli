@@ -142,11 +142,13 @@ Test conventions used by the skill: method names as `given<Input>_when<Condition
 
 ## Credentials and keys (`.env`)
 
-Credentials and encryption keys are not stored in `application.yml`. Copy `.env.example` to `.env` (ignored by Git), fill in the values and run the application from the repository root: `application.yml` imports `./.env` and the same names can alternatively be provided as OS environment variables. The application fails to start if any of them is missing. `reset-db.sh` reads `CLI_DB_USERNAME` and `CLI_DB_PASSWORD` from the same source.
+Credentials and encryption keys are not stored in `application.yml`. Copy `.env.example` to `.env` (ignored by Git), fill in the values and run the application from the repository root: `application.yml` imports `./.env` and the same names can alternatively be provided as OS environment variables. The application fails to start with a clear message if any of them is missing or if a configured path is relative or inaccessible. `reset-db.sh` reads `CLI_DB_USERNAME` and `CLI_DB_PASSWORD` from the same source.
 
 | Variable | Purpose |
 |----------|---------|
 | `CLI_DB_USERNAME` / `CLI_DB_PASSWORD` | PostgreSQL credentials |
+| `CLI_STORAGE_PATH` | Absolute path of the document storage directory; created if missing, must be readable and writable |
+| `CLI_FILES_PATH` | Absolute path of the directory listed when attaching files; must exist and be readable |
 | `CLI_CRYPTO_KEY` | AES-256-GCM key: Base64 of 32 random bytes (`openssl rand -base64 32`) used to encrypt secrets |
 
 The previous values were committed to this public repository, so they must be rotated; see [`docs/security-rotation.md`](docs/security-rotation.md). The secrets storage format and its migration are described in [`docs/secrets-storage.md`](docs/secrets-storage.md) (both in Portuguese).

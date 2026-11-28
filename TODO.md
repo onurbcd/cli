@@ -45,7 +45,7 @@ Execução por checkpoints para facilitar revisão e commits independentes:
 - [x] Avaliar rotação das credenciais/chaves que possam ter sido usadas fora de ambientes descartáveis. Avaliação em [`docs/security-rotation.md`](docs/security-rotation.md): chaves AES e senha do banco estão no histórico público e devem ser rotacionadas; como os dados são descartáveis, a rotação é trocar os valores no `.env` e rodar `./reset-db.sh`, sem migrar dados.
 - [x] Revisar o armazenamento de segredos: substituir AES/CBC com IV fixo por criptografia autenticada e documentar uma migração compatível com dados existentes. AES-256-GCM com IV aleatório e formato `v2:`; migração (corte limpo) em [`docs/secrets-storage.md`](docs/secrets-storage.md).
 - [x] Garantir que segredos e dados sensíveis não sejam incluídos em logs ou mensagens de erro. Prompt de senha mascarado e sem default; `CryptoHelper` já não ecoa valores (coberto em `CryptoHelperTest`); `SensitiveDataExposureTest` protege contra `toString` com senha/chave. Erros de banco/JDBC ficam para a Fase 5.
-- [ ] Externalizar caminhos locais de armazenamento e arquivos, com validação clara na inicialização.
+- [x] Externalizar caminhos locais de armazenamento e arquivos, com validação clara na inicialização. `CLI_STORAGE_PATH` e `CLI_FILES_PATH` no `.env`; `AdminPathsValidator` exige caminho absoluto, cria o storage se faltar e falha na subida se algum diretório estiver ausente ou sem permissão.
 - [ ] Validar que caminhos resolvidos no `StorageService` permanecem dentro do diretório-base configurado.
 - [ ] Revisar permissões do banco e dos diretórios de documentos, além da estratégia de backup.
 - [ ] Configurar níveis de log por ambiente sem desativar toda a informação necessária para diagnóstico.

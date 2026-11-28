@@ -37,5 +37,5 @@ admin:
   crypto:
     key: ${CLI_CRYPTO_KEY}
   minYear: 2013
-  storagePath: /media/bruno-domingues/UUI/storage
-  filesPath: /home/bruno-domingues/Downloads
+  storagePath: ${CLI_STORAGE_PATH}
+  filesPath: ${CLI_FILES_PATH}
