@@ -4,7 +4,7 @@ Este arquivo é o ponto de acompanhamento das melhorias acordadas para o reposit
 
 ## Estado geral
 
-- Fase ativa: **1 — Atualização da plataforma e dependências**
+- Fase ativa: **3 — Configuração e segurança**
 - A fase 1 está em andamento; os itens já verificados nesta migração estão marcados abaixo.
 - `todo-list` foi revisado e seus itens foram incorporados abaixo; o arquivo original foi preservado.
 
@@ -32,16 +32,16 @@ Execução por checkpoints para facilitar revisão e commits independentes:
 
 **Retomada:** o checkpoint 1 foi implementado, mas ainda não foi executado nem verificado. Na próxima sessão, leia o resultado de `./mvnw test` informado pelo usuário; corrija eventuais falhas. Se passar, registre o checkpoint como concluído e comece o checkpoint 2, cobrindo os serviços e as regras de domínio. Os arquivos do checkpoint 1 são `pom.xml`, `README.md`, `src/test/resources/application.properties` e os testes em `src/test/java/com/onurbcd/cli/{util,validator,service,persistency/repository}`. Não marque as tarefas da Fase 2 abaixo como concluídas antes dessa verificação.
 
-- [ ] Criar testes unitários em `src/test/java`, seguindo os pacotes de produção e sufixo `*Test`.
-- [ ] Cobrir primeiro regras de serviço, validadores, conversores e fluxos com maior impacto.
-- [ ] Testar comandos Spring Shell: parâmetros, fluxos e resultados apresentados.
-- [ ] Criar testes de integração de persistência e migrações com PostgreSQL real de teste ou banco em memória compatível; avaliar Testcontainers.
-- [ ] Criar configuração de teste isolada, sem depender de credenciais ou caminhos locais.
-- [ ] Estabelecer critérios de cobertura úteis e confirmar relatório JaCoCo no `verify`.
+- [x] Criar testes unitários em `src/test/java`, seguindo os pacotes de produção e sufixo `*Test`.
+- [x] Cobrir primeiro regras de serviço, validadores, conversores e fluxos com maior impacto.
+- [x] Testar comandos Spring Shell: parâmetros, fluxos e resultados apresentados.
+- [x] Criar testes de integração de persistência e migrações com PostgreSQL real de teste ou banco em memória compatível; avaliar Testcontainers.
+- [x] Criar configuração de teste isolada, sem depender de credenciais ou caminhos locais.
+- [x] Estabelecer critérios de cobertura úteis e confirmar relatório JaCoCo no `verify`.
 
 ## Fase 3 — Configuração e segurança
 
-- [ ] Remover credenciais e chaves criptográficas fixas de `application.yml` e `reset-db.sh`; fornecer valores por variáveis de ambiente ou configuração local ignorada pelo Git.
+- [x] Remover credenciais e chaves criptográficas fixas de `application.yml` e `reset-db.sh`; fornecer valores por variáveis de ambiente ou configuração local ignorada pelo Git.
 - [ ] Avaliar rotação das credenciais/chaves que possam ter sido usadas fora de ambientes descartáveis.
 - [ ] Revisar o armazenamento de segredos: substituir AES/CBC com IV fixo por criptografia autenticada e documentar uma migração compatível com dados existentes.
 - [ ] Garantir que segredos e dados sensíveis não sejam incluídos em logs ou mensagens de erro.

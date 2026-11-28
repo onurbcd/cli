@@ -7,8 +7,21 @@ set -e
 
 CONTAINER_NAME="postgres-cli"
 NETWORK_NAME="cli-network"
-POSTGRES_USER="admin"
-POSTGRES_PASSWORD="secret"
+ENV_FILE="$(dirname "$0")/.env"
+
+# Reads a single KEY from .env without sourcing it (values may contain shell metacharacters).
+read_env() {
+    local value
+    value="$(grep -E "^${1}=" "${ENV_FILE}" 2>/dev/null | tail -n 1 | cut -d= -f2-)" || true
+    printf '%s' "${value}"
+}
+
+POSTGRES_USER="${CLI_DB_USERNAME:-$(read_env CLI_DB_USERNAME)}"
+POSTGRES_PASSWORD="${CLI_DB_PASSWORD:-$(read_env CLI_DB_PASSWORD)}"
+if [ -z "${POSTGRES_USER}" ] || [ -z "${POSTGRES_PASSWORD}" ]; then
+    echo "❌ CLI_DB_USERNAME and CLI_DB_PASSWORD must be set in the environment or in .env (see .env.example)."
+    exit 1
+fi
 POSTGRES_DB="cli"
 POSTGRES_PORT="5432"
 POSTGRES_VERSION="17"
@@ -72,7 +85,6 @@ if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
     echo "   Port: ${POSTGRES_PORT}"
     echo "   Database: ${POSTGRES_DB}"
     echo "   User: ${POSTGRES_USER}"
-    echo "   Password: ${POSTGRES_PASSWORD}"
     echo "   Network: ${NETWORK_NAME}"
     echo ""
 else

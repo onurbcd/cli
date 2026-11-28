@@ -1,11 +1,13 @@
 spring:
+  config:
+    import: optional:file:./.env[.properties]
   main:
     banner-mode: OFF
     web-application-type: NONE
   datasource:
     url: jdbc:postgresql://localhost:5432/cli
-    username: admin
-    password: secret
+    username: ${CLI_DB_USERNAME}
+    password: ${CLI_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   flyway:
     locations: classpath:db/migration
@@ -34,8 +36,8 @@ logging:
 admin:
   crypto:
     algorithm: AES
-    key1: '%C*F-JaNdRgUjXn2r5u8x/A?D(G+KbPe'
-    key2: G+KaPdSgVkYp3s6v
+    key1: ${CLI_CRYPTO_KEY1}
+    key2: ${CLI_CRYPTO_KEY2}
     transformation: AES/CBC/PKCS5PADDING
   minYear: 2013
   storagePath: /media/bruno-domingues/UUI/storage

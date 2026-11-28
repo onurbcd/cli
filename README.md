@@ -140,12 +140,22 @@ The skill finds the class, reads `pom.xml` to match the project's versions, list
 
 Test conventions used by the skill: method names as `given<Input>_when<Condition>_should<Result>`, a `@Nested` class per method under test, English `@DisplayName`, AssertJ assertions only, `verifyNoMoreInteractions` on every mock, and no dependence between tests.
 
+## Credentials and keys (`.env`)
+
+Credentials and encryption keys are not stored in `application.yml`. Copy `.env.example` to `.env` (ignored by Git), fill in the values and run the application from the repository root: `application.yml` imports `./.env` and the same names can alternatively be provided as OS environment variables. The application fails to start if any of them is missing. `reset-db.sh` reads `CLI_DB_USERNAME` and `CLI_DB_PASSWORD` from the same source.
+
+| Variable | Purpose |
+|----------|---------|
+| `CLI_DB_USERNAME` / `CLI_DB_PASSWORD` | PostgreSQL credentials |
+| `CLI_CRYPTO_KEY1` | AES key (16, 24 or 32 bytes) used to encrypt secrets |
+| `CLI_CRYPTO_KEY2` | AES/CBC IV (16 bytes); to be replaced when the secrets storage is revised |
+
 ## Postgres in Docker
 
 ```bash
 docker run -p5432:5432 --name postgres \
-  -e POSTGRES_PASSWORD=secret \
-  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD="$CLI_DB_PASSWORD" \
+  -e POSTGRES_USER="$CLI_DB_USERNAME" \
   -e POSTGRES_DB=eru-service \
   -d postgres:17
 ```
