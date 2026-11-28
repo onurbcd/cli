@@ -42,7 +42,7 @@ Execução por checkpoints para facilitar revisão e commits independentes:
 ## Fase 3 — Configuração e segurança
 
 - [x] Remover credenciais e chaves criptográficas fixas de `application.yml` e `reset-db.sh`; fornecer valores por variáveis de ambiente ou configuração local ignorada pelo Git.
-- [ ] Avaliar rotação das credenciais/chaves que possam ter sido usadas fora de ambientes descartáveis.
+- [x] Avaliar rotação das credenciais/chaves que possam ter sido usadas fora de ambientes descartáveis. Avaliação em [`docs/security-rotation.md`](docs/security-rotation.md): chaves AES e senha do banco estão no histórico público e devem ser rotacionadas; como os dados são descartáveis, a rotação é trocar os valores no `.env` e rodar `./reset-db.sh`, sem migrar dados.
 - [ ] Revisar o armazenamento de segredos: substituir AES/CBC com IV fixo por criptografia autenticada e documentar uma migração compatível com dados existentes.
 - [ ] Garantir que segredos e dados sensíveis não sejam incluídos em logs ou mensagens de erro.
 - [ ] Externalizar caminhos locais de armazenamento e arquivos, com validação clara na inicialização.

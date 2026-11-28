@@ -150,6 +150,8 @@ Credentials and encryption keys are not stored in `application.yml`. Copy `.env.
 | `CLI_CRYPTO_KEY1` | AES key (16, 24 or 32 bytes) used to encrypt secrets |
 | `CLI_CRYPTO_KEY2` | AES/CBC IV (16 bytes); to be replaced when the secrets storage is revised |
 
+The previous values were committed to this public repository, so they must be rotated; see [`docs/security-rotation.md`](docs/security-rotation.md) (in Portuguese).
+
 ## Postgres in Docker
 
 ```bash

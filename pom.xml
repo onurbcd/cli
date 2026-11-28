@@ -15,7 +15,7 @@
 
     <groupId>com.onurbcd</groupId>
     <artifactId>cli</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0-rc3</version>
     <name>cli</name>
     <description>CLI application for managing daily routines</description>
 
